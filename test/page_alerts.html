@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Alerts, inline and banner</title>
+<!-- The portfolio summary's Asset allocation card closes with an inline
+     alert: a 20px check-circle and one line of text, on nothing. The icon is
+     a span whose background colour shows through a CSS mask, the colour and
+     the mask both handed down through the apex-kit tokens. A banner alert,
+     with its own tinted fill, can carry the same kind of icon. -->
+<style>
+  :root {
+    --reference-color-green-800: #0F5319;
+    --reference-color-red-800: #A11313;
+    --reference-color-neutral-900: #141414;
+    --apex-kit-icon-svg--success: url("data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%229.25%22%20stroke%3D%22%230F5319%22%20stroke-width%3D%221.5%22%2F%3E%3Cpath%20d%3D%22M8%2012.5l2.75%202.75L16%209.5%22%20stroke%3D%22%230F5319%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E");
+  }
+  body { background-color: #f9f7f5; margin: 0; font: 14px Arial, sans-serif; color: #141414; }
+  .card { background-color: #ffffff; border-radius: 24px; padding: 24px; width: 480px; margin: 24px; }
+  .gain { color: var(--reference-color-green-800); }
+  .apex-kit-web-icon-root { display: inline-block; fill: var(--apex-kit-icon-color); }
+  .apex-kit-web-inline-alert-root {
+    --apex-kit-inline-alert-color-palette: var(--reference-color-red-800);
+    --apex-kit-inline-alert-text-color: var(--reference-color-neutral-900);
+    --apex-kit-inline-alert-icon-component-content: var(--apex-kit-icon-svg--critical);
+    display: flex; align-items: center;
+  }
+  .apex-kit-web-inline-alert-root.pvd-inline-alert--success {
+    --apex-kit-inline-alert-color-palette: var(--reference-color-green-800);
+    --apex-kit-inline-alert-icon-component-content: var(--apex-kit-icon-svg--success);
+  }
+  .apex-kit-web-inline-alert-root .pvd-inline-alert__icon { display: flex; }
+  .apex-kit-web-inline-alert-root .pvd-inline-alert__icon .apex-kit-web-icon-root {
+    background-color: var(--apex-kit-inline-alert-color-palette); content: "";
+    -webkit-mask-image: var(--apex-kit-inline-alert-icon-component-content); mask-image: var(--apex-kit-inline-alert-icon-component-content);
+    -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center;
+    -webkit-mask-size: contain; mask-size: contain; width: 20px; height: 20px;
+  }
+  .apex-kit-web-inline-alert-root .pvd-inline-alert__content { color: var(--apex-kit-inline-alert-text-color); padding-left: 12px; }
+  .pvd-alert--success { background-color: #EDFAEB; border: 1px solid #368727; padding: 12px; display: flex; align-items: center; color: #0F5319; }
+  .pvd-alert--success .apex-kit-web-icon-root {
+    background-color: var(--reference-color-green-800);
+    -webkit-mask-image: var(--apex-kit-icon-svg--success); mask-image: var(--apex-kit-icon-svg--success);
+    -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-size: contain; mask-size: contain; width: 20px; height: 20px; margin-right: 8px;
+  }
+</style>
+</head>
+<body>
+  <div class="card" id="allocCard">
+    <p class="gain" id="gainText">+$100.00</p>
+    <apex-kit-web-inline-alert class="asset-allocation-alert">
+      <div class="apex-kit-web-inline-alert-root pvd-inline-alert--medium pvd-inline-alert--success" id="inlineAlert">
+        <div class="pvd-inline-alert__icon"><span class="apex-kit-web-icon-root pvd-icon--small" id="inlineIcon"></span></div>
+        <div class="pvd-inline-alert__content" id="inlineText">Your asset allocation resembles a <b>Most Aggressive</b> strategy.</div>
+      </div>
+    </apex-kit-web-inline-alert>
+  </div>
+  <div class="card">
+    <div class="pvd-alert--success" id="bannerAlert"><span class="apex-kit-web-icon-root" id="bannerIcon"></span><span id="bannerText">No new transfers found</span></div>
+  </div>
+</body>
+</html>

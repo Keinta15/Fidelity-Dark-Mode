@@ -1,0 +1,396 @@
+/* =============================================================================
+ * 02-structure.css - page shell, floating layers, data grids and skeletons.
+ * The recolor engine (src/recolor.js) maps the colours in Fidelity's own rules;
+ * this file covers surfaces it cannot see in time or cannot judge.
+ * Selectors carry :not(#\9); see 00-base.css.
+ * =========================================================================== */
+
+@media screen {
+
+/* --- the shell ------------------------------------------------------------ */
+/* Only surfaces go in this list: [class*="layout-container"] would also match
+   pcc-ideogram-card-layout-container, inside the planning page's "Up next"
+   card. */
+html:not(.fdm-off):not(#\9) body,
+html:not(.fdm-off):not(#\9) .fds-shell,
+html:not(.fdm-off):not(#\9) #root,
+html:not(.fdm-off):not(#\9) [class*="page-wrapper"] {
+  background-color: var(--fdm-canvas) !important;
+  color: var(--fdm-text);
+}
+
+/* Masthead and the primary nav rail sit one step above the canvas. */
+html:not(.fdm-off):not(#\9) header,
+html:not(.fdm-off):not(#\9) nav.header-navigation,
+html:not(.fdm-off):not(#\9) .nav-utility-container,
+html:not(.fdm-off):not(#\9) .nav-primary,
+html:not(.fdm-off):not(#\9) [class*="nav-primary-container"] {
+  background-color: var(--fdm-surf-1) !important;
+  border-color: var(--fdm-hair) !important;
+}
+
+/* --- floating layers ------------------------------------------------------ */
+/* A popover needs a step up from the card to have an edge. Only the bubble is
+   named: [class*="pvd-popover"] would also match pvd-popover__trigger-wrapper
+   and put a plate behind every icon that opens one. The trade ticket's
+   Shares/Dollars trigger is also a role="listbox"; a popup list never has
+   aria-expanded, and its trigger always does. */
+html:not(.fdm-off):not(#\9) .dropdown-overlay,
+html:not(.fdm-off):not(#\9) [class*="overlay-body"],
+html:not(.fdm-off):not(#\9) [class*="popup-container"],
+html:not(.fdm-off):not(#\9) .pvd-popover__popover,
+html:not(.fdm-off):not(#\9) .fds-popover__popover,
+html:not(.fdm-off):not(#\9) .popover-content,
+html:not(.fdm-off):not(#\9) [class*="kebob-menu"],
+html:not(.fdm-off):not(#\9) [class*="nav-primary-level2"],
+html:not(.fdm-off):not(#\9) [class*="mega-menu"],
+html:not(.fdm-off):not(#\9) [role="menu"],
+html:not(.fdm-off):not(#\9) [role="listbox"]:not([aria-expanded]) {
+  background-color: var(--fdm-surf-3) !important;
+  border-color: var(--fdm-border-str) !important;
+  color: var(--fdm-text) !important;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, .55) !important;
+}
+
+/* A .popover-content inside a bubble (the Balance card's About popover) is
+   part of the bubble; matched by the list above, it would cast a second
+   shadow across the text. */
+html:not(.fdm-off):not(#\9) :is(.pvd-popover__popover, .fds-popover__popover) .popover-content {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
+}
+
+/* A modal takes the card colour, not a popover's lift: its scrim already
+   separates it, and Fidelity paints its footer and inner panels white, which
+   the engine maps to the card colour. On a lifted modal those show as darker
+   bands (the Customize accounts footer). Only the outermost box is the modal:
+   the tax-loss harvesting dialogs name their paragraphs modal-content-text
+   and modal-content-title, and a shadow on each drew a grey plate behind
+   every line. */
+html:not(.fdm-off):not(#\9) [role="dialog"],
+html:not(.fdm-off):not(#\9) apex-kit-web-modal,
+html:not(.fdm-off):not(#\9) popup-modal,
+html:not(.fdm-off):not(#\9) [class*="modal__content"]:not(:is([role="dialog"], [class*="modal__dialog"], [class*="modal-dialog"], [class*="modal__content"], [class*="modal-content"]) *),
+html:not(.fdm-off):not(#\9) [class*="modal-content"]:not(:is([role="dialog"], [class*="modal__dialog"], [class*="modal-dialog"], [class*="modal__content"], [class*="modal-content"]) *),
+html:not(.fdm-off):not(#\9) [class*="modal__dialog"],
+html:not(.fdm-off):not(#\9) [class*="modal-dialog"] {
+  background-color: var(--fdm-surf-1) !important;
+  border-color: var(--fdm-border) !important;
+  color: var(--fdm-text) !important;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, .55) !important;
+}
+/* and what is inside the box paints nothing of its own */
+html:not(.fdm-off):not(#\9) :is([role="dialog"], [class*="modal__dialog"], [class*="modal-dialog"]) :is([class*="modal__content"], [class*="modal-content"]) {
+  box-shadow: none !important;
+}
+
+html:not(.fdm-off):not(#\9) [class*="overlay-head"] {
+  background-color: var(--fdm-surf-3) !important;
+  border-bottom-color: var(--fdm-border) !important;
+  color: var(--fdm-text) !important;
+}
+html:not(.fdm-off):not(#\9) [class*="modal-header"],
+html:not(.fdm-off):not(#\9) [class*="modal__header"],
+html:not(.fdm-off):not(#\9) [class*="modal-footer"],
+html:not(.fdm-off):not(#\9) [class*="modal__footer"],
+html:not(.fdm-off):not(#\9) [class*="modal__btn-actions"],
+html:not(.fdm-off):not(#\9) [class*="modal-body"],
+html:not(.fdm-off):not(#\9) [class*="modal__body"] {
+  background-color: transparent !important;
+  color: var(--fdm-text) !important;
+}
+
+/* A floating layer is one surface. Fidelity nests a panel inside the nav
+   dropdown's shell, so only the shell paints and its children stay clear. */
+html:not(.fdm-off):not(#\9) .dropdown-overlay > *,
+html:not(.fdm-off):not(#\9) [class*="nav-primary-level2"] > *,
+html:not(.fdm-off):not(#\9) [class*="mega-menu"] > *,
+html:not(.fdm-off):not(#\9) .pvd-popover__popover > *,
+html:not(.fdm-off):not(#\9) [role="menu"] > *,
+html:not(.fdm-off):not(#\9) [role="listbox"]:not([aria-expanded]) > * {
+  background-color: transparent !important;
+}
+
+/* --- data grids ----------------------------------------------------------- */
+/* A grid is a low container, as in Fidelity's app: rows on the recess under a
+   black header row, summary rows at card colour. The whole tile holding a grid
+   takes the recess (its tab strip and toolbar too), and the grid shell takes
+   the tile's radius. */
+html:not(.fdm-off):not(#\9) .ag-root-wrapper {
+  background-color: var(--fdm-recess) !important;
+  border-radius: inherit !important;
+}
+/* posweb-grid also names the grid's kebab popover
+   (posweb-grid_top-kebab_popover_content), which is a floating layer, and
+   the toolbar's own controls (posweb-grid_top-search-icon, the X that clears
+   the search), which paint nothing in light mode and must not here. */
+html:not(.fdm-off):not(#\9) [class*="ag-theme"],
+html:not(.fdm-off):not(#\9) [class*="posweb-grid"]:not([class*="popover"]):not([class*="kebab"]):not([class*="icon"]):not([class*="button"]):not([class*="close"]):not(button):not(pwefds-icon):not(pwefds-button),
+html:not(.fdm-off):not(#\9) .pvd-tile__tile:has(.ag-root-wrapper),
+html:not(.fdm-off):not(#\9) .fds-card__card:has(.ag-root-wrapper) { background-color: var(--fdm-recess) !important; }
+
+html:not(.fdm-off):not(#\9) .ag-header { background-color: var(--fdm-grid-head) !important; }
+/* The app underlines the sorted column in white, not brand green. */
+html:not(.fdm-off):not(#\9) .ag-header-cell .ag-cell-label-container[class*="ag-header-cell-sorted"] {
+  border-bottom-color: var(--fdm-text) !important;
+}
+/* The grid's kebab menu is one surface: the bubble and arrow drawn inside the
+   pwe-popover component. The host, the list slotted into it and its items stay
+   clear, and the list (a role="menu") drops the floating-layer shadow, which
+   would band the bubble's padding. Items lift on hover like other menus. */
+html:not(.fdm-off):not(#\9) pwe-popover[class*="kebab_popover"],
+html:not(.fdm-off):not(#\9) [class*="kebab_popover_content"],
+html:not(.fdm-off):not(#\9) .posweb-kebab-menu,
+html:not(.fdm-off):not(#\9) .posweb-kebabmenu,
+html:not(.fdm-off):not(#\9) .posweb-kebabmenu_item { background-color: transparent !important; }
+html:not(.fdm-off):not(#\9) [class*="kebab_popover_content"],
+html:not(.fdm-off):not(#\9) [class*="kebab_popover_content"] * { box-shadow: none !important; }
+html:not(.fdm-off):not(#\9) [class*="kebab_popover"]:not(pwe-popover):not([class*="kebab_popover_content"]) { background-color: var(--fdm-surf-3) !important; }
+html:not(.fdm-off):not(#\9) .posweb-kebabmenu_item:hover,
+html:not(.fdm-off):not(#\9) .posweb-kebabmenu_item:focus-visible { background-color: var(--fdm-surf-4) !important; }
+
+/* border-color defaults to currentColor, so an AG Grid border that names no
+   colour would draw in primary ink round every row and the pinned column. */
+html:not(.fdm-off):not(#\9) .ag-root-wrapper,
+html:not(.fdm-off):not(#\9) .ag-header,
+html:not(.fdm-off):not(#\9) .ag-header-cell,
+html:not(.fdm-off):not(#\9) .ag-row,
+html:not(.fdm-off):not(#\9) .ag-cell,
+html:not(.fdm-off):not(#\9) .ag-cell-last-left-pinned,
+html:not(.fdm-off):not(#\9) .ag-cell-first-right-pinned,
+html:not(.fdm-off):not(#\9) .ag-pinned-left-cols-container,
+html:not(.fdm-off):not(#\9) .ag-pinned-left-header,
+html:not(.fdm-off):not(#\9) .ag-pinned-right-cols-container,
+html:not(.fdm-off):not(#\9) .ag-horizontal-left-spacer,
+html:not(.fdm-off):not(#\9) .ag-horizontal-right-spacer { border-color: var(--fdm-border) !important; }
+
+/* Summary rows (an account's header row, its total, the grand total) take the
+   card colour; the spacer between accounts shows the page. */
+html:not(.fdm-off):not(#\9) .ag-row { background-color: transparent !important; }
+html:not(.fdm-off):not(#\9) .posweb-row-account,
+html:not(.fdm-off):not(#\9) .posweb-row-total,
+html:not(.fdm-off):not(#\9) .posweb-row-grand { background-color: var(--fdm-surf-1) !important; }
+html:not(.fdm-off):not(#\9) .posweb-row-spacer { background-color: var(--fdm-canvas) !important; }
+html:not(.fdm-off):not(#\9) .ag-row-hover { background-color: var(--fdm-surf-1) !important; }
+html:not(.fdm-off):not(#\9) .ag-icon,
+html:not(.fdm-off):not(#\9) .ag-header-icon,
+html:not(.fdm-off):not(#\9) .ag-sort-indicator-icon { color: var(--fdm-text-2) !important; opacity: 1 !important; }
+html:not(.fdm-off):not(#\9) .ag-header-cell-sorted-asc .ag-icon,
+html:not(.fdm-off):not(#\9) .ag-header-cell-sorted-desc .ag-icon { color: var(--fdm-text) !important; }
+
+html:not(.fdm-off):not(#\9) [role="menuitem"]:hover,
+html:not(.fdm-off):not(#\9) [role="option"]:hover,
+html:not(.fdm-off):not(#\9) [class*="menu-item"]:hover {
+  background-color: var(--fdm-surf-4) !important;
+}
+
+/* The scrim behind a modal has to be darker than the page, or it lightens it. */
+html:not(.fdm-off):not(#\9) [class*="backdrop"],
+html:not(.fdm-off):not(#\9) [class*="scrim"] {
+  background-color: rgba(0, 0, 0, .66) !important;
+}
+
+/* --- the Performance route ------------------------------------------------ */
+/* Its widgets (<ap153246-perf-...>) get their white fill from route bundles
+   that load after first paint, so they are named here. They stay transparent:
+   each wraps a rounded tile that paints its own surface, and a filled wrapper
+   would show square corners behind it. */
+html:not(.fdm-off):not(#\9) [class*="performance-grid"],
+html:not(.fdm-off):not(#\9) [class*="perf-card"],
+html:not(.fdm-off):not(#\9) .personal-return,
+html:not(.fdm-off):not(#\9) [class*="return-card"],
+html:not(.fdm-off):not(#\9) ap153246-perf-asset-allocation-card,
+html:not(.fdm-off):not(#\9) ap153246-perf-risk-v2,
+html:not(.fdm-off):not(#\9) ap153246-perf-ratings,
+html:not(.fdm-off):not(#\9) [class*="goals-card"],
+html:not(.fdm-off):not(#\9) [class*="goal-details"] {
+  background-color: transparent !important;
+  color: var(--fdm-text);
+}
+
+/* --- interaction states --------------------------------------------------- */
+/* A hovered row goes lighter here, where light mode goes darker. The class
+   matches skip "rows" containers, or hovering one row lights the whole list. */
+html:not(.fdm-off):not(#\9) tbody tr:hover,
+html:not(.fdm-off):not(#\9) [class*="table-row"]:not([class*="rows"]):hover,
+html:not(.fdm-off):not(#\9) [class*="list-row"]:not([class*="rows"]):hover,
+html:not(.fdm-off):not(#\9) [class*="account-row"]:not([class*="rows"]):hover {
+  background-color: var(--fdm-surf-2) !important;
+}
+/* am-columns lists (the Summary page's movers) draw the hover as a rounded
+   ::before that bleeds past the row; only that band lights up. */
+html:not(.fdm-off):not(#\9) .am-columns--row:hover::before {
+  background-color: var(--fdm-surf-2) !important;
+}
+
+
+
+/* Row emphasis: .posweb-row-intraday is a position traded today, which light
+   mode washes pale yellow. --fdm-row-mark is the app's colour for that row
+   (see src/palette.js); white, gain and loss ink all clear AA on it. */
+html:not(.fdm-off):not(#\9) .posweb-row-intraday,
+html:not(.fdm-off):not(#\9) .posweb-row-intraday .ag-cell,
+html:not(.fdm-off):not(#\9) [class*="row--highlight"],
+html:not(.fdm-off):not(#\9) [class*="row-highlight"],
+html:not(.fdm-off):not(#\9) [class*="--highlighted"],
+html:not(.fdm-off):not(#\9) [class*="recent-activity"],
+html:not(.fdm-off):not(#\9) tr[class*="highlight"],
+html:not(.fdm-off):not(#\9) [class*="am-columns--row"][class*="highlight"] {
+  background-color: var(--fdm-row-mark) !important;
+}
+/* Hovered, it is an ordinary hovered row: light mode drops the yellow for the
+   same hover every row gets, so the wash only ever shows as the legend's key. */
+html:not(.fdm-off):not(#\9) .posweb-row-intraday:hover,
+html:not(.fdm-off):not(#\9) .posweb-row-intraday.ag-row-hover {
+  background-color: var(--fdm-surf-1) !important;
+}
+html:not(.fdm-off):not(#\9) .posweb-row-intraday:hover .ag-cell,
+html:not(.fdm-off):not(#\9) .posweb-row-intraday.ag-row-hover .ag-cell {
+  background-color: transparent !important;
+}
+
+/* Cells stay transparent so they follow their row's state; a filled symbol
+   cell would stay at the old colour in a hovered or marked row. */
+html:not(.fdm-off):not(#\9) .ag-row .ag-cell,
+html:not(.fdm-off):not(#\9) .ag-row-hover .ag-cell,
+html:not(.fdm-off):not(#\9) .ag-row-selected .ag-cell,
+html:not(.fdm-off):not(#\9) .ag-row [class*="cell-symbol"],
+html:not(.fdm-off):not(#\9) .ag-row [class*="_container"] { background-color: transparent !important; }
+
+/* --- footer --------------------------------------------------------------- */
+/* Fidelity's footer (apex-kit-web-page-footer-root) is white on a white page,
+   so it reads as more page; it stays transparent rather than a card band. */
+html:not(.fdm-off):not(#\9) [class*="page-footer"],
+html:not(.fdm-off):not(#\9) [class*="footer-wrapper"],
+html:not(.fdm-off):not(#\9) footer {
+  background-color: transparent !important;
+  border-top-color: var(--fdm-hair) !important;
+}
+
+/* --- separators ----------------------------------------------------------- */
+/* Not every divider or separator class is a line. Plural and table names are
+   modifiers (pvd-table--disable-column-dividers on the Documents table root),
+   and negated names (no_separator on the retirement analysis's captions,
+   nodiv, without) mean there is none. */
+html:not(.fdm-off):not(#\9) hr,
+html:not(.fdm-off):not(#\9) [class*="divider"]:not([class*="dividers"]):not([class*="table"]):not([class*="no_div" i], [class*="no-div" i], [class*="nodiv" i], [class*="without" i]),
+html:not(.fdm-off):not(#\9) [class*="separator"]:not([class*="separators"]):not([class*="table"]):not([class*="no_sep" i], [class*="no-sep" i], [class*="nosep" i], [class*="without" i]) {
+  border-color: var(--fdm-hair) !important;
+}
+/* Only an empty element gets the line's fill: the Account features page's
+   content-item-divider is a whole row, and the retirement analysis puts text
+   in separator spans. Text and label names (the screener's "OR" is a
+   separator-text) are excluded too. :empty still matches a line that holds
+   only an Angular comment node. */
+html:not(.fdm-off):not(#\9) hr,
+html:not(.fdm-off):not(#\9) [class*="divider"]:not([class*="dividers"]):not([class*="table"]):not([class*="text"]):not([class*="label"]):not([class*="no_div" i], [class*="no-div" i], [class*="nodiv" i], [class*="without" i]):empty,
+html:not(.fdm-off):not(#\9) [class*="separator"]:not([class*="separators"]):not([class*="table"]):not([class*="text"]):not([class*="label"]):not([class*="no_sep" i], [class*="no-sep" i], [class*="nosep" i], [class*="without" i]):empty {
+  background-color: var(--fdm-hair) !important;
+}
+
+/* --- pvd tables ----------------------------------------------------------- */
+/* The Documents table's data and row-header cells use two greys that light
+   mode barely tells apart, but mapped separately the Account column's lines
+   nearly vanish. Every cell takes the grids' subtle line. */
+html:not(.fdm-off):not(#\9) .pvd-table__table td,
+html:not(.fdm-off):not(#\9) .pvd-table__table th {
+  border-color: var(--fdm-border) !important;
+}
+/* Fidelity rounds three of that table's corners and leaves the bottom-left one
+   square, which shows on the dark page. */
+html:not(.fdm-off):not(#\9) documents-new-documents-table .pvd-table__table tbody tr:last-child > :is(td, th):first-child {
+  border-bottom-left-radius: 12px !important;
+}
+
+/* --- skeletons ------------------------------------------------------------ */
+/* A route's skeletons are on screen while its stylesheet is still arriving,
+   before the engine can map them, so they are named here and dark from first
+   paint. [class*="loading-indicator"] is Fidelity's spinner, not a skeleton,
+   so it stays out of this list; the skeleton va-loading-indicator__shimmer
+   matches [class*="shimmer"]. */
+html:not(.fdm-off):not(#\9) [class*="skeleton"]:not(a):not(button):not(input):not(label),
+html:not(.fdm-off):not(#\9) [class*="loading-block"],
+html:not(.fdm-off):not(#\9) [class*="loading-bar"],
+html:not(.fdm-off):not(#\9) [class*="shimmer"]:not(a):not(button):not(input):not(label),
+html:not(.fdm-off):not(#\9) [class*="placeholder"]:empty:not(input):not(textarea) {
+  background-color: var(--fdm-surf-2) !important;
+  background-image: linear-gradient(
+    90deg,
+    var(--fdm-surf-2) 0%,
+    var(--fdm-surf-3) 50%,
+    var(--fdm-surf-2) 100%
+  ) !important;
+}
+
+/* Unnamed placeholders are empty divs, matched only inside a loading
+   container so empty divs on a settled page are left alone. Spinner parts
+   (orb, cog, spin) are excluded and no border is set, because a ring
+   spinner's arc is its transparent borders. */
+html:not(.fdm-off):not(#\9) [aria-busy="true"] div:empty:not([class*="spin" i]):not([class*="orb" i]):not([class*="cog" i]),
+html:not(.fdm-off):not(#\9) [class*="loading"]:not([class*="indicator" i]) div:empty:not([class*="spin" i]):not([class*="orb" i]):not([class*="cog" i]),
+html:not(.fdm-off):not(#\9) [class*="skeleton"] div:empty {
+  background-color: var(--fdm-surf-2) !important;
+  background-image: none !important;
+}
+
+/* --- square wrappers behind rounded cards --------------------------------- */
+/* The Positions tile (.pvd-tile__tile) sits in .positions-content-container,
+   which has no radius. A wrapper that only holds a card paints nothing, or its
+   square corners show past the tile's rounded ones. */
+html:not(.fdm-off):not(#\9) .positions-content-container {
+  background-color: transparent !important;
+}
+
+/* --- a floating panel casts one shadow, not two --------------------------- */
+/* In the primary nav's dropdown and the profile menu, Fidelity repeats the
+   panel's shadow or border on the list inside it. Only the panel is a floating
+   surface, so what sits inside it draws no shadow, border or fill. */
+html:not(.fdm-off):not(#\9) .nav-primary-level2,
+html:not(.fdm-off):not(#\9) .nav-utility-dropdown,
+html:not(.fdm-off):not(#\9) [class*="level2-container"] ul,
+html:not(.fdm-off):not(#\9) [class*="dropdown-container"] ul,
+html:not(.fdm-off):not(#\9) [class*="level2-container"] .nav-primary-column {
+  box-shadow: none !important;
+  border-color: transparent !important;
+  background-color: transparent !important;
+}
+
+/* --- a tile and the grid inside it are one surface ------------------------ */
+/* A tile's 1px border, invisible on white, reads as an outline here, so it
+   goes, and so do the grid's borders inside the Positions tile; tile and grid
+   share the recess (data grids, above). Tiles are not clipped to their radius:
+   the grid's kebab menu opens past the tile's top edge. */
+html:not(.fdm-off):not(#\9) .pvd-tile__tile,
+html:not(.fdm-off):not(#\9) [class*="pwe-fds-tile"] {
+  border-color: transparent !important;
+}
+html:not(.fdm-off):not(#\9) .pvd-tile__tile [class*="ag-root"],
+html:not(.fdm-off):not(#\9) .pvd-tile__tile .ag-header {
+  border-color: transparent !important;
+}
+
+/* --- the masthead search -------------------------------------------------- */
+/* A square-cornered wrapper and the rounded input paint the same surface, so
+   only the input paints. The focus ring goes round the whole control, as in
+   light mode, instead of round the inner input. */
+html:not(.fdm-off):not(#\9) [class*="search-input-root"],
+html:not(.fdm-off):not(#\9) [class*="search-form"],
+html:not(.fdm-off):not(#\9) [class*="search-fa-form"] {
+  background-color: transparent !important;
+}
+html:not(.fdm-off):not(#\9) [class*="search-input-root"]:focus-within {
+  outline: 2px solid var(--fdm-focus) !important;
+  outline-offset: 1px !important;
+  border-radius: 12px;
+}
+html:not(.fdm-off):not(#\9) [class*="search-input-root"] input:focus,
+html:not(.fdm-off):not(#\9) [class*="search-input-root"] input:focus-visible {
+  outline: none !important;
+}
+
+/* --- surfaces painted after the engine's sweep ---------------------------- */
+html:not(.fdm-off):not(#\9) .contribution-disclosure { background-color: var(--fdm-surf-2) !important; }
+html:not(.fdm-off):not(#\9) .am-avatar--blank { background-color: var(--fdm-surf-3) !important; }
+
+} /* @media screen */

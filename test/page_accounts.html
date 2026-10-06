@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Summary page: account rail selection</title>
+<!-- The Summary page's account rail, reduced: All accounts, a group and an
+     account, each of which can be the selected item. Light mode gives every
+     .selected-hint the same tint, and the wrappers the same 1px outline. -->
+<style>
+  body { background: #f9f7f5; margin: 0; padding: 24px; font: 14px Arial, sans-serif; color: #141414; }
+  .acct-selector__container { background: #fff; width: 300px; padding: 12px; border-radius: 16px; }
+  .acct-selector__all-accounts-wrapper { display: block; min-height: 52px; border-radius: .75rem; padding: .5rem 1rem; }
+  .acct-selector__all-accounts-wrapper:hover { background-color: #f5f3f0; }
+  .acct-selector__acct-wrapper { display: block; padding: .5rem 1rem; border-radius: .75rem; }
+  .acct-selector__acct-wrapper:not(.selected-hint):hover { background-color: #f9f7f5; }
+  .acct-selector-link { display: block; padding: .5rem 1rem; }
+  .selected-hint { background-color: #f9f7f5; }
+  .selected-hint:not(.acct-selector-link) { border: 1px solid #141414; }
+</style>
+</head>
+<body>
+  <div class="acct-selector__container">
+    <div class="acct-selector__all-accounts-wrapper selected-hint" id="allAccts"><h2>All accounts</h2></div>
+    <div class="acct-selector__group">
+      <a class="acct-selector-link selected-hint" id="groupLink" href="#">Investment</a>
+      <div class="acct-selector__acct-wrapper selected-hint" id="acctSel">Brokerage account</div>
+      <div class="acct-selector__acct-wrapper" id="acctPlain">Retirement account</div>
+    </div>
+  </div>
+</body>
+</html>

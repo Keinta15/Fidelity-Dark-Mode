@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Fidelity Dark Mode</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="head">
+    <img class="mark" src="../icons/src/mark.svg" alt="" width="24" height="24">
+    <h1>Fidelity Dark Mode</h1>
+  </header>
+
+  <div class="row">
+    <label class="lab" for="enabled">
+      <span class="lab__t">Dark mode</span>
+      <span class="lab__s" id="host">On for fidelity.com</span>
+    </label>
+    <button id="enabled" class="switch" role="switch" aria-checked="true" aria-labelledby="enabled-l"></button>
+    <span id="enabled-l" class="sr">Dark mode</span>
+  </div>
+
+  <footer class="foot">
+    <a class="foot__link" href="https://github.com/bradleyw95/Fidelity-Dark-Mode/issues" target="_blank" rel="noopener">Feedback</a>
+    <span class="foot__sep" aria-hidden="true">&middot;</span>
+    <a class="foot__link" href="https://github.com/bradleyw95/Fidelity-Dark-Mode" target="_blank" rel="noopener">GitHub</a>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>

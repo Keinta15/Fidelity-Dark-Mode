@@ -1,0 +1,421 @@
+/* =============================================================================
+ * 05-charts.css - Highcharts, ChartIQ and SVG colours set by attribute.
+ * Highcharts writes colour as SVG presentation attributes and rewrites them on
+ * every redraw. Any CSS declaration outranks a presentation attribute, so this
+ * is CSS rather than script. For the :not(#\9) guard, see 00-base.css.
+ * =========================================================================== */
+
+@media screen {
+
+/* --- chart furniture ------------------------------------------------------ */
+/* The guard also lifts these over the attribute sweep below, which beats an
+   unguarded class rule on type selectors. */
+
+html:not(.fdm-off):not(#\9) .highcharts-container,
+html:not(.fdm-off):not(#\9) [class*="chart-container"] { background: transparent !important; }
+
+html:not(.fdm-off):not(#\9) .highcharts-background { fill: transparent !important; }
+
+/* The plot area stays transparent so it matches its card, as in light mode. */
+html:not(.fdm-off):not(#\9) .highcharts-plot-background,
+html:not(.fdm-off):not(#\9) .highcharts-plot-background-image { fill: transparent !important; }
+
+html:not(.fdm-off):not(#\9) .highcharts-plot-border { stroke: var(--fdm-hair) !important; }
+
+html:not(.fdm-off):not(#\9) .highcharts-grid-line,
+html:not(.fdm-off):not(#\9) .highcharts-minor-grid-line { stroke: var(--fdm-hair) !important; }
+
+html:not(.fdm-off):not(#\9) .highcharts-axis-line,
+html:not(.fdm-off):not(#\9) .highcharts-tick,
+html:not(.fdm-off):not(#\9) .highcharts-minor-tick { stroke: var(--fdm-border) !important; }
+
+html:not(.fdm-off):not(#\9) .highcharts-axis-labels text,
+html:not(.fdm-off):not(#\9) .highcharts-axis-labels tspan { fill: var(--fdm-text-3) !important; }
+
+html:not(.fdm-off):not(#\9) .highcharts-axis-title,
+html:not(.fdm-off):not(#\9) .highcharts-axis-title tspan { fill: var(--fdm-text-2) !important; }
+
+html:not(.fdm-off):not(#\9) .highcharts-title,
+html:not(.fdm-off):not(#\9) .highcharts-title tspan { fill: var(--fdm-text) !important; }
+html:not(.fdm-off):not(#\9) .highcharts-subtitle,
+html:not(.fdm-off):not(#\9) .highcharts-subtitle tspan { fill: var(--fdm-text-3) !important; }
+
+html:not(.fdm-off):not(#\9) .highcharts-legend-item text,
+html:not(.fdm-off):not(#\9) .highcharts-legend-item tspan { fill: var(--fdm-text-2) !important; }
+html:not(.fdm-off):not(#\9) .highcharts-legend-item-hidden text,
+html:not(.fdm-off):not(#\9) .highcharts-legend-item-hidden tspan { fill: var(--fdm-text-dis) !important; }
+html:not(.fdm-off):not(#\9) .highcharts-legend-box { fill: transparent !important; stroke: var(--fdm-hair) !important; }
+
+/* Highcharts' white label outline is a halo here: removed, not recoloured. */
+html:not(.fdm-off):not(#\9) .highcharts-data-label text,
+html:not(.fdm-off):not(#\9) .highcharts-data-label tspan,
+html:not(.fdm-off):not(#\9) .highcharts-data-labels text,
+html:not(.fdm-off):not(#\9) .highcharts-label text,
+html:not(.fdm-off):not(#\9) .highcharts-stack-labels text {
+  fill: var(--fdm-text) !important;
+  stroke-width: 0 !important;
+  paint-order: normal !important;
+  text-shadow: none !important;
+}
+html:not(.fdm-off):not(#\9) .highcharts-data-label-box { fill: var(--fdm-surf-3) !important; stroke: var(--fdm-border) !important; }
+
+/* The tooltip floats, so it takes the overlay surface. */
+html:not(.fdm-off):not(#\9) .highcharts-tooltip-box,
+html:not(.fdm-off):not(#\9) .highcharts-tooltip path,
+html:not(.fdm-off):not(#\9) .highcharts-tooltip rect {
+  fill: var(--fdm-surf-3) !important;
+  stroke: var(--fdm-border-str) !important;
+  fill-opacity: 1 !important;
+}
+html:not(.fdm-off):not(#\9) .highcharts-tooltip text,
+html:not(.fdm-off):not(#\9) .highcharts-tooltip tspan { fill: var(--fdm-text) !important; }
+
+/* The research Distributions chart's tooltip is a .modal around a
+   .chartTipText, outlined on three sides by those two boxes and on the left by
+   a 25px GIF strip that draws the edge and the pointer, black on white. Each
+   takes the tooltip colours; the strip by a filter that sends its white to
+   the bubble and its black to the outline. */
+html:not(.fdm-off):not(#\9) [class*="chartTipText"] {
+  background-color: var(--fdm-surf-4) !important;
+  border-color: var(--fdm-border-str) !important;
+}
+html:not(.fdm-off):not(#\9) [class*="modal"]:has(> [class*="chartTipText"]) {
+  border-right-color: var(--fdm-border-str) !important;
+}
+/* The strip is a sibling of the text box, so it is found from its own
+   position (:has() on the subject, or the sibling combinator). A :has() on an
+   ancestor part of the selector made every class change on the page cost a
+   full style recalculation: 75 ms per keystroke on a large page, 6 ms
+   without it. */
+html:not(.fdm-off):not(#\9) [class*="modal"] > img[class*="Arrow"]:has(~ [class*="chartTipText"]),
+html:not(.fdm-off):not(#\9) [class*="modal"] > [class*="chartTipText"] ~ img[class*="Arrow"] {
+  filter: invert(1) contrast(0.293) brightness(0.71) !important;
+}
+
+html:not(.fdm-off):not(#\9) .highcharts-crosshair,
+html:not(.fdm-off):not(#\9) .highcharts-crosshair-thin { stroke: var(--fdm-text-3) !important; }
+
+html:not(.fdm-off):not(#\9) .highcharts-credits { fill: var(--fdm-text-dis) !important; }
+
+/* Range selector and navigator */
+html:not(.fdm-off):not(#\9) .highcharts-button-box { fill: var(--fdm-surf-2) !important; stroke: var(--fdm-border) !important; }
+html:not(.fdm-off):not(#\9) .highcharts-button text { fill: var(--fdm-text-2) !important; }
+html:not(.fdm-off):not(#\9) .highcharts-button-hover .highcharts-button-box { fill: var(--fdm-surf-3) !important; }
+html:not(.fdm-off):not(#\9) .highcharts-button-pressed .highcharts-button-box { fill: var(--fdm-green) !important; }
+html:not(.fdm-off):not(#\9) .highcharts-button-pressed text { fill: var(--fdm-text-inv) !important; }
+html:not(.fdm-off):not(#\9) .highcharts-navigator-mask-inside { fill: rgba(255, 255, 255, .05) !important; }
+html:not(.fdm-off):not(#\9) .highcharts-navigator-outline { stroke: var(--fdm-border) !important; }
+html:not(.fdm-off):not(#\9) .highcharts-navigator-handle { fill: var(--fdm-surf-4) !important; stroke: var(--fdm-border-ctl) !important; }
+html:not(.fdm-off):not(#\9) .highcharts-scrollbar-track { fill: var(--fdm-surf-2) !important; stroke: none !important; }
+html:not(.fdm-off):not(#\9) .highcharts-scrollbar-thumb { fill: var(--fdm-surf-4) !important; stroke: none !important; }
+
+html:not(.fdm-off):not(#\9) .highcharts-halo { fill-opacity: .18 !important; }
+
+html:not(.fdm-off):not(#\9) .highcharts-pie-series path,
+html:not(.fdm-off):not(#\9) .highcharts-series[class*="pie"] path {
+  stroke: var(--fdm-surf-1) !important;
+  stroke-width: 2 !important;
+}
+
+/* === Data colours, keyed on the exact values Fidelity configures ========== */
+/* Every SVG, not only charts: Fidelity's sprite-sheet status icons share these
+   colours (#0f5319, #a11313, #7f330f). Text fills are ink (4.5:1), shape fills
+   marks (3:1). The `i` flag and short hex forms match either spelling. */
+
+/* --- neutral shape fills become surfaces --------------------------------- */
+html:not(.fdm-off) svg :is([fill="#ffffff" i], [fill="#fff" i], [fill="white" i], [fill="#fffffe" i]):not(text):not(tspan) { fill: var(--fdm-surf-1) !important; }
+html:not(.fdm-off) svg :is([fill="#f9f7f5" i], [fill="#f5f3f0" i], [fill="#f2f2f2" i]):not(text):not(tspan) { fill: var(--fdm-recess) !important; }
+html:not(.fdm-off) svg :is([fill="#e6e4e1" i], [fill="#e6e6e6" i], [fill="#eeeeee" i]):not(text):not(tspan) { fill: var(--fdm-surf-3) !important; }
+
+/* --- neutral ink --------------------------------------------------------- */
+html:not(.fdm-off) svg :is(text, tspan):is([fill="#ffffff" i], [fill="#fff" i], [fill="white" i]) { fill: var(--fdm-text) !important; }
+html:not(.fdm-off) svg :is(text, tspan):is([fill="#000000" i], [fill="#000" i], [fill="black" i], [fill="#141414" i], [fill="#1a1919" i], [fill="#333333" i]) { fill: var(--fdm-text) !important; }
+html:not(.fdm-off) svg :is(text, tspan):is([fill="#525150" i], [fill="#656565" i], [fill="#666666" i], [fill="#757473" i]) { fill: var(--fdm-text-2) !important; }
+
+/* A black shape is a mark (line, arrowhead, glyph), not a surface: ink. */
+html:not(.fdm-off) svg :is([fill="#000000" i], [fill="#000" i], [fill="black" i], [fill="#141414" i], [fill="#1a1919" i], [fill="#333333" i]):not(text):not(tspan) { fill: var(--fdm-text) !important; }
+html:not(.fdm-off) svg :is([fill="#525150" i], [fill="#656565" i], [fill="#666666" i], [fill="#757473" i]):not(text):not(tspan) { fill: var(--fdm-text-2) !important; }
+
+/* --- strokes ------------------------------------------------------------- */
+/* Light strokes are grid and frame: they recede. */
+html:not(.fdm-off) svg :is([stroke="#ffffff" i], [stroke="#fff" i], [stroke="white" i]) { stroke: var(--fdm-surf-1) !important; }
+html:not(.fdm-off) svg :is([stroke="#e6e6e6" i], [stroke="#e6e4e1" i], [stroke="#cccccc" i], [stroke="#d8d8d8" i]) { stroke: var(--fdm-hair) !important; }
+html:not(.fdm-off) svg :is([stroke="#999999" i], [stroke="#888888" i], [stroke="grey" i], [stroke="gray" i]) { stroke: var(--fdm-border-str) !important; }
+/* Dark strokes are data (the plotted line): ink. */
+html:not(.fdm-off) svg :is([stroke="#000000" i], [stroke="#000" i], [stroke="black" i], [stroke="#141414" i], [stroke="#333333" i], [stroke="#4c4c4c" i], [stroke="#666666" i]) { stroke: var(--fdm-text) !important; }
+
+/* --- brand, semantics, status icons -------------------------------------- */
+html:not(.fdm-off) svg :is([fill="#368727" i], [fill="#1e6f1d" i], [fill="#317b23" i], [fill="#2b6b1e" i], [fill="#0f5319" i]):not(text):not(tspan) { fill: var(--fdm-gain) !important; }
+html:not(.fdm-off) svg :is([fill="#0d6f3f" i], [fill="#568200" i], [fill="#65c754" i], [fill="#6ad539" i]):not(text):not(tspan) { fill: var(--fdm-gain) !important; }
+html:not(.fdm-off) svg :is([fill="#044014" i], [fill="#d4f3cf" i], [fill="#c7edc0" i], [fill="#edfaeb" i]):not(text):not(tspan) { fill: var(--fdm-gain-bg) !important; }
+html:not(.fdm-off) svg :is([fill="#dc1616" i], [fill="#c31212" i], [fill="#b41212" i], [fill="#a11313" i]):not(text):not(tspan) { fill: var(--fdm-loss) !important; }
+html:not(.fdm-off) svg :is([fill="#d24823" i], [fill="#e48232" i], [fill="#cc4700" i], [fill="#9d3b0f" i], [fill="#7f330f" i]):not(text):not(tspan) { fill: #E07A3C !important; }
+html:not(.fdm-off) svg :is([fill="#1d3986" i], [fill="#2751c2" i], [fill="#356f95" i], [fill="#1373b4" i], [fill="#024a7a" i]):not(text):not(tspan) { fill: var(--fdm-link) !important; }
+
+html:not(.fdm-off) svg :is([stroke="#044014" i], [stroke="#0f5319" i], [stroke="#368727" i], [stroke="#1e6f1d" i]) { stroke: var(--fdm-gain) !important; }
+html:not(.fdm-off) svg :is([stroke="#a11313" i], [stroke="#c31212" i], [stroke="#dc1616" i]) { stroke: var(--fdm-loss) !important; }
+html:not(.fdm-off) svg :is([stroke="#7f330f" i], [stroke="#e48232" i]) { stroke: var(--fdm-warn) !important; }
+html:not(.fdm-off) svg :is([stroke="#1d3986" i], [stroke="#013b61" i], [stroke="#2751c2" i]) { stroke: var(--fdm-link) !important; }
+html:not(.fdm-off) svg [stroke="#c293f9" i] { stroke: var(--fdm-visited) !important; }
+
+/* --- asset-allocation categories ----------------------------------------- */
+/* Categories only: ramp stops (the style box's colour axis, e.g. #113da1) must
+   keep their order, which mapSequential() in recolor.js preserves. */
+html:not(.fdm-off) svg :is([fill="#013b61" i], [fill="rgb(1,59,97)" i], [fill="#143960" i], [fill="#1d3986" i]):not(text):not(tspan) { fill: var(--fdm-c-domestic) !important; }
+html:not(.fdm-off) svg :is([fill="#1dade2" i], [fill="rgb(29,173,226)" i]):not(text):not(tspan) { fill: var(--fdm-c-foreign) !important; }
+html:not(.fdm-off) svg :is([fill="#568200" i], [fill="#446800" i]):not(text):not(tspan) { fill: var(--fdm-c-bonds) !important; }
+html:not(.fdm-off) svg :is([fill="#757a02" i], [fill="#9b980b" i]):not(text):not(tspan) { fill: var(--fdm-c-fixed) !important; }
+html:not(.fdm-off) svg :is([fill="#ffcd00" i], [fill="#f0b429" i]):not(text):not(tspan) { fill: var(--fdm-c-short) !important; }
+html:not(.fdm-off) svg :is([fill="#d24823" i], [fill="#cc4700" i]):not(text):not(tspan) { fill: var(--fdm-c-other) !important; }
+html:not(.fdm-off) svg :is([fill="#9d66c1" i], [fill="#5c0198" i]):not(text):not(tspan) { fill: var(--fdm-c-unknown) !important; }
+
+/* --- the style box -------------------------------------------------------- */
+/* mapSequential() keeps every heatmap cell dark enough for this light ink.
+   With useHTML each label is a <div>, in a group that carries the series class
+   itself, so this sets color, not fill. */
+html:not(.fdm-off) .highcharts-data-labels.highcharts-heatmap-series .highcharts-data-label,
+html:not(.fdm-off) .highcharts-data-labels.highcharts-heatmap-series .highcharts-data-label span,
+html:not(.fdm-off) .highcharts-data-labels.highcharts-heatmap-series .highcharts-data-label div {
+  color: var(--fdm-text) !important;
+  font-weight: 600 !important;
+}
+/* With useHTML, axis labels are HTML too. */
+html:not(.fdm-off) .highcharts-axis-labels div,
+html:not(.fdm-off) .highcharts-axis-labels span { color: var(--fdm-text-2) !important; }
+
+/* --- the tooltip ---------------------------------------------------------- */
+/* With useHTML the tooltip text is HTML, so it needs color. No !important: it
+   is a default, and a gain or loss colour the engine mapped keeps it. */
+html:not(.fdm-off) .highcharts-tooltip,
+html:not(.fdm-off) .highcharts-tooltip div,
+html:not(.fdm-off) .highcharts-tooltip span,
+html:not(.fdm-off) .highcharts-tooltip td,
+html:not(.fdm-off) .highcharts-tooltip th { color: var(--fdm-text); }
+
+/* --- the key beside a chart ----------------------------------------------- */
+/* useHTML legend labels are spans in Highcharts' #333333, beyond the fill
+   rules. Markers keep their colour: the engine sets them inline !important. */
+html:not(.fdm-off) .highcharts-legend-item,
+html:not(.fdm-off) .highcharts-legend-item div,
+html:not(.fdm-off) .highcharts-legend-item span,
+html:not(.fdm-off) .highcharts-legend div,
+html:not(.fdm-off) .highcharts-legend span { color: var(--fdm-text-2) !important; }
+/* A hidden series' span draws its strike-through in its own colour, but the
+   words are in a <div> inside it, so everything in the item takes one grey
+   (6.3:1 on the card). The guard outranks the rule above. */
+html:not(.fdm-off):not(#\9) .highcharts-legend-item-hidden,
+html:not(.fdm-off):not(#\9) .highcharts-legend-item-hidden * { color: var(--fdm-text-3) !important; }
+
+html:not(.fdm-off) .highcharts-heatmap-series .highcharts-point { stroke: var(--fdm-hair) !important; }
+
+/* --- SVG drop shadows ----------------------------------------------------- */
+html:not(.fdm-off) svg feDropShadow[flood-color="#000000" i],
+html:not(.fdm-off) svg feFlood[flood-color="#000000" i] { flood-opacity: .55 !important; }
+
+/* === Brand marks ========================================================== */
+/* Later and more specific than the sweep: the green stays #368727, black
+   lettering (the footer variant) becomes ink, and a white knockout takes the
+   canvas colour. */
+html:not(.fdm-off) :is([class*="logo"], [class*="brand-mark"]) svg :is([fill="#368727" i], [fill="#1e6f1d" i]),
+html:not(.fdm-off) svg:is([class*="logo"], [class*="brand-mark"]) :is([fill="#368727" i], [fill="#1e6f1d" i]) {
+  fill: #368727 !important;
+}
+html:not(.fdm-off) :is([class*="logo"], [class*="brand-mark"]) svg :is([fill="#1a1919" i], [fill="#000000" i], [fill="black" i], [fill="#141414" i]),
+html:not(.fdm-off) svg:is([class*="logo"], [class*="brand-mark"]) :is([fill="#1a1919" i], [fill="#000000" i], [fill="black" i], [fill="#141414" i]) {
+  fill: var(--fdm-text) !important;
+}
+html:not(.fdm-off) :is([class*="logo"], [class*="brand-mark"]) svg :is([fill="#ffffff" i], [fill="#fffffe" i], [fill="white" i]),
+html:not(.fdm-off) svg:is([class*="logo"], [class*="brand-mark"]) :is([fill="#ffffff" i], [fill="#fffffe" i], [fill="white" i]) {
+  fill: var(--fdm-canvas) !important;
+}
+
+/* === Large-area marks ===================================================== */
+/* Later and more specific than the sweep: gain and loss fills in column, bar
+   and area series take the deeper --fdm-gain-fill / --fdm-loss-fill. */
+html:not(.fdm-off) :is(.highcharts-column-series, .highcharts-bar-series, .highcharts-area-series, .highcharts-areaspline-series) :is([fill="#368727" i], [fill="#1e6f1d" i], [fill="#0f5319" i], [fill="#0d6f3f" i], [fill="#568200" i], [fill="#65c754" i]):not(text):not(tspan) {
+  fill: var(--fdm-gain-fill) !important;
+}
+html:not(.fdm-off) :is(.highcharts-column-series, .highcharts-bar-series, .highcharts-area-series, .highcharts-areaspline-series) :is([fill="#dc1616" i], [fill="#c31212" i], [fill="#b41212" i], [fill="#a11313" i]):not(text):not(tspan) {
+  fill: var(--fdm-loss-fill) !important;
+}
+/* An area wash under its line drops to 22%. A solid band (fill-opacity="1" and
+   not a gradient), like the retirement projection's three outcomes, stays
+   opaque so each band matches its key. */
+html:not(.fdm-off) :is(.highcharts-area, .highcharts-areaspline-series .highcharts-area):not([fill-opacity="1"]:not([fill^="url"])) { fill-opacity: .22 !important; }
+
+/* === The loading overlay ================================================== */
+/* Highcharts' showLoading() writes a white, half-opaque panel as inline styles
+   on a node made on demand, which flashes before the engine's inline pass (each
+   chart on the Performance page). A stylesheet !important beats a plain inline
+   style. */
+html:not(.fdm-off):not(#\9) .highcharts-loading {
+  background-color: var(--fdm-surf-1) !important;
+  opacity: .82 !important;
+}
+html:not(.fdm-off):not(#\9) .highcharts-loading-inner,
+html:not(.fdm-off):not(#\9) .highcharts-loading span {
+  color: var(--fdm-text-2) !important;
+}
+/* Fidelity's own chart loading states take the card surface. */
+html:not(.fdm-off):not(#\9) [class*="chart"][class*="loading" i],
+html:not(.fdm-off):not(#\9) [class*="chart"] [class*="loading" i]:not([class*="indicator" i]):not([class*="spin" i]),
+html:not(.fdm-off):not(#\9) [class*="graph"][class*="loading" i] {
+  background-color: var(--fdm-surf-1) !important;
+  background-image: none !important;
+}
+
+/* === Highcharts' accessibility proxies ==================================== */
+/* The screen-reader and sonification proxies are <button>s over the chart and
+   would show as button surfaces. Hidden from sight only: display:none or
+   visibility:hidden would drop them from the accessibility tree. */
+html:not(.fdm-off):not(#\9) .highcharts-a11y-proxy-button,
+html:not(.fdm-off):not(#\9) .highcharts-a11y-proxy-container button,
+html:not(.fdm-off):not(#\9) .highcharts-container button:not([class]) {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  color: transparent !important;
+  opacity: 0 !important;
+}
+
+/* === The ACE chart (the quote pages' chart, a fidchart around ChartIQ) ===== */
+/* Fidelity's chart component is themed through --fidchart-* custom properties
+   and ships a dark theme of its own, .fidchart-theme-dark, which content.js
+   puts on each container (themeAce). Its canvas follows: ChartIQ reads the
+   grid, axis and candle colours from hidden .stx_* probes that resolve the
+   same tokens, so nothing here is inverted. The main tokens are restated in
+   the palette so the chart agrees with the page; the long tail (dialogs, the
+   date picker, the series palettes) keeps Fidelity's dark values. Icons are
+   coloured by filter chains that turn a black glyph into one colour, so those
+   tokens carry chains for the palette's inks (test/audit.js checks them). */
+html:not(.fdm-off):not(#\9) .ace-chart.ace-container {
+  /* the plot and its chrome */
+  --fidchart-background-color: var(--fdm-surf-1);
+  --fidchart-background-base-primary: var(--fdm-surf-1);
+  --fidchart-background-base-secondary: var(--fdm-canvas);
+  --fidchart-background-base-tertiary: var(--fdm-sunken);
+  --fidchart-background-surface-primary: var(--fdm-surf-3);
+  --fidchart-background-surface-primary_opacity_75: rgba(50, 50, 50, .75);
+  --fidchart-background-surface-secondary: var(--fdm-surf-2);
+  --fidchart-background-transparent-color: rgba(41, 41, 40, .75);
+  --fidchart-chart-opaque-background: rgba(41, 41, 40, .75);
+  --fidchart-menu-background-color: var(--fdm-surf-3);
+  --fidchart-chart-control-layer-color: var(--fdm-surf-4);
+  --fidchart-chart-range-layer-color: var(--fdm-surf-3);
+  --fidchart-highlight-background-color: var(--fdm-surf-4);
+  --fidchart-grid-color: var(--fdm-hair);
+  --fidchart-border-color: var(--fdm-border);
+  --fidchart-border-default: var(--fdm-border);
+  --fidchart-border-grid-divider: var(--fdm-hair);
+  --fidchart-border-control: var(--fdm-border-str);
+  --fidchart-border-checkbox-radio: var(--fdm-border-ctl);
+  --fidchart-border-active: var(--fdm-green-hov);
+  --fidchart-item-separator-color: var(--fdm-border);
+  --fidchart-datepicker-border-color: var(--fdm-border);
+  --fidchart-datepicker-grid-bg-color: var(--fdm-surf-2);
+  --fidchart-checkbox_border-color: var(--fdm-border-str);
+  --fidchart-cursor-price-tag-background: var(--fdm-surf-4);
+  --fidchart-icon-background: rgba(64, 63, 62, .5);
+  --fidchart-icon-background-hover: var(--fdm-surf-4);
+
+  /* ink */
+  --fidchart-text-color: var(--fdm-text-2);
+  --fidchart-text-primary: var(--fdm-text);
+  --fidchart-text-secondary: var(--fdm-text-2);
+  --fidchart-text-tertiary: var(--fdm-text-3);
+  --fidchart-text-interactive-primary-color: var(--fdm-text-2);
+  --fidchart-highlight-secondary-text-color: var(--fdm-text-2);
+  --fidchart-dropdown-secondary-text-color: var(--fdm-text-2);
+  --fidchart-table-view-table_header_font_color: var(--fdm-text-2);
+  --fidchart-text-link: var(--fdm-link);
+  --fidchart-text-visited-link: var(--fdm-visited);
+  --fidchart-technicalview-text-link: var(--fdm-link);
+  --fidchart-link-color: var(--fdm-link);
+  --fidchart-error-text-color: var(--fdm-crit);
+
+  /* gain and loss: the readout, the candles and their price tags */
+  --fidchart-text-gain: var(--fdm-gain);
+  --fidchart-text-loss: var(--fdm-loss);
+  --fidchart-text-performance-gain-color: var(--fdm-gain);
+  --fidchart-text-performance-loss-color: var(--fdm-loss);
+  --fidchart-chart-up-color: var(--fdm-gain-fill);
+  --fidchart-chart-up-text-color: var(--fdm-text-inv);
+  --fidchart-chart-down-color: var(--fdm-loss-fill);
+  --fidchart-chart-down-text-color: var(--fdm-text);
+  --fidchart-current-color: var(--fdm-text-inv);
+  --fidchart-crosshair-color: var(--fdm-text-inv);
+  --fidchart-crosshair-bg-color: var(--fdm-text-3);
+
+  /* the selected period, cursor and toggle: green type, a raised surface */
+  --fidchart-highlight-text-color: var(--fdm-green-txt);
+  --fidchart-control-toggle-text: var(--fdm-green-txt);
+  --fidchart-item-on-font-color: var(--fdm-green-txt);
+  --fidchart-item-on-bg-color: var(--fdm-surf-4);
+  --fidchart-item-off-bg-color: var(--fdm-surf-3);
+  --fidchart-item-off-font-color: var(--fdm-text-2);
+  --fidchart-item-hover-font-color: var(--fdm-text);
+  --fidchart-item-focus-border-color: var(--fdm-green);
+  --fidchart-item_background-color: var(--fdm-surf-3);
+  --fidchart-item_opacity_background-color: rgba(50, 50, 50, .75);
+
+  /* controls and buttons */
+  --fidchart-control-default: var(--fdm-surf-4);
+  --fidchart-control-pressed: var(--fdm-surf-3);
+  --fidchart-control-disabled: var(--fdm-surf-3);
+  --fidchart-control-icon-default: var(--fdm-text-2);
+  --fidchart-control-icon-hover: var(--fdm-text);
+  --fidchart-control-button-primary-default: var(--fdm-green);
+  --fidchart-control-button-primary-hover: var(--fdm-green-hov);
+  --fidchart-control-button-primary-text: var(--fdm-text-inv);
+  --fidchart-control-button-secondary-default: var(--fdm-surf-4);
+  --fidchart-control-button-secondary-text: var(--fdm-text);
+  --fidchart-control-button-secondary-border: var(--fdm-border-str);
+  --fidchart-control-button-tertiary-text: var(--fdm-text-2);
+  --fidchart-button-primary-background-color: var(--fdm-green);
+  --fidchart-button-primary-text-color: var(--fdm-text-inv);
+  --fidchart-button-primary_hover_background-color: var(--fdm-green-hov);
+  --fidchart-button-primary_hover_text-color: var(--fdm-text-inv);
+  --fidchart-button-secondary-background-color: var(--fdm-surf-4);
+  --fidchart-button-secondary-text-color: var(--fdm-text);
+  --fidchart-button-secondary_hover_text-color: var(--fdm-text);
+  --fidchart-button-secondary_border-color: var(--fdm-border-str);
+  --fidchart-button-secondary_icon-color: var(--fdm-text-2);
+  --fidchart-table-view-btn_background-color: var(--fdm-green);
+  --fidchart-table-view-btn_text-color: var(--fdm-text-inv);
+  --fidchart-table-view-ohlc-btn_background-color: var(--fdm-green-act);
+  --fidchart-table-view-ohlc-btn_border-color: var(--fdm-green-act);
+  --fidchart-checkbox_checked_background-color: var(--fdm-green);
+  --fidchart-checkbox-uncheckIcon_background-color: var(--fdm-text-3);
+  --fidchart-checkbox-checkedIcon_background-color: var(--fdm-text-inv);
+  --fidchart-datepicker-focus-color: var(--fdm-green);
+  --fidchart-datepicker-focus-text-color: var(--fdm-text-inv);
+  --fidchart-datepicker-hover-color: var(--fdm-green-hov);
+
+  /* icon filters: a black glyph becomes one of the palette's inks (00-base.css) */
+  --fidchart-filter-text-color: var(--fdm-f-text-2);
+  --fidchart-ace-icon-color: var(--fdm-f-text-2);
+  --fidchart-expand-icon-color: var(--fdm-f-text-2);
+  --fidchart-item-cursor-icon-color: var(--fdm-f-text-2);
+  --fidchart-control-icon-default-filter: var(--fdm-f-text-2);
+  --fidchart-control-button-cancel-text-filter: var(--fdm-f-text-2);
+  --fidchart-indicator-icon-color: var(--fdm-f-text-2);
+  --fidchart-border-checkbox-radio-filter: var(--fdm-f-text-3);
+  --fidchart-indicator-fav-marker-empty-icon-color: var(--fdm-f-text-3);
+  --fidchart-filter-highlight-text-color: var(--fdm-f-gain);
+  --fidchart-text-gain-filter: var(--fdm-f-gain);
+  --fidchart-cursor-on-color: var(--fdm-f-gain);
+  --fidchart-indicator-fav-marker-icon-color: var(--fdm-f-gain);
+  --fidchart-text-loss-filter: var(--fdm-f-loss);
+  --fidchart-messaging-fill-error-filter: var(--fdm-f-loss);
+}
+
+/* === ChartIQ outside the ACE wrapper (fund research's Compare Funds) ====== */
+/* The engine leaves ChartIQ's probes alone (CHARTIQ_OWN in recolor.js), so the
+   canvas draws in light-mode colours and is inverted, with the key swatches
+   and the outermost stx_* overlays; the key bar, toggles and date flag are
+   themed as HTML. Never inside .ace-chart, which is inverted whole. */
+html:not(.fdm-off):not(#\9) .chartContainer > canvas:not(.ace-chart *),
+html:not(.fdm-off):not(#\9) cq-swatch:not(.ace-chart *),
+html:not(.fdm-off):not(#\9) .chartContainer [class*="stx_"]:not([class*="stx_"] *):not(.ace-chart *) {
+  filter: invert(1) hue-rotate(180deg) !important;
+}
+} /* @media screen */

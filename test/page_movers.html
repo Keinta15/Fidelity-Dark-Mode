@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Summary page: movers list and tooltip</title>
+<!-- The Summary page's top and bottom movers card, reduced:
+     - am-columns rows whose hover highlight is a rounded ::before that bleeds
+       16px past the row, inside a list container whose class also contains
+       "am-columns--row",
+     - an apex-kit tooltip whose bubble, pointer and outline all come from
+       --apex-kit-tooltip-* variables set on the tooltip root,
+     - the quote page's quick-quote tooltip, whose pointer is a white square
+       outlined on two sides and edged with `canvas` on the others,
+     - a tooltip whose pointer is a border triangle on the bubble's ::after,
+     - the quote page's pvd3 tooltip, whose bubble and pointer outlines both
+       come from --color-neutral-57 through the root's variables,
+     - the same tooltip inside the quote header's .price-range-popover, with a
+       pointer that paints its own box. -->
+<style>
+  :root { --color-white: #ffffff; --color-neutral-40: #abaaa8; --color-neutral-57: #929292; }
+  body { background: #f9f7f5; margin: 0; padding: 24px; font: 14px Arial, sans-serif; color: #141414; }
+  .card-container { background: #fff; border-radius: 16px; padding: 24px; width: 420px; }
+  .am-columns--rows { display: block; }
+  .am-columns--row { position: relative; display: flex; justify-content: space-between; height: 48px; align-items: center; }
+  .am-columns--cell { position: relative; }
+  .am-columns--row::before { content: ""; position: absolute; left: -1rem; right: -1rem; height: 100%; top: 0; border-radius: .5rem; }
+  .am-columns--row:hover::before { background-color: rgb(245, 243, 240); }
+  .apex-kit-web-tooltip-root {
+    --apex-kit-tooltip-background-color: var(--color-white);
+    --apex-kit-tooltip-arrow-background-color: var(--color-white);
+    --apex-kit-tooltip-border-color: var(--color-neutral-40);
+    --apex-kit-tooltip-border: 1px solid var(--apex-kit-tooltip-border-color);
+    position: relative; display: inline-block; margin-top: 24px;
+  }
+  .apex-kit-web-tooltip-root .pvd-tooltip__tooltip { background-color: var(--apex-kit-tooltip-background-color); border: var(--apex-kit-tooltip-border); border-radius: 8px; padding: 12px; width: 220px; }
+  .apex-kit-web-tooltip-root .pvd-tooltip__arrow { position: absolute; top: -6px; left: 40px; width: 0; height: 0; }
+  .apex-kit-web-tooltip-root .pvd-tooltip__arrow::after { content: ""; position: absolute; width: 10px; height: 10px; transform: rotate(45deg); background-color: var(--apex-kit-tooltip-arrow-background-color); border-style: solid; border-width: 1px 0 0 1px; border-color: var(--apex-kit-tooltip-border-color) transparent transparent var(--apex-kit-tooltip-border-color); }
+  .apex-kit-quick-quote-tooltip-root { position: relative; display: inline-block; margin: 24px 0 0 24px; }
+  .apex-kit-quick-quote-tooltip-root .pvd-tooltip__tooltip { background-color: #fff; border: 1px solid #929292; border-radius: 8px; padding: 8px 12px; }
+  .apex-kit-quick-quote-tooltip-root .pvd-tooltip__arrow { position: absolute; top: -8px; left: 20px; width: 0; height: 0; }
+  .apex-kit-quick-quote-tooltip-root .pvd-tooltip__arrow::after { background-color: rgb(255, 255, 255); border-color: rgba(0, 0, 0, 0) rgb(146, 146, 146) rgb(146, 146, 146) rgba(0, 0, 0, 0); border-style: solid; border-width: 1px; content: ""; display: block; height: 1rem; width: 1rem; transform: rotate(-135deg); }
+  .apex-kit-quick-quote-tooltip-root.pvd-tooltip--placement-top .pvd-tooltip__wrapper .pvd-tooltip__arrow::after { border-left-color: canvas; border-top-color: canvas; }
+  :root .pvd3-tooltip-root {
+    --apex-kit-tooltip-background-color: var(--color-white);
+    --apex-kit-tooltip-arrow-background-color: var(--color-white);
+    --apex-kit-tooltip-border: 1px solid var(--color-neutral-57);
+    --apex-kit-tooltip-arrow-border-color: transparent transparent var(--color-neutral-57) var(--color-neutral-57);
+    position: relative; display: inline-block; margin: 24px 0 0 24px;
+  }
+  .pvd3-tooltip-root .pvd-tooltip__tooltip { background-color: var(--apex-kit-tooltip-background-color); border: var(--apex-kit-tooltip-border); border-radius: 8px; padding: 8px 12px; }
+  .pvd3-tooltip-root .pvd-tooltip__arrow { position: absolute; top: -8px; left: 20px; width: 0; height: 0; }
+  .pvd3-tooltip-root .pvd-tooltip__arrow::after { content: ""; display: block; width: 1rem; height: 1rem; transform: rotate(135deg); background-color: var(--apex-kit-tooltip-arrow-background-color); border-style: solid; border-width: 1px; border-color: var(--apex-kit-tooltip-arrow-border-color); }
+  .price-range-popover .pvd-tooltip__arrow.boxed { width: 10px; height: 10px; transform: rotate(45deg); background-color: var(--apex-kit-tooltip-arrow-background-color); }
+  .simple-tooltip { position: relative; display: inline-block; margin: 24px; background: #fff; border: 1px solid #ccc; padding: 8px; }
+  .simple-tooltip::after { content: ""; position: absolute; top: 100%; left: 16px; border: 6px solid transparent; border-top-color: #fff; }
+</style>
+</head>
+<body>
+  <div class="card-container" id="moversCard">
+    <h2>Your top and bottom movers</h2>
+    <am-columns>
+      <div class="am-columns--root">
+        <div class="am-columns--rows" id="rows">
+          <div class="am-columns--row" id="row1"><div class="am-columns--cell">AAA</div><div class="am-columns--cell">+1.00</div></div>
+          <div class="am-columns--row" id="row2"><div class="am-columns--cell">BBB</div><div class="am-columns--cell">+0.50</div></div>
+          <div class="am-columns--row" id="row3"><div class="am-columns--cell">CCC</div><div class="am-columns--cell">-0.25</div></div>
+        </div>
+      </div>
+    </am-columns>
+    <div class="apex-kit-web-tooltip-root pvd-tooltip--placement-bottom" id="tipRoot">
+      <div class="pvd-tooltip__tooltip" id="tip">EXAMPLE HOLDINGS CORP COMMON STOCK</div>
+      <span class="pvd-tooltip__arrow" id="tipArrow"></span>
+    </div>
+    <div class="apex-kit-quick-quote-tooltip-root pvd-tooltip--placement-top">
+      <div class="pvd-tooltip__wrapper"><div class="pvd-tooltip__tooltip" id="qqTip">Add to watchlist</div><span class="pvd-tooltip__arrow" id="qqArrow"></span></div>
+    </div>
+    <div class="simple-tooltip" id="simpleTip">Set alert</div>
+    <div class="pvd3-tooltip-root pvd-tooltip--placement-bottom">
+      <div class="pvd-tooltip__wrapper"><div class="pvd-tooltip__tooltip" id="pvdTip">Launch screener</div><span class="pvd-tooltip__arrow" id="pvdArrow"></span></div>
+    </div>
+    <div class="price-range-popover">
+      <div class="pvd3-tooltip-root pvd-tooltip--placement-bottom">
+        <div class="pvd-tooltip__wrapper"><div class="pvd-tooltip__tooltip" id="rangeTip">Low of $10.00</div><span class="pvd-tooltip__arrow boxed" id="rangeArrow"></span></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

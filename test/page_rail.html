@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>A rail and a footer drawn with tiles</title>
+<!-- www.fidelity.com's search & compare page, reduced: a white page on a
+     #F0F0F0 body, with a right rail painted by a 4px PNG laid across in
+     repeat-x (a grey hatch fading to white) under black "Questions?" copy and
+     blue links; and a footer painted #F0F0F0 with a 1x233 strip laid over it,
+     a #CCCCCC rule on top. A third panel tiles a picture with ink in it, which
+     is artwork and is left alone. -->
+<style>
+  body { background-color: #f0f0f0; margin: 0; font: 14px Arial, sans-serif; color: #000000; }
+  #page-container { background-color: #ffffff; width: 1140px; margin: 0 auto; }
+  .row { display: flex; }
+  .main { flex: 1; padding: 20px; min-height: 480px; }
+  .rail { width: 255px; height: 440px; background: url("rail_texture.png") repeat-x; padding: 0 8px; }
+  .rail h3 { color: #000000; font-size: 22px; font-weight: normal; margin: 12px 0 4px; }
+  .rail a { color: #0e67a9; }
+  .inked { background: url("ink_tile.png") repeat; height: 120px; width: 400px; }
+  /* the marketing site's reset of bare tags, as foundation ships it */
+  abbr, li, b { background: 0 0; }
+  .seo-footer { background: #f0f0f0 url("footer_strip.png") repeat-x; height: 376px; padding: 20px; box-sizing: border-box; }
+  /* its link rows: a grey pipe after each link, taken off the last one by a
+     later rule that names no colour and no picture */
+  .seo-footer-list { list-style: none; margin: 12px 0 0; padding: 0; display: flex; gap: 8px; }
+  .seo-footer--internal-list-items { background: url("uplevel.gif") 100% 0.1875em no-repeat scroll transparent; padding-right: 20px; }
+  .seo-footer--last-item { background: 0px 0px; }
+  .seo-footer a { color: #0e67a9; }
+  /* the left nav's way back up, and the toolbar's Share: small GIFs on white
+     set into larger list items */
+  .side-nav { list-style: none; margin: 0; padding: 0; width: 200px; }
+  .return-link { background: url("uplevel.gif") no-repeat 7px 9px; padding: 6px 0 6px 30px; height: 44px; width: 142px; }
+  .return-link a { color: #0e67a9; }
+  .page-controls { list-style: none; margin: 0; padding: 0; display: flex; gap: 12px; }
+  .page-controls--share { background: url("share_blue.gif") no-repeat 0 50%; padding-left: 16px; color: #0e67a9; font-size: 12px; }
+</style>
+</head>
+<body>
+<div id="page-container">
+  <div class="row">
+    <div class="main">
+      <ul class="page-controls"><li class="page-controls--share" id="shareLi">Share</li></ul>
+      <ul class="side-nav"><li class="return-link" id="returnLi"><a href="#">Calculators &amp; Tools Overview</a></li></ul>
+      <h1>Search and compare</h1>
+    </div>
+    <div class="rail" id="rail"><h3 id="railH3">Questions?</h3><a href="#" id="railLink">Chat with a representative</a></div>
+  </div>
+  <div class="inked" id="inked"></div>
+  <div class="seo-footer" id="footer"><a href="#" id="footLink">Mutual Funds</a>
+    <ul class="seo-footer-list"><li class="seo-footer--internal-list-items" id="footCareers"><a href="#">Careers</a></li><li class="seo-footer--internal-list-items seo-footer--last-item" id="footIntl"><a href="#">International</a></li></ul>
+  </div>
+</div>
+</body>
+</html>

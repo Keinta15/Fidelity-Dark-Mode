@@ -1,0 +1,479 @@
+/* =============================================================================
+ * 03-components.css - tabs, buttons, inputs, tooltips, banners, gain and loss.
+ * The recolor engine (src/recolor.js) sees a colour and a property, so it
+ * cannot tell a tab from a link or a gain from the brand green; those calls
+ * are made here. Selectors carry :not(#\9); see 00-base.css.
+ * =========================================================================== */
+
+@media screen {
+
+/* --- links ---------------------------------------------------------------- */
+/* No blanket rule on <a>: Fidelity's tab strip, account rail and most of its
+   nav are anchors in near-black ink, and the engine already maps #141414 to
+   ink and #1d3986 to link. */
+
+/* Tabs are anchors in ink with a green rule under the active one; they must
+   not read as links. Only the strip is styled: [class*="pvd-tab"] would also
+   match pvd-table cells, and a tab group's root and panels hold content (the
+   portfolio summary's news panel) that keeps its own colours. */
+html:not(.fdm-off):not(#\9) [class*="new-tab__tab"],
+html:not(.fdm-off):not(#\9) [role="tab"],
+html:not(.fdm-off):not(#\9) [class*="tab-group"] :is([role="tablist"], [class*="tab-group__tabs"]) a,
+html:not(.fdm-off):not(#\9) [class*="pvd-tab__"]:not([class*="table"]) { color: var(--fdm-text-2) !important; }
+
+html:not(.fdm-off):not(#\9) [class*="new-tab-root"][class*="selected"] [class*="new-tab__tab"],
+html:not(.fdm-off):not(#\9) [role="tab"][aria-selected="true"],
+html:not(.fdm-off):not(#\9) [class*="tab--selected"],
+html:not(.fdm-off):not(#\9) [class*="tab--active"] {
+  color: var(--fdm-text) !important;
+  border-bottom-color: var(--fdm-green) !important;
+}
+/* The label span inside a chosen tab is itself a pvd-tab__ element, so it
+   would keep the strip's grey without this. */
+html:not(.fdm-off):not(#\9) :is([role="tab"][aria-selected="true"], [class*="tab--selected"], [class*="tab--active"]) [class*="pvd-tab__"] {
+  color: var(--fdm-text) !important;
+}
+html:not(.fdm-off):not(#\9) .new-tab__tab:hover,
+html:not(.fdm-off):not(#\9) [role="tab"]:hover { color: var(--fdm-text) !important; }
+html:not(.fdm-off):not(#\9) [role="tablist"],
+html:not(.fdm-off):not(#\9) [class*="new-tab-container"] { border-bottom-color: var(--fdm-hair) !important; }
+
+/* --- typography ----------------------------------------------------------- */
+html:not(.fdm-off):not(#\9) [class*="disclosure"],
+html:not(.fdm-off):not(#\9) [class*="timestamp"],
+html:not(.fdm-off):not(#\9) [class*="as-of"] { color: var(--fdm-text-3) !important; }
+
+/* --- buttons -------------------------------------------------------------- */
+/* No blanket fill for primary buttons: pvd-button--primary names a button's
+   rank, not its fill ("Manage settings" on the dividends page is transparent).
+   The engine maps whatever fill Fidelity sets; the label's parts inherit the
+   button's own colour. */
+html:not(.fdm-off):not(#\9) [class*="button--primary"] * { color: inherit !important; }
+
+/* No blanket border for secondary buttons either: several, such as a card's
+   collapse chevron, have a border-width in an invisible colour, which the
+   engine keeps invisible. */
+
+/* Icon-only buttons have no fill until hovered, as in light mode; a surface
+   rule that reached them would put a plate behind card-header controls. */
+html:not(.fdm-off):not(#\9) [class*="icon-only"],
+html:not(.fdm-off):not(#\9) [class*="pvd-button--icon"],
+html:not(.fdm-off):not(#\9) button[class*="kebob"],
+html:not(.fdm-off):not(#\9) [class*="expand-collapse"] button,
+html:not(.fdm-off):not(#\9) [class*="card-header"] button {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+html:not(.fdm-off):not(#\9) [class*="icon-only"]:hover,
+html:not(.fdm-off):not(#\9) [class*="pvd-button--icon"]:hover,
+html:not(.fdm-off):not(#\9) [class*="card-header"] button:hover {
+  background-color: var(--fdm-surf-2) !important;
+}
+
+/* A pressed icon toggle (the grid's filter control) gets a one-step lift.
+   aria-expanded is left out: it marks a disclosure, such as a card's collapse
+   chevron, not a toggle. */
+html:not(.fdm-off):not(#\9) [class*="icon-only"][aria-pressed="true"],
+html:not(.fdm-off):not(#\9) [class*="icon-only"][class*="--selected"],
+html:not(.fdm-off):not(#\9) [class*="icon-only"][class*="--active"],
+html:not(.fdm-off):not(#\9) [class*="toolbar"] button[aria-pressed="true"] {
+  background-color: var(--fdm-surf-2) !important;
+  border-radius: 6px !important;
+}
+/* Icons default to secondary ink so a filled glyph does not outweigh the
+   outline icons beside it. Tertiary (text) buttons are skipped: their icon
+   takes the button's colour, like the research quote's green Refresh. */
+html:not(.fdm-off):not(#\9) button svg:not([class*="button--tertiary"] *),
+html:not(.fdm-off):not(#\9) [class*="icon-only"] svg:not([class*="button--tertiary"] *),
+html:not(.fdm-off):not(#\9) [class*="-icon"] svg:not([class*="button--tertiary"] *) { color: var(--fdm-text-2); }
+
+/* Masthead and card-header icons are ink; inside a link they would inherit
+   its mapped link or visited colour. An expand/collapse control's own chevron
+   too: the control, not the content it opens (pvd-expand-collapse is an
+   accordion, and the tax-loss harvesting tables sit in its __content). */
+html:not(.fdm-off):not(#\9) header svg:not([class*="logo"]),
+html:not(.fdm-off):not(#\9) .nav-utility-container svg,
+html:not(.fdm-off):not(#\9) [class*="card-header"] svg,
+html:not(.fdm-off):not(#\9) .card-tooltip-icons svg,
+html:not(.fdm-off):not(#\9) [class*="expand-collapse"]:is(button, a, [role="button"], [class*="button"], [class*="toggle"], [class*="header"], [class*="trigger"]) svg,
+html:not(.fdm-off):not(#\9) [class*="expand-collapse"] > svg {
+  color: var(--fdm-text-2) !important;
+  fill: currentColor !important;
+}
+html:not(.fdm-off):not(#\9) header button:hover svg,
+html:not(.fdm-off):not(#\9) [class*="card-header"] button:hover svg { color: var(--fdm-text) !important; }
+
+/* Masthead utility links (Customer Support, Profile) and the account rail's
+   expand arrows are ink, not links. Only the control itself and what it is
+   made of: `[class*="expand-collapse"] *` once reached every cell of a table
+   inside an accordion's __content, and painted its losses, gains and links
+   in plain ink. */
+html:not(.fdm-off):not(#\9) .header-nav-stm,
+html:not(.fdm-off):not(#\9) [class*="nav-utility"] a,
+html:not(.fdm-off):not(#\9) [class*="nav-utility"] button,
+html:not(.fdm-off):not(#\9) [class*="expand-collapse"]:is(button, a, [role="button"], [class*="button"], [class*="toggle"], [class*="trigger"]),
+html:not(.fdm-off):not(#\9) [class*="expand-collapse"]:is(button, a, [role="button"], [class*="button"], [class*="toggle"], [class*="trigger"]) * {
+  color: var(--fdm-text-2) !important;
+}
+html:not(.fdm-off):not(#\9) .header-nav-stm:hover,
+html:not(.fdm-off):not(#\9) [class*="nav-utility"] a:hover,
+html:not(.fdm-off):not(#\9) [class*="expand-collapse"]:is(button, a, [role="button"], [class*="button"], [class*="toggle"], [class*="trigger"]):hover,
+html:not(.fdm-off):not(#\9) [class*="expand-collapse"]:is(button, a, [role="button"], [class*="button"], [class*="toggle"], [class*="trigger"]):hover * { color: var(--fdm-text) !important; }
+
+/* Disabled changes the ink only. Most disabled controls here (the screener's
+   unanswered select, link-styled buttons) have no fill, and one that does
+   keeps the engine's mapping of it. */
+html:not(.fdm-off):not(#\9) button[disabled],
+html:not(.fdm-off):not(#\9) [aria-disabled="true"] {
+  color: var(--fdm-text-dis) !important;
+}
+
+/* --- inputs --------------------------------------------------------------- */
+/* Control outlines are set here, at 3:1 or better; recolor.js gives other
+   borders only a visibility floor. The fds- and pvd- inputs and the fds-
+   select are left to 06-fds.css (an fds- field's surface is on its root).
+   Submit and button inputs are buttons (the research pages' green "Go"). */
+html:not(.fdm-off):not(#\9) input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="reset"]):not([type="image"]):not([type="range"]):not(.fds-input__input):not(.pvd-input__input),
+html:not(.fdm-off):not(#\9) select:not(.fds-select__select),
+html:not(.fdm-off):not(#\9) textarea,
+html:not(.fdm-off):not(#\9) [class*="pvd-textfield__input"],
+html:not(.fdm-off):not(#\9) [contenteditable="true"] {
+  background-color: var(--fdm-surf-2) !important;
+  border-color: var(--fdm-border-ctl) !important;
+  color: var(--fdm-text) !important;
+}
+/* A range input's box is the browser's Field colour, mid grey under
+   color-scheme: dark (it showed through the screener's risk scale). */
+html:not(.fdm-off):not(#\9) input[type="range"] { background-color: transparent !important; }
+html:not(.fdm-off):not(#\9) input:hover:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
+html:not(.fdm-off):not(#\9) select:hover,
+html:not(.fdm-off):not(#\9) textarea:hover { border-color: var(--fdm-text-2) !important; }
+html:not(.fdm-off):not(#\9) input:focus,
+html:not(.fdm-off):not(#\9) select:focus,
+html:not(.fdm-off):not(#\9) textarea:focus { border-color: var(--fdm-focus) !important; }
+html:not(.fdm-off):not(#\9) [class*="input-error"],
+html:not(.fdm-off):not(#\9) [aria-invalid="true"] { border-color: var(--fdm-crit) !important; }
+
+/* --- the time-period selector --------------------------------------------- */
+/* 1M / 3M / YTD / 1Y buttons are small enough that a solid green fill reads
+   well; the larger chips and segmented controls below use a raised surface
+   and a green edge instead. */
+html:not(.fdm-off):not(#\9) [class*="time-period"] button[class*="selected"],
+html:not(.fdm-off):not(#\9) [class*="time-period"] button[class*="active"],
+html:not(.fdm-off):not(#\9) [class*="range-selector"] button[aria-pressed="true"] {
+  background-color: var(--fdm-green) !important;
+  color: var(--fdm-text-inv) !important;
+  border-color: var(--fdm-green) !important;
+}
+
+/* A close control's border resolves to currentColor, so it would draw a white
+   ring; a dismiss control stays quiet. The same goes for an X whose light
+   mode fill is the bubble's own white through a token (the positions grid's
+   pwe-popover `close-popover`, the search field's `search-close`): the bubble
+   maps to the floating surface, the token to the card, and the X sat on a
+   square of the wrong grey. An icon-only X (empty, drawn as a background
+   picture, or one <svg>) in any dismiss role paints nothing of its own. */
+html:not(.fdm-off):not(#\9) [class*="close-button"],
+html:not(.fdm-off):not(#\9) [class*="modal__close"],
+html:not(.fdm-off):not(#\9) [class*="popover__close"],
+html:not(.fdm-off):not(#\9) [class*="close-popover"],
+html:not(.fdm-off):not(#\9) [class*="close-modal"],
+html:not(.fdm-off):not(#\9) [class*="close-tooltip"],
+html:not(.fdm-off):not(#\9) [class*="tooltip__close"],
+html:not(.fdm-off):not(#\9) [class*="dialog__close"],
+html:not(.fdm-off):not(#\9) [class*="search-close"],
+html:not(.fdm-off):not(#\9) :is(button, a, [role="button"])[class*="close" i]:empty,
+html:not(.fdm-off):not(#\9) :is(button, a, [role="button"])[class*="close" i]:has(> svg:only-child),
+html:not(.fdm-off):not(#\9) :is(button, a, [role="button"])[aria-label*="close" i]:empty,
+html:not(.fdm-off):not(#\9) :is(button, a, [role="button"])[aria-label*="close" i]:has(> svg:only-child) {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  color: var(--fdm-text-2) !important;
+}
+/* Only a real button lifts on hover. The apex-kit popover's X sits in
+   .pvd-popover__close-button-area, a full-height column of the bubble (the
+   Balance "About" popover), and an icon-only button keeps its own hover. */
+html:not(.fdm-off):not(#\9) :is(button, a, [role="button"])[class*="close-button"]:not([class*="icon-only"]):hover,
+html:not(.fdm-off):not(#\9) :is(button, a, [role="button"])[class*="popover__close"]:not([class*="icon-only"]):hover {
+  background-color: var(--fdm-surf-4) !important;
+  color: var(--fdm-text) !important;
+}
+
+/* --- tooltips ------------------------------------------------------------- */
+/* Only the bubble is painted. [class*="tooltip"] would also match triggers
+   such as pvd-tooltip__trigger-wrapper, which sit behind every (i) icon in a
+   card header and every ticker in the movers list. */
+html:not(.fdm-off):not(#\9) [role="tooltip"],
+html:not(.fdm-off):not(#\9) .pvd-tooltip__tooltip,
+html:not(.fdm-off):not(#\9) [class*="tooltiptext"],
+html:not(.fdm-off):not(#\9) [class*="tooltip__content"],
+html:not(.fdm-off):not(#\9) [class*="tooltip-content"] {
+  background-color: var(--fdm-surf-4) !important;
+  color: var(--fdm-text) !important;
+  border-color: var(--fdm-border-str) !important;
+}
+html:not(.fdm-off):not(#\9) .pvd-tooltip__arrow,
+html:not(.fdm-off):not(#\9) [class*="tooltip-arrow"] { background-color: var(--fdm-surf-4) !important; }
+/* The apex-kit and pvd3 tooltips draw their pointer on the arrow's ::after
+   from their own variables, outlined in --color-neutral-57. Pointed at the
+   bubble's colours, the two join without a seam. */
+html:not(.fdm-off):not(#\9) [class*="tooltip-root"] {
+  --apex-kit-tooltip-background-color: var(--fdm-surf-4) !important;
+  --apex-kit-tooltip-arrow-background-color: var(--fdm-surf-4) !important;
+  --apex-kit-tooltip-border-color: var(--fdm-border-str) !important;
+  --color-neutral-57: var(--fdm-border-str) !important;
+}
+
+/* tooltip-content is the bubble in some tooltips and a row inside it in others
+   (the style box's .tooltip-container holds three .tooltip-content rows; the
+   classic Performance page's .uxd-tooltip-inner holds .uxd-tooltip-content).
+   Inside a bubble it paints nothing, as in light mode. */
+html:not(.fdm-off):not(#\9) :is([class*="tooltip-container"],[class*="tooltip-box"],[role="tooltip"],.pvd-tooltip__tooltip,.highcharts-tooltip,[class*="tooltiptext"],[class*="popover__popover"],.uxd-tooltip,[class*="tooltip-inner"]) [class*="tooltip-content"],
+html:not(.fdm-off):not(#\9) :is([class*="tooltip-container"],[class*="tooltip-box"],[role="tooltip"],.pvd-tooltip__tooltip,.highcharts-tooltip,[class*="tooltiptext"],[class*="popover__popover"],.uxd-tooltip,[class*="tooltip-inner"]) [class*="tooltip__content"] {
+  background-color: transparent !important;
+  border-color: transparent !important;
+}
+
+/* Tooltip and popover triggers stay transparent. */
+html:not(.fdm-off):not(#\9) .apex-kit-web-tooltip-root,
+html:not(.fdm-off):not(#\9) .apex-kit-web-popover-root,
+html:not(.fdm-off):not(#\9) .pvd-tooltip__trigger-wrapper,
+html:not(.fdm-off):not(#\9) .pvd-popover__trigger-wrapper,
+html:not(.fdm-off):not(#\9) .pvd-popover__wrapper,
+html:not(.fdm-off):not(#\9) .card-tooltip-icons,
+html:not(.fdm-off):not(#\9) .fa-icon-tooltip-wrapper {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* --- alerts and banners --------------------------------------------------- */
+html:not(.fdm-off):not(#\9) [class*="message--error"] {
+  background-color: var(--fdm-crit-bg) !important;
+  border-color: var(--fdm-crit) !important; color: var(--fdm-text) !important;
+}
+
+/* --- gains and losses ----------------------------------------------------- */
+/* Hue is data here: gain and loss figures take --fdm-gain and --fdm-loss
+   whatever green or red Fidelity wrote, and their labels stay neutral. */
+html:not(.fdm-off):not(#\9) [class*="gain-loss--gain"],
+html:not(.fdm-off):not(#\9) [class*="money--gain"],
+html:not(.fdm-off):not(#\9) .color-positive,
+html:not(.fdm-off):not(#\9) [class*="--positive"],
+html:not(.fdm-off):not(#\9) [class*="value-up"],
+html:not(.fdm-off):not(#\9) [class*="change--up"] { color: var(--fdm-gain) !important; }
+
+html:not(.fdm-off):not(#\9) [class*="gain-loss--loss"],
+html:not(.fdm-off):not(#\9) [class*="money--loss"],
+html:not(.fdm-off):not(#\9) .color-negative,
+html:not(.fdm-off):not(#\9) [class*="--negative"],
+html:not(.fdm-off):not(#\9) [class*="value-down"],
+html:not(.fdm-off):not(#\9) [class*="change--down"] { color: var(--fdm-loss) !important; }
+
+html:not(.fdm-off):not(#\9) [class*="gain-loss-text"],
+html:not(.fdm-off):not(#\9) [class*="gain-loss--label"] { color: var(--fdm-text-3) !important; }
+
+/* --- non-Highcharts SVG (52-week range markers, inline sparklines) --------- */
+html:not(.fdm-off):not(#\9) svg [class*="grid"] line,
+html:not(.fdm-off):not(#\9) svg .tick line,
+html:not(.fdm-off):not(#\9) svg [class*="axis"] line,
+html:not(.fdm-off):not(#\9) svg [class*="axis"] path { stroke: var(--fdm-hair) !important; }
+html:not(.fdm-off):not(#\9) svg [class*="axis"] text { fill: var(--fdm-text-3) !important; }
+
+
+/* --- AG Grid sort indicators ---------------------------------------------- */
+/* The arrows are ::before background images (sort_ascending.svg and friends)
+   whose paths set no fill, so they draw black, and the engine's icon pass
+   cannot reach a pseudo-element's background. The same paths are inlined with
+   a literal fill, since a background image cannot use currentColor;
+   test/audit.js checks the literals against --fdm-text-2 and --fdm-text-dis. */
+html:not(.fdm-off):not(#\9) .ag-icon-asc::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23D9D8D5' transform='rotate(180 12 12.5)' d='M12 17.5l10-10H2l10 10z'/%3E%3C/svg%3E") !important;
+}
+html:not(.fdm-off):not(#\9) .ag-icon-desc::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23D9D8D5' d='M12 17.5l10-10H2l10 10z'/%3E%3C/svg%3E") !important;
+}
+/* The unsorted arrow is a step dimmer, so the sorted column stands out. */
+html:not(.fdm-off):not(#\9) .ag-icon-none::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23757473' d='M2 10L12 0l10 10H2zm20 4L12 24 2 14h20z'/%3E%3C/svg%3E") !important;
+}
+html:not(.fdm-off):not(#\9) .ag-header-cell-sorted-asc .ag-icon-asc::before,
+html:not(.fdm-off):not(#\9) .ag-header-cell-sorted-desc .ag-icon-desc::before {
+  filter: brightness(1.45) !important;
+}
+
+/* The other grid glyphs (filter, menu, columns, group) are drawn the same way,
+   as single-colour artwork on transparent, so inverting them is exact. */
+html:not(.fdm-off):not(#\9) .ag-icon-filter::before,
+html:not(.fdm-off):not(#\9) .ag-icon-menu::before,
+html:not(.fdm-off):not(#\9) .ag-icon-columns::before,
+html:not(.fdm-off):not(#\9) .ag-icon-group::before {
+  filter: invert(1) brightness(0.86) !important;
+}
+
+/* --- filter chips --------------------------------------------------------- */
+/* A selected chip is a pale green wash in light mode, which maps to a loud
+   solid fill. Here selection is a raised surface, a green edge and green
+   ink. */
+html:not(.fdm-off):not(#\9) .fds-chip__label,
+html:not(.fdm-off):not(#\9) .fds-chip__checkbox,
+html:not(.fdm-off):not(#\9) [class*="chip"][class*="--selected"],
+html:not(.fdm-off):not(#\9) [class*="chip"] input:checked + label {
+  background-color: var(--fdm-surf-3) !important;
+  border-color: var(--fdm-green) !important;
+  color: var(--fdm-green-txt) !important;
+}
+html:not(.fdm-off):not(#\9) .fds-chip__label:hover,
+html:not(.fdm-off):not(#\9) .fds-chip__checkbox:hover {
+  background-color: var(--fdm-surf-4) !important;
+}
+
+/* Segmented controls ("Fund ratings / Analyst ratings / Bond quality") get the
+   same treatment. The chosen segment is marked only by a checked
+   input.pvd-segment__radio immediately before its label. */
+html:not(.fdm-off):not(#\9) .pvd-segment__radio:checked + .pvd-segment__label,
+html:not(.fdm-off):not(#\9) .pvd-segment__label[aria-checked="true"],
+html:not(.fdm-off):not(#\9) .pvd-segment__label[aria-selected="true"],
+html:not(.fdm-off):not(#\9) [class*="segment"][class*="--selected"],
+html:not(.fdm-off):not(#\9) [class*="segment__label"][class*="--active"] {
+  background-color: var(--fdm-surf-3) !important;
+  border-color: var(--fdm-green) !important;
+  color: var(--fdm-green-txt) !important;
+}
+/* An unchosen segment is an outline control with a quiet edge, not full ink. */
+html:not(.fdm-off):not(#\9) .pvd-segment__label {
+  border-color: var(--fdm-border-str) !important;
+  color: var(--fdm-text) !important;
+}
+html:not(.fdm-off):not(#\9) .pvd-segment__label:hover {
+  background-color: var(--fdm-surf-2) !important;
+}
+html:not(.fdm-off):not(#\9) .fds-chip__text,
+html:not(.fdm-off):not(#\9) .fds-chip__icon,
+html:not(.fdm-off):not(#\9) .fds-chip__icon svg,
+html:not(.fdm-off):not(#\9) .fds-chip__icon path {
+  color: inherit !important;
+  fill: currentColor !important;
+}
+html:not(.fdm-off):not(#\9) .fds-chip-root { color: var(--fdm-text) !important; }
+
+/* --- text that only inherits ---------------------------------------------- */
+/* The Activity toolbar (as-of timestamp, Clear Filters) sets no colour and
+   inherits the card's --fds-card-text-color, which resolves through
+   --color-surface-foreground. tokenRole() in src/recolor.js reads that as ink;
+   these rules are a backstop. */
+html:not(.fdm-off):not(#\9) .fds-card__card,
+html:not(.fdm-off):not(#\9) .fds-card__content,
+html:not(.fdm-off):not(#\9) .filters-top-row,
+html:not(.fdm-off):not(#\9) .filters-bottom-row,
+html:not(.fdm-off):not(#\9) .top-buttons-right,
+html:not(.fdm-off):not(#\9) .refresh-container,
+html:not(.fdm-off):not(#\9) .api-error-alert { color: var(--fdm-text) !important; }
+
+html:not(.fdm-off):not(#\9) .refresh-container span,
+html:not(.fdm-off):not(#\9) [class*="as-of"],
+html:not(.fdm-off):not(#\9) [class*="timestamp"] { color: var(--fdm-text-3) !important; }
+
+/* fds- tertiary buttons ("Messages" in the masthead, Clear Filters) are text
+   buttons in ink, not links. The older pvd- ones are green in light mode (the
+   research quote's Refresh and Close), so the engine's mapping is kept. */
+html:not(.fdm-off):not(#\9) .fds-activity-button-root,
+html:not(.fdm-off):not(#\9) [class*="fds-button--tertiary"] { color: var(--fdm-text) !important; }
+html:not(.fdm-off):not(#\9) .fds-activity-button-root:disabled,
+html:not(.fdm-off):not(#\9) [class*="fds-button--tertiary"]:disabled { color: var(--fdm-text-dis) !important; }
+
+/* The toolbar's own icon buttons: print, download, refresh, search, cancel. */
+html:not(.fdm-off):not(#\9) .top-buttons-right button,
+html:not(.fdm-off):not(#\9) .top-buttons-right a,
+html:not(.fdm-off):not(#\9) .top-buttons-right svg,
+html:not(.fdm-off):not(#\9) [class*="search-input__icon"] svg,
+html:not(.fdm-off):not(#\9) [class*="search-input__icon"] path {
+  color: var(--fdm-text-2) !important;
+  fill: currentColor !important;
+}
+
+/* --- radios and checkboxes ------------------------------------------------ */
+/* The fds- and pvd- radio and checkbox wraps are styled in 06-fds.css. These
+   are the native inputs, for anywhere no custom wrap is drawn. */
+html:not(.fdm-off):not(#\9) input[type="radio"],
+html:not(.fdm-off):not(#\9) input[type="checkbox"] {
+  accent-color: var(--fdm-green) !important;
+  border-color: var(--fdm-border-ctl) !important;
+}
+
+/* --- count badges --------------------------------------------------------- */
+/* A count sits on a bright status fill, so it takes the inverse ink. Stated
+   here because the engine's contrast backstop only fixes these small,
+   late-rendering badges after they have appeared. */
+html:not(.fdm-off):not(#\9) [class*="events-icon-number"],
+html:not(.fdm-off):not(#\9) [class*="count-badge"],
+html:not(.fdm-off):not(#\9) [class*="badge-count"],
+html:not(.fdm-off):not(#\9) [class*="notification-count"],
+html:not(.fdm-off):not(#\9) [class*="alert-count"] {
+  color: var(--fdm-text-inv) !important;
+  font-weight: 600 !important;
+}
+
+/* --- status banners ------------------------------------------------------- */
+/* A banner gets a deep tint of its status colour and light ink in the same
+   hue; Fidelity's dark status ink is lost on the deep tint ("No new transfers
+   found"). Inline alerts (pvd-inline-alert--*) and the apex-kit alert
+   (.pvd3-alert-root, .helios-alert-root) are excluded: neither is tinted in
+   light mode, and the apex-kit alert's colour is a stripe with its icon
+   knocked out, which the banner rules would clear. */
+html:not(.fdm-off):not(#\9) [class*="alert--success"]:not([class*="inline-alert"]):not(.pvd3-alert-root):not(.helios-alert-root),
+html:not(.fdm-off):not(#\9) [class*="notification--success"],
+html:not(.fdm-off):not(#\9) [class*="message--success"],
+html:not(.fdm-off):not(#\9) [class*="banner--success"] {
+  background-color: var(--fdm-success-bg) !important;
+  border-color: var(--fdm-green) !important;
+  color: #8AD97C !important;   /* 5.4:1 on the tint; the gain green is 4.0:1 */
+}
+html:not(.fdm-off):not(#\9) [class*="alert--info"]:not([class*="inline-alert"]):not(.pvd3-alert-root):not(.helios-alert-root),
+html:not(.fdm-off):not(#\9) [class*="notification--info"],
+html:not(.fdm-off):not(#\9) [class*="message--info"],
+html:not(.fdm-off):not(#\9) [class*="banner--info"] {
+  background-color: var(--fdm-info-bg) !important;
+  border-color: var(--fdm-info) !important;
+  color: var(--fdm-link-hov) !important;
+}
+html:not(.fdm-off):not(#\9) [class*="alert--warning"]:not([class*="inline-alert"]):not(.pvd3-alert-root):not(.helios-alert-root),
+html:not(.fdm-off):not(#\9) [class*="notification--warning"],
+html:not(.fdm-off):not(#\9) [class*="message--warning"],
+html:not(.fdm-off):not(#\9) [class*="banner--warning"] {
+  background-color: var(--fdm-warn-bg) !important;
+  border-color: var(--fdm-warn) !important;
+  color: #F0C462 !important;
+}
+html:not(.fdm-off):not(#\9) [class*="alert--error"]:not([class*="inline-alert"]):not(.pvd3-alert-root):not(.helios-alert-root),
+html:not(.fdm-off):not(#\9) [class*="alert--critical"]:not([class*="inline-alert"]):not(.pvd3-alert-root):not(.helios-alert-root),
+html:not(.fdm-off):not(#\9) [class*="notification--error"],
+html:not(.fdm-off):not(#\9) [class*="banner--error"] {
+  background-color: var(--fdm-crit-bg) !important;
+  border-color: var(--fdm-crit) !important;
+  color: #FF938E !important;
+}
+/* The ink reaches every descendant except icons: an apex-kit icon is a span
+   whose background is its colour, shown through a glyph-shaped mask. */
+html:not(.fdm-off):not(#\9) [class*="alert--success"]:not([class*="inline-alert"]):not(.pvd3-alert-root):not(.helios-alert-root) *:not([class*="icon-root"]),
+html:not(.fdm-off):not(#\9) [class*="alert--info"]:not([class*="inline-alert"]):not(.pvd3-alert-root):not(.helios-alert-root) *:not([class*="icon-root"]),
+html:not(.fdm-off):not(#\9) [class*="alert--warning"]:not([class*="inline-alert"]):not(.pvd3-alert-root):not(.helios-alert-root) *:not([class*="icon-root"]),
+html:not(.fdm-off):not(#\9) [class*="alert--error"]:not([class*="inline-alert"]):not(.pvd3-alert-root):not(.helios-alert-root) *:not([class*="icon-root"]),
+html:not(.fdm-off):not(#\9) [class*="banner--success"] *:not([class*="icon-root"]),
+html:not(.fdm-off):not(#\9) [class*="banner--info"] *:not([class*="icon-root"]),
+html:not(.fdm-off):not(#\9) [class*="banner--warning"] *:not([class*="icon-root"]),
+html:not(.fdm-off):not(#\9) [class*="banner--error"] *:not([class*="icon-root"]) {
+  color: inherit !important;
+  background-color: transparent !important;
+}
+
+/* --- the research StyleMap ------------------------------------------------ */
+/* The current box is a navy dot, keyed by a navy circle, on the pale steel
+   cell of the historical box. The engine darkens the steel; the dot and its
+   key take the light chart blue, so the dot stands out on the cell as the
+   navy did on the pale steel, and the key still reads on the card. */
+html:not(.fdm-off):not(#\9) [class*="styleMap"] [class*="current"],
+html:not(.fdm-off):not(#\9) [class*="currentIcon"] {
+  background-color: var(--fdm-c-foreign) !important;
+}
+
+} /* @media screen */

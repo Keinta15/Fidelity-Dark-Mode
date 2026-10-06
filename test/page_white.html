@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>A page painted white twice</title>
+<!-- The fund research pages, reduced to the shape that split them in two:
+     a white body, and a full-width white <main> laid over it. The disclosures
+     sit below <main>, on the body. A narrower white card and a short grey band
+     are there to show that only the page itself is treated as the page. -->
+<style>
+  body { background-color: #FFFFFF; margin: 0; font: 14px Arial, sans-serif; color: #333333; }
+  .evaluator main { position: relative; background: #FFFFFF; padding: 20px; min-height: 720px; }
+  .card { background: #FFFFFF; border: 1px solid #CCCCCC; width: 300px; height: 100px; }
+  .band { background: #F5F5F5; height: 60px; }
+  footer { padding: 20px; }
+  /* the research quote tabs: a #f2f2f2 panel (the theme paints it sunken)
+     holding a #f4f4f4 grid of white cards, two greys light mode cannot tell
+     apart; one grid is named in the theme, one is not */
+  .nre-cards-container .nre-panel { background: #f2f2f2; padding: 16px 32px; }
+  .card-grid-container, .tab-grid { background: #f4f4f4; min-height: 520px; padding: 8px; }
+  .nre-card { background: #ffffff; height: 200px; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+  <div class="evaluator">
+    <main id="pwMain"><div class="card" id="pwCard">A card</div></main>
+  </div>
+  <div class="band" id="pwBand">A band</div>
+  <div class="nre-cards-container">
+    <div class="nre-panel pvd3-tab-panel-root" id="pwPanel">
+      <div class="card-grid-container" id="pwNamedGrid"><div class="nre-card" id="pwNamedCard">Premium/discount to NAV</div></div>
+    </div>
+    <div class="nre-panel pvd3-tab-panel-root" id="pwPanel2">
+      <div class="tab-grid" id="pwGrid"><div class="nre-card" id="pwGridCard">Growth of Hypothetical $10,000</div></div>
+    </div>
+  </div>
+  <footer id="pwFoot">Before investing, consider the funds' investment objectives.</footer>
+</body>
+</html>

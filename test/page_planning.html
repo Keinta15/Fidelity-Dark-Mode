@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>A planning page</title>
+<!-- The Planning app's Spending page, reduced to what went wrong.
+
+     Its figures carry Fidelity's utility classes, which are !important, on top
+     of a heading class that is not: `.performance-loss` is red because it is
+     important, and `.sub-heading` comes later in the sheet but loses. Copied
+     with every declaration made important, the later one won and the loss
+     came out white.
+
+     And its page is a `section.main-body-container` painted #f2f2f2 several
+     levels down, on a #f4f4f4 body - one colour to the eye - with white tiles
+     on it. -->
+<style>
+  body { background-color: #f4f4f4; margin: 0; font: 14px Arial, sans-serif; color: #141414; }
+  .performance-loss { color: #B41212 !important; }
+  .performance-gain { color: #368727 !important; }
+  .sub-heading { color: #000000; font-size: 24px; margin: 0; }
+  .main-body-container { background-color: #f2f2f2; padding: 24px; min-height: 900px; }
+  .pvd-tile { background-color: #ffffff; border-radius: 8px; padding: 16px; margin-bottom: 16px; width: 600px; }
+  .caption { color: #141414; }
+  .pvd-tab-group--border { color: #141414; }
+  .pvd-tab-group__tabs { display: flex; gap: 16px; border-bottom: 1px solid #cccccc; }
+  .pvd-tab__tab { color: #000000; padding: 8px 0; }
+  .pvd-tab--selected .pvd-tab__tab { border-bottom: 3px solid #368727; }
+  .investments-news-more-button-focus-layer { color: #1d3986; text-decoration: underline; }
+  .pvd3-button-root { color: var(--apex-kit-button-text-color); background: transparent; border: 0; font: inherit; display: inline-flex; gap: 6px; align-items: center; }
+  .pvd-button--tertiary { --apex-kit-button-text-color: #368727; }
+</style>
+</head>
+<body>
+  <div class="app-root"><div class="shell"><div class="route"><div class="planning-page"><div class="tabs-body"><main>
+    <section class="main-body-container" id="mainBody">
+      <div class="pvd-tile" id="tile">
+        <h2 class="sub-heading performance-loss" id="netLoss">-$1,000.00</h2>
+        <h2 class="sub-heading performance-gain" id="netGain">+$100.00</h2>
+        <h2 class="sub-heading" id="plainHeading">Spending Summary</h2>
+        <p class="caption">Compared to the period before</p>
+        <div class="row" id="badgeRow"></div>
+      </div>
+      <!-- a tile with an info icon flush in its rounded corner, as the
+           Spending Summary card has -->
+      <div class="pvd-tile__tile" id="cornerTile" style="background-color:#ffffff;border-radius:24px;width:300px;height:60px;position:relative"><button class="pvd-link__link" id="cornerIcon" style="position:absolute;top:0;right:0;width:20px;height:27px;border:0;background:transparent;padding:0">i</button></div>
+      <!-- a text button, as the research quote draws Refresh: green label,
+           green arrow, both in the button's own colour -->
+      <div class="pvd-tile"><button class="pvd3-button-root pvd-button--icon-only pvd-button--with-icon pvd-button--tertiary" id="textBtn"><span class="pvd-button__icon"><svg id="textBtnIcon" width="16" height="16" viewBox="0 0 16 16"><path d="M2 8a6 6 0 1 0 2-4.5" fill="none" stroke="currentColor" stroke-width="2"/></svg></span><span class="pvd-button__text" id="textBtnLabel">Refresh</span></button></div>
+      <!-- a tab group, as the portfolio summary's news card draws it: the
+           strip's labels, and a panel whose text and "View more news" link are
+           content, not tabs -->
+      <div class="pvd-tile">
+        <div class="apex-kit-web-tab-group-root pvd-tab-group--border">
+          <div class="pvd-tab-group__tabs" role="tablist">
+            <div class="apex-kit-web-tab-root pvd-tab--selected"><div class="pvd-tab__tab" role="tab" aria-selected="true"><span class="pvd-tab__text-wrapper" id="tabOn">Your investments</span></div></div>
+            <div class="apex-kit-web-tab-root"><div class="pvd-tab__tab" role="tab" aria-selected="false"><span class="pvd-tab__text-wrapper" id="tabOff">Market</span></div></div>
+          </div>
+          <div class="pvd-tab-group__tab-panels">
+            <div class="pvd-tab-panel__panel" role="tabpanel">
+              <p class="news-headline" id="panelText">Markets close higher</p>
+              <a class="investments-news-more-button-focus-layer" id="panelLink" href="#">View more news</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- the Balance card's About popover: the bubble, and the content
+           wrapper inside it, white on white -->
+      <div class="pvd-popover__wrapper">
+        <div class="pvd-popover__popover" id="aboutPop" style="background-color:#ffffff;border:1px solid #cccccc;width:400px;padding:16px;display:flex">
+          <!-- its X: a button inside a host element, inside a column as tall
+               as the bubble -->
+          <div class="pvd-popover__close-button-area" id="closeArea" style="order:2;width:40px;align-self:stretch">
+            <pvd-scoped-button class="pvd-popover__close-button" id="closeHost" style="display:block;width:40px;height:40px"><button class="apex-kit-web-button-root pvd-button--icon-only pvd-button--tertiary" id="closeBtn" type="button" style="width:40px;height:40px;border-radius:50%;border:1px solid transparent">x</button></pvd-scoped-button>
+          </div>
+          <div class="pvd-popover__slot-area" style="flex:1"><div class="apex-kit-popover__popover-content-reset">
+            <h3 class="popover-title">About</h3>
+            <div class="popover-content" id="aboutContent" style="background-color:#ffffff;max-height:120px;overflow:auto"><p><b>Balance</b><br>This is the total current value of your Fidelity account(s).</p></div>
+          </div></div>
+        </div>
+      </div>
+    </section>
+  </main></div></div></div></div></div>
+<script>
+  /* The positions grid's earnings badge, as Fidelity builds it: a component
+     whose shadow root names its fill "--icon-rest-color", white on a white
+     row, with a blue "E" in a blue outline. */
+  const host = document.createElement('posweb-icon');
+  host.id = 'badgeHost';
+  const sr = host.attachShadow({ mode: 'open' });
+  const st = document.createElement('style');
+  st.textContent = ':host{--icon-rest-color:#FFFFFF;--icon-primary-color:#3266E0;--icon-border-width:1px}' +
+    '.pwe-icon{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;box-sizing:border-box;' +
+    'background-color:var(--icon-rest-color);border:var(--icon-border-width) solid var(--icon-primary-color);border-radius:4px}' +
+    '.icon-text{color:var(--icon-primary-color);font-size:12px}' +
+    ':host([data-attr-button]:hover) .pwe-icon{color:var(--icon-rest-color);background-color:var(--icon-primary-color)}';
+  sr.appendChild(st);
+  const box = document.createElement('div');
+  box.className = 'pwe-icon';
+  box.innerHTML = '<span class="icon-text">E</span>';
+  sr.appendChild(box);
+  document.getElementById('badgeRow').appendChild(host);
+</script>
+</body>
+</html>

@@ -1,0 +1,1126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Fidelity Dark Mode - render fixture</title>
+<!--
+  A stand-in for the parts of Fidelity that the theme gets wrong in interesting
+  ways. Every construct here was copied from the live site after it broke
+  something: the token chain that made card text invisible, the chart fills that
+  all collapsed to one color, the sort arrow with no fill attribute, the legend
+  swatch the engine read as a surface.
+
+  It carries no account data and needs no login, which is the point - these are
+  mechanisms, not screenshots, and a mechanism can be tested on a fixture. Its
+  figures are made up, and the pictures inlined in it are plain stand-ins drawn
+  for these tests, each keeping only what the tests look at.
+-->
+<style>
+  /* --- Fidelity's token layer, as it actually arrives ------------------- */
+  :root {
+    /* the two that caused the worst bug: read left to right, "surface" wins
+       and the card's ink becomes a background color */
+    --color-surface-foreground: light-dark(#1D252C, #FFFFFF);
+    --color-surface-background: light-dark(#F9F7F5, #1D1D1D);
+    --color-surface-line: light-dark(#E6E4E1, #3A3A3A);
+    --fds-card-text-color: var(--color-surface-foreground);
+    --fds-card-background-color: light-dark(#FFFFFF, #202020);
+    --pvd-color-text-on-surface: #333333;
+    --icon-fill-color: #000000;
+  }
+
+  body { margin: 0; font: 14px/1.5 Arial, sans-serif; background: #F9F7F5; }
+  .page { padding: 20px; }
+
+  /* --- a card, painted entirely from tokens ----------------------------- */
+  .fds-card__card {
+    background-color: var(--fds-card-background-color);
+    color: var(--fds-card-text-color);
+    border: 1px solid var(--color-surface-line);
+    border-radius: 8px; padding: 16px; margin-bottom: 16px;
+  }
+  .fds-card__content { color: var(--fds-card-text-color); }
+  /* these set no color of their own - they inherit, which is the whole bug */
+  .refresh-container span { font-size: 12px; }
+  .fds-activity-button-root { background: none; border: 0; font: inherit; cursor: pointer; }
+
+  /* --- a skeleton, as it paints before any route CSS is rewritten -------- */
+  .widget-skeleton { background-color: #FFFFFF; border-radius: 8px; padding: 16px; }
+  .widget-skeleton .bar {
+    background-image: linear-gradient(90deg, #EDEDED 0%, #F8F8F8 50%, #EDEDED 100%);
+    height: 12px; border-radius: 3px; margin: 8px 0;
+    animation: shimmer 1.4s infinite;
+  }
+  @keyframes shimmer { 0% { opacity: .6 } 50% { opacity: 1 } 100% { opacity: .6 } }
+
+  /* --- AG Grid's sort indicator: artwork in a pseudo-element ------------- */
+  .ag-header-cell { display: inline-flex; align-items: center; gap: 4px; padding: 6px 10px; }
+  .ag-icon { display: inline-block; width: 10px; height: 10px; }
+  .ag-icon::before {
+    content: ""; display: block; width: 10px; height: 10px;
+    background-repeat: no-repeat; background-size: contain;
+  }
+  /* the real files carry a <path> with NO fill attribute, so they draw black */
+  .ag-icon-none::before { background-image: url("sort_unsorting.svg"); }
+  .ag-icon-asc::before  { background-image: url("sort_ascending.svg"); }
+
+  /* --- the allocation key: an inline background-color on a span ---------- */
+  .legend-symbol {
+    display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+    margin-right: 6px; vertical-align: middle;
+  }
+
+
+  /* --- icons, in the two shapes Fidelity actually ships ------------------ */
+  .icon-btn {
+    width: 24px; height: 24px; display: inline-block; border: 0;
+    background-color: transparent; background-repeat: no-repeat;
+    background-size: contain; background-position: center;
+  }
+  /* a same-origin .svg file whose path carries no fill: draws black */
+  #iconPrint { background-image: url("icon_print.svg"); }
+  /* the same trap with a stroke instead of a fill */
+  #iconChevron { background-image: url("icon_chevron.svg"); }
+
+  /* --- the trade ticket, as its stylesheet draws it ----------------------- */
+  .eq-ticket-standalone .eq-ticket__more-trade-divider { position: absolute; left: 0; top: 20%; width: 1px; height: 60%; background-color: #cccccc; }
+  .eq-ticket-standalone .dropdown-arrow { position: absolute; right: 12px; top: 10px; width: 10px; height: 10px; border-right: 0.667px solid #000; border-bottom: 0.667px solid #000; transform: rotate(45deg); }
+  .eq-ticket-standalone .dropdown-label-in-field:focus { outline: 0.667px solid #000; box-shadow: 0 0 0 1px #000; }
+
+  /* --- the marketing site's CTA, with the shadow it declares and then
+         switches off lower down ------------------------------------------ */
+  .generic-button a { display: inline-block; padding: 8px 16px; background-color: #368727; color: #fff; text-shadow: #004988 0.0625em 0.0625em 0.25em; border-radius: 4px; }
+  .pvd--tridion-button.generic-button a { text-shadow: none; }
+
+  /* --- the prospect header's round icon button, as the site draws it ------- */
+  .nav-utility { background-color: #368727; padding: 8px; }
+  .nav-utility-links { list-style: none; margin: 0; padding: 0; display: flex; gap: 8px; }
+  li.header-icon-utility-customer-support-white > a { display: block; width: 40px; height: 40px; border-radius: 50%; background-repeat: no-repeat;
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9Ii04IC04IDQwIDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik04LjkgOS42YTMgMyAwIDEgMSA2IDBjMCAxLjUtMi4yIDItMi44IDMuMnYxLjRNMTIgMTYuM3YwLjEiIHN0cm9rZT0ibm9uZSIgZmlsbD0id2hpdGUiLz48cGF0aCBkPSJNMTIgMmExMCAxMCAwIDEgMSAwIDIwYTEwIDEwIDAgMCAxIDAtMjB6bTAgMS41YTguNSA4LjUgMCAxIDAgMCAxN2E4LjUgOC41IDAgMCAwIDAtMTd6IiBmaWxsPSJ3aGl0ZSIvPjwvc3ZnPg=="); }
+  li.header-icon-utility-customer-support-white > a:hover { background-color: rgb(30, 111, 29); outline: 1px solid #fff; outline-offset: -1px; }
+  li.header-icon-utility-customer-support-white > a > span { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; color: #fff; }
+  li.header-icon-utility-customer-support-white > a:hover > span:not(:empty) { left: auto; width: auto; height: auto; background-color: rgb(41, 41, 40); padding: 6px 12px; border-radius: 8px; }
+
+  /* --- the legacy header: a shorthand on every link, a logo drawn by a more
+         specific longhand ------------------------------------------------ */
+  #pgnb .pbn { background-color: #368727; height: 54px; }
+  .pgnb a { background: transparent; color: #fff; }
+  .pgnb .pnlogout { display: inline-block; width: 130px; height: 43px; background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 130 43'%3E%3Crect x='4' y='10' width='120' height='20' fill='%23fff'/%3E%3C/svg%3E"); background-repeat: no-repeat; }
+
+  /* --- an ACE chart (fidchart around ChartIQ), as the site styles it: its
+         tokens with light fallbacks, its own dark theme behind a class, its
+         probes and icons reading the tokens ---------------------------- */
+  .fidchart-theme-dark { --fidchart-background-color: #121212; --fidchart-grid-color: #303030; --fidchart-chart-koi-100: #FF6262; --fidchart-accent-brand: #5CBf4a; --fidchart-accent-blueberry-filter: brightness(0) saturate(100%) invert(83%) sepia(44%) saturate(6054%) hue-rotate(196deg) brightness(102%) contrast(102%); }
+  .ace-chart .ace-color { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: var(--line-color); }
+  .ace-chart .stx_grid { color: var(--fidchart-grid-color, rgb(239, 239, 239)); }
+  .ace-chart .stx_yaxis { color: var(--fidchart-text-color, rgb(51, 51, 51)); }
+  .ace-chart .stx_candle_up { color: var(--fidchart-chart-up-color, #368727); }
+  .ace-chart .chartContainer { background-color: var(--fidchart-background-color, #ffffff); }
+  .ace-chart .ace-toolbar { background: #ffffff; border: 1px solid #cccccc; }
+  .ace-chart .ace-icon { display: inline-block; width: 16px; height: 16px; border: 1px solid transparent; background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M2 2h12v12H2z' fill='%23333'/%3E%3C/svg%3E"); filter: var(--fidchart-filter-text-color, brightness(0) saturate(100%)); }
+  .ace-chart .ace-icon.ace-icon-atn-crosshair { filter: var(--fidchart-text-gain-filter, brightness(0) saturate(100%) invert(41%) sepia(80%) saturate(495%) hue-rotate(64deg) brightness(95%) contrast(90%)); }
+  .ace-chart .ace-save-button-status-display { display: inline-block; padding: 2px 8px; background-color: #368727; color: #ffffff; }
+  .ace-chart .ace-ohlc-delta { color: #000000; }
+  .ace-chart .ace-ohlc-delta--positive { color: var(--fidchart-text-gain, #368727); }
+  .ace-chart .ace-input-link-label { color: #368727; }
+
+  /* --- fund research legacy controls, as the site draws them ------------- */
+  .fidelity-search-bar .search-box input[type="submit"] { background: #3F8700 -webkit-gradient(linear, 50% 0, 50% 50%, from(#7AAC4E), to(#3F8700)); color: #FFFFFF; border: 1px solid #55842D; padding: 4px 10px; }
+  button.disabled-btn { background: #BDBABE -webkit-gradient(linear, 50% 0, 50% 50%, from(#BDBABE), to(#BDBABE)); color: #FFFFFF; border: 1px solid #BDBABE; padding: 4px 10px; }
+  .box-scale-blue, .box-scale-gray { display: inline-block; width: 12px; height: 12px; margin-right: 2px; }
+  .box-scale-blue { background-color: #1B4472; }
+  .box-scale-gray { background-color: #CDCDCD; }
+  .risk-icon-gradient { width: 100px; height: 10px; background-image: linear-gradient(to right, rgb(122, 150, 45) 0%, rgb(122, 150, 45) 9.1%, rgb(255, 255, 255) 9.1%, rgb(255, 255, 255) 10.1%, rgb(183, 74, 49) 10.1%, rgb(183, 74, 49) 100%); }
+  .search-criteria .separator-text { display: inline-block; }
+
+  /* --- the fund screener's start page and results header, as its sheet
+         draws them ------------------------------------------------------ */
+  .quick-criteria-morningstar-ratings .box { display: inline-block; color: rgb(27, 68, 114); background: rgb(27, 68, 114); margin-left: 3px; width: 13px; height: 14px; }
+  .quick-criteria-morningstar-ratings .box.greyed-out { background: rgb(205, 205, 205); color: rgb(205, 205, 205); }
+  .quick-criteria-fund-type .category-criterion .class-options { position: relative; border: 1px solid rgb(204, 204, 204); padding: 11px 31px 11px 16px; border-radius: 5px; width: 220px; }
+  .quick-criteria-fund-type .category-criterion .class-options.dropdown-arrows::after { content: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAARCAIAAABFBIsgAAAAVElEQVR42mP8//8/A20AEwPNwKjR9DOaBb+0srIyfgV3794l09V4dBKUJRwguPTjN5fYsMY0haC5JEQjslnEmMvAwMDwnxSgpKREvGLG0TJkOBgNANr3dOIsKy7CAAAAAElFTkSuQmCC"); position: absolute; right: 31px; top: 50%; margin-top: -8.5px; border: none; height: 17px; }
+  .quick-criteria-risk-slider input[type="range"].slider-input { appearance: none; outline: none; width: 220px; margin: 4px 0; padding: 0; }
+  .quick-criteria-risk-slider input[type="range"].slider-input::-webkit-slider-runnable-track { height: 20px; background: -webkit-linear-gradient(left, rgb(122, 150, 45) 0%, rgb(122, 150, 45) 9.1%, rgb(255, 255, 255) 9.1%, rgb(255, 255, 255) 10.1%, rgb(155, 159, 50) 10.1%, rgb(155, 159, 50) 100%); }
+  .quick-criteria-risk-slider input[type="range"].slider-input::-webkit-slider-thumb { appearance: none; width: 20px; height: 20px; background-color: rgba(0, 0, 0, 0); border: 2px solid rgb(0, 0, 0); }
+  .madlib-select-wrap { position: relative; width: 240px; height: 30px; border-bottom: 1px solid #808080; }
+  .madlib-dropdown-arrow { background: url("data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/wAALCAAsAB4BAREA/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/9oACAEBAAA/AP1Tr518f/8ABQj9kb4WeMtW+H3xB+KV3ofiHQ7g219Y3PhfWN8T4BBBFqVdGUq6OpKOjKyllYE6vwh/bf8A2Y/j14yj+H/wj+Id34i12S3luzbw+HNUiSKCMDfLLLLbLFEmSqhnZQXdEGWdQfdaK+Nf+Cjv7Dlz+1b4NsPGHw+e0t/iL4Pt50sYZUiiTW7RiHNlLOQGR1YM0DM3lK8sqsFExlj9A/Yc/ZE0r9kH4Rt4Un1G01jxZr1wupeI9Vgt1RHnCBUtYXKiV7aEbtnmHJeSaQLH5pjX6KooooorAvvHfhbTbuWwv9SaGeFtro1tLkH/AL55HcEcEcipdK8ZeHNbuxY6VftcTFS20W8oAUdSSVAA+p6kDvW1RXJfEDwY3ie0S7sCq6haKQgIAEynnYW7HuuTjJOeuRe8GeFYvCmlfZWkWW6nbzLiVVwC2MBQcZKjnGe5J4zgb9FFFFf/2Q==") no-repeat; display: block; width: 30px; height: 20px; position: absolute; right: 0; top: 6px; }
+  .disabled .madlib-dropdown-arrow { background-position: center bottom; }
+  #results-header tr th.sort-desc.sort { background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAABmUlEQVR42u3cW47CMAwFUPBquv/VdDfwjzQaZkpp7HvOP1Jj3z4S2txuAAAAAAAAAAAAAABAV/fpA9y27XHk9/u+j65ROQeyCYAAIAAIAAKAACAACAACgAAgAAgAAoAAIAAIAAKAACAACAACgAAgAAgAAoAAIAAIAAKAACAACAACgAAgAAgAAoAAsJrL98A7uo/fBFfuRVjJg09v/jK3gNQQrDDuUozs8ZaiZI/TLMA00NmRPL5SpOxxlWJlj6cULXscpXjZx1+KmH3cpZjZx1uKmh1WC0Hh2gVg9bOr262q5RVg1SJ3fFhtewtYrdhdZyqtnwFWKXrntYr2D4FXF7/7QtWIWcBVTZiwVD1mGvjtZkz5n2LUOsC3mjLpn0oLQeHGBeDss3PaewojrwBnNWnim0pjbwGfbtbU19RGPwN8qmmTX1Qd/xB4tHnT31KOmAX8t4kJH6rETAP/2syUr5Si1gHebWrSd4oWgsLFBeC3szvtK+XIK8BPTU7cpyD2FvDa7PSdSmLZowgAAAAAAAAAAAAAAACAZp6rXac8TiGibwAAAABJRU5ErkJggg=="); background-position: right 2px bottom 3px; background-repeat: no-repeat; background-size: 8px 8px; background-color: #F3F3F3; color: #333; width: 110px; height: 28px; }
+
+  /* --- the Fidelity Assistant's send button: a reset for every button in
+         the panel, and a more specific rule that draws the arrow ---------- */
+  #va-container.va button { background-image: none; }
+  #va-container.va #va-submit.va-submit { background: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='12' fill='%23024A7A'/%3E%3Cpath d='M7 12h10M13 8l4 4-4 4' stroke='%23FFFFFF' stroke-width='2' fill='none'/%3E%3C/svg%3E") center center / 24px auto no-repeat; border: 0; height: 44px; width: 44px; padding: 0; }
+  .va-avatar-row span { background-image: none; }
+
+  /* --- ChartIQ, as the compare chart's stylesheet draws it ---------------- */
+  .chartContainer { background: rgb(255, 255, 255); color: rgb(0, 0, 0); }
+  .stx_grid { color: rgb(239, 239, 239); }
+  cq-swatch { display: inline-block; width: 12px; height: 12px; background-color: rgb(0, 0, 0); }
+  cq-comparison-item cq-swatch { background-color: rgb(221, 0, 0); }
+
+  /* --- a selected filter chip ------------------------------------------- */
+  .fds-chip__label {
+    display: inline-block; padding: 6px 14px; border-radius: 999px;
+    background-color: #EDFAEB; color: #0F5319; border: 1px solid #99D78E;
+  }
+
+  /* --- the screener's results header and criteria list, as main.css draws
+         them: a link-styled button that is off until a fund is ticked, and
+         a criterion's help button, a picture and nothing else ------------- */
+  button.as-link { background: rgba(0, 0, 0, 0); border: none; cursor: pointer; color: rgb(15, 87, 194); display: inline-block; }
+  button.as-link.disabled { color: rgb(189, 186, 190); cursor: initial; }
+  .inactive-criterion .inactive-criterion-help-control .inactive-criterion-help-button { margin-left: 5px; width: 14px; height: 14px; background-repeat: no-repeat; background-size: cover; border: none; padding: 0; }
+
+  /* --- the marketing site's popin close button: a sprite named for its
+         colour, drawn by a shorthand with nothing else in it -------------- */
+  .popin--close-button { display: block; width: 16px; height: 16px; cursor: pointer; background: url("icon-x-gray-1x.svg") no-repeat; }
+
+  /* --- fund research's simple footer: a stand-in for its logo, an SVG
+         inlined in the sheet, black by default with white stripes knocked
+         out of it, and nothing behind it but the page ---------------------- */
+  .top-menu-bar__content-wrapper { background-color: rgb(54, 135, 39); }
+  .pg-simple-footer { padding: 16px; }
+  .pg-simple-footer--logo { width: 152px; height: 33px; background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNTIiIGhlaWdodD0iMzMiIHZpZXdCb3g9IjAgMCAxNTIgMzMiPjxyZWN0IHg9IjIiIHk9IjQiIHdpZHRoPSIyNiIgaGVpZ2h0PSIyNSIgcng9IjMiLz48cGF0aCBmaWxsPSIjZmZmZmZmIiBkPSJNNyAxMGgxNnYzSDd6TTcgMTVoMTZ2M0g3ek03IDIwaDE2djNIN3oiLz48cmVjdCB4PSIzNCIgeT0iOSIgd2lkdGg9IjIyIiBoZWlnaHQ9IjE1Ii8+PHJlY3QgeD0iNjAiIHk9IjkiIHdpZHRoPSIyMiIgaGVpZ2h0PSIxNSIvPjxyZWN0IHg9Ijg2IiB5PSI5IiB3aWR0aD0iMjIiIGhlaWdodD0iMTUiLz48cmVjdCB4PSIxMTIiIHk9IjkiIHdpZHRoPSIzNiIgaGVpZ2h0PSIxNSIvPjwvc3ZnPg==); background-repeat: no-repeat; }
+
+  /* --- an apex-kit popover, opened below its trigger. The panel and its
+         pointer are both painted from the kit's variables, and the
+         pointer's are declared on its own ::after, as the kit does it ----- */
+  :root { --color-white: #FFFFFF; --color-neutral-40: #666666; }
+  .apex-kit-web-popover-root { --apex-kit-popover-background-color: var(--color-white); --apex-kit-popover-border: 1px solid var(--color-neutral-40); position: relative; display: inline-block; padding-top: 8px; }
+  .apex-kit-web-popover-root .pvd-popover__popover { background-color: var(--apex-kit-popover-background-color); border: var(--apex-kit-popover-border); width: 200px; height: 48px; }
+  .apex-kit-web-popover-root .pvd-popover__arrow { position: absolute; left: 30px; top: 8px; width: 0; height: 0; z-index: 2; }
+  .apex-kit-web-popover-root .pvd-popover__arrow::after {
+    content: ""; position: absolute; left: -10px; top: -10px; width: 20px; height: 20px; box-sizing: border-box;
+    transform: rotate(45deg); border-width: 1px; border-style: solid;
+    --apex-kit-popover-background-color: var(--color-white);
+    --apex-kit-popover-border-left-color: transparent; --apex-kit-popover-border-right-color: var(--color-neutral-40);
+    --apex-kit-popover-border-top-color: transparent; --apex-kit-popover-border-bottom-color: var(--color-neutral-40);
+    background-color: var(--apex-kit-popover-background-color);
+    border-left-color: var(--apex-kit-popover-border-left-color); border-right-color: var(--apex-kit-popover-border-right-color);
+    border-top-color: var(--apex-kit-popover-border-top-color); border-bottom-color: var(--apex-kit-popover-border-bottom-color);
+  }
+  .apex-kit-web-popover-root.pvd-popover--placement-bottom .pvd-popover__arrow::after {
+    --apex-kit-popover-border-bottom-color: transparent; --apex-kit-popover-border-left-color: var(--color-neutral-40);
+    --apex-kit-popover-border-right-color: transparent; --apex-kit-popover-border-top-color: var(--color-neutral-40);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- 1. the inheritance chain that lost a whole toolbar -->
+  <div class="fds-card__card" id="card">
+    <div class="fds-card__content">
+      <div class="refresh-container"><span id="asof">As of Sep-29-2026 09:00 PM ET</span></div>
+      <button class="fds-activity-button-root" id="clear">Clear Filters</button>
+    </div>
+  </div>
+
+  <!-- 2. a skeleton mid-load -->
+  <div class="widget-skeleton" id="skeleton">
+    <div class="bar" style="width:40%"></div>
+    <div class="bar" style="width:80%"></div>
+  </div>
+
+  <!-- 3. grid headers with pseudo-element sort artwork -->
+  <div class="fds-card__card">
+    <span class="ag-header-cell">52-week range <span class="ag-icon ag-icon-none" id="sortNone"></span></span>
+    <span class="ag-header-cell">Symbol <span class="ag-icon ag-icon-asc" id="sortAsc"></span></span>
+  </div>
+
+  <!-- 4. a chart: classic-mode Highcharts paints presentation attributes -->
+  <div class="fds-card__card">
+    <div class="highcharts-container" id="chartBox">
+      <svg class="highcharts-root" width="320" height="120" xmlns="http://www.w3.org/2000/svg">
+        <g class="highcharts-series-group">
+          <g class="highcharts-series highcharts-series-0 highcharts-pie-series">
+            <path id="pieDomestic" class="highcharts-point highcharts-color-0" fill="#143960" stroke="#ffffff" d="M10 10h20v20h-20z"/>
+            <path id="pieForeign"  class="highcharts-point highcharts-color-1" fill="#1DADE2" stroke="#ffffff" d="M40 10h20v20h-20z"/>
+            <path id="pieBonds"    class="highcharts-point highcharts-color-2" fill="#568200" stroke="#ffffff" d="M70 10h20v20h-20z"/>
+            <path id="pieShort"    class="highcharts-point highcharts-color-3" fill="#FFCD00" stroke="#ffffff" d="M100 10h20v20h-20z"/>
+            <path id="pieOther"    class="highcharts-point highcharts-color-4" fill="#D24823" stroke="#ffffff" d="M130 10h20v20h-20z"/>
+            <path id="pieUnknown"  class="highcharts-point highcharts-color-5" fill="#9D66C1" stroke="#ffffff" d="M160 10h20v20h-20z"/>
+          </g>
+          <g class="highcharts-series highcharts-series-1 highcharts-column-series">
+            <path id="colGain" class="highcharts-point" fill="#368727" d="M10 50h20v20h-20z"/>
+            <path id="colLoss" class="highcharts-point highcharts-negative" fill="#dc1616" d="M40 50h20v20h-20z"/>
+          </g>
+          <g class="highcharts-series highcharts-series-2 highcharts-spline-series">
+            <path id="balanceLine" class="highcharts-graph" fill="none" stroke="black" d="M10 90L300 90"/>
+          </g>
+          <g class="highcharts-series highcharts-series-3 highcharts-heatmap-series">
+            <path id="heat0" class="highcharts-point" fill="#FFFFFF" stroke="#666666" d="M200 10h20v20h-20z"/>
+            <path id="heat1" class="highcharts-point" fill="#D2DEF9" stroke="#666666" d="M225 10h20v20h-20z"/>
+            <path id="heat2" class="highcharts-point" fill="#7A9DF0" stroke="#666666" d="M250 10h20v20h-20z"/>
+            <path id="heat3" class="highcharts-point" fill="#113DA1" stroke="#666666" d="M275 10h20v20h-20z"/>
+          </g>
+        </g>
+      </svg>
+      <!-- Performance's balance chart keys its lines with HTML legend items:
+           a 16px div whose inline border-top is the series' colour and dash -->
+      <div class="highcharts-legend-item highcharts-spline-series"><span><div style="width: 16px; border-top: 2px solid rgb(0, 0, 0);" id="keyBalance"></div><div>Balance at Fidelity</div></span></div>
+      <div class="highcharts-legend-item highcharts-spline-series"><span><div style="width: 16px; border-top: 2px dotted rgb(194, 147, 249);" id="keyNotInvested"></div><div>Balance if not invested</div></span></div>
+      <div class="highcharts-legend-item highcharts-column-series"><span><div style="width: 10px; height: 10px; border-radius: 50%; background-color: rgb(54, 135, 39);" id="keyGain"></div><div style="width: 10px; height: 10px; border-radius: 50%; background-color: rgb(220, 22, 22);" id="keyLoss"></div><div>Rate of return gain/loss</div></span></div>
+    </div>
+    <ul style="list-style:none;padding:0">
+      <li><span class="legend-symbol" id="swDomestic" style="background-color:#143960"></span>Domestic Stock</li>
+      <li><span class="legend-symbol" id="swForeign"  style="background-color:#1DADE2"></span>Foreign Stock</li>
+      <li><span class="legend-symbol" id="swBonds"    style="background-color:#568200"></span>Bonds</li>
+    </ul>
+    <!-- the summary's Asset allocation card keys the same donut with 12px
+         blocks, each colour set inline -->
+    <div class="asset-allocation-legend">
+      <div class="legend-item-content"><span class="legend-item-block" id="blkDomestic" style="display:inline-block;width:12px;height:12px;border-radius:50%;background-color: rgb(20, 57, 96);"></span><span class="legend-item-label">Domestic stock</span></div>
+      <div class="legend-item-content"><span class="legend-item-block" id="blkBonds" style="display:inline-block;width:12px;height:12px;border-radius:50%;background-color: rgb(86, 130, 0);"></span><span class="legend-item-label">Bonds</span></div>
+      <div class="legend-item-content"><span class="legend-item-block" id="blkOther" style="display:inline-block;width:12px;height:12px;border-radius:50%;background-color: rgb(210, 72, 35);"></span><span class="legend-item-label">Other</span></div>
+    </div>
+  </div>
+
+  <!-- 5a. a bar chart whose track is painted white -->
+  <div class="fds-card__card">
+    <div class="highcharts-container" id="ratingsBox">
+      <svg class="highcharts-root" width="300" height="60" xmlns="http://www.w3.org/2000/svg">
+        <g class="highcharts-series-group">
+          <g class="highcharts-series highcharts-series-0 highcharts-bar-series">
+            <path id="trackA" class="highcharts-point" fill="#ffffff" stroke="#ffffff" d="M10 10h260v14h-260z"/>
+            <path id="trackB" class="highcharts-point" fill="#ffffff" stroke="#ffffff" d="M10 32h260v14h-260z"/>
+          </g>
+          <g class="highcharts-series highcharts-series-1 highcharts-bar-series">
+            <path id="fillA" class="highcharts-point" fill="#5c0198" d="M10 10h40v14h-40z"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <!-- 5a'. the composition pages' sector bars: a 100x18 chart whose grey
+       background is the unfilled part of the bar; and a full-size chart whose
+       grey background is only a backdrop -->
+  <div class="fds-card__card">
+    <div class="benchmark-chart">
+      <div class="highcharts-container" id="sectorBarBox" style="width:100px;height:18px">
+        <svg class="highcharts-root" width="100" height="18" xmlns="http://www.w3.org/2000/svg">
+          <rect class="highcharts-background" id="sectorTrack" fill="#E5E5E5" x="0" y="0" width="100" height="18"/>
+          <g class="highcharts-series-group"><g class="highcharts-series highcharts-bar-series">
+            <rect id="sectorFill" class="highcharts-point" fill="#0066CC" x="0" y="2" width="38" height="6"/>
+          </g></g>
+        </svg>
+      </div>
+    </div>
+    <div class="highcharts-container" id="bigChartBox" style="width:300px;height:120px">
+      <svg class="highcharts-root" width="300" height="120" xmlns="http://www.w3.org/2000/svg">
+        <rect class="highcharts-background" id="bigBackground" fill="#E5E5E5" x="0" y="0" width="300" height="120"/>
+        <g class="highcharts-series-group"><g class="highcharts-series highcharts-line-series">
+          <path class="highcharts-graph" stroke="#0066CC" fill="none" d="M0 100L300 20"/>
+        </g></g>
+      </svg>
+    </div>
+  </div>
+
+  <!-- 5b. a segmented control -->
+  <div class="fds-card__card">
+    <span class="pvd-segment__label" id="segOn" style="background-color:#EDFAEB;color:#0F5319;border:1px solid #FFFFFF;padding:6px 14px;display:inline-block">Fund ratings</span>
+    <span class="pvd-segment__label" id="segOff" style="background-color:#FFFFFF;color:#1D252C;border:1px solid #FFFFFF;padding:6px 14px;display:inline-block">Analyst ratings</span>
+  </div>
+
+  <!-- 5c. a chart legend, drawn with useHTML -->
+  <div class="fds-card__card">
+    <div class="highcharts-container">
+      <div class="highcharts-legend">
+        <div class="highcharts-legend-item"><span id="legLabel" style="color:#333333">Balance at Fidelity</span></div>
+        <!-- a series switched off from its key, as Highcharts leaves it: the
+             span greyed and struck through, the words in a div inside it -->
+        <div class="highcharts-legend-item highcharts-legend-item-hidden"><span id="legHidden" style="color: rgb(102, 102, 102); text-decoration: line-through;"><div style="display:flex;align-items:center"><div id="legHiddenKey" style="width: 16px; border-top: 2px dotted rgb(194, 147, 249);"></div><div id="legHiddenText" style="margin-left:8px">Balance if not invested</div></div></span></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 5d. toolbar icons, delivered as background images -->
+  <div class="fds-card__card">
+    <button class="icon-btn" id="iconPrint" aria-label="Print"></button>
+    <button class="icon-btn" id="iconChevron" aria-label="Expand"></button>
+    <button class="icon-btn" id="iconInline" aria-label="Search"
+      style="background-image:url(&quot;data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000000' d='M10 2a8 8 0 105.3 14l5.4 5.4 1.4-1.4-5.4-5.4A8 8 0 0010 2z'/%3E%3C/svg%3E&quot;)"></button>
+    <!-- the Trade panel's Help-mode switch: an <img> of a toggle, a pale
+         track under a WHITE knob with a grey outline -->
+    <button class="float-trade-container-help-mode help-mode" id="helpToggle" style="background:none;border:0;padding:0"><img class="icon-off" id="helpToggleImg" width="38" height="25" alt="Help mode off"
+      src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='38' height='25' viewBox='0 0 48 28' fill='none'%3E%3Cpath fill='%23E6E4E1' stroke='%23757473' d='M14 .5H34a13.5 13.5 0 0 1 0 27H14a13.5 13.5 0 0 1 0-27z'/%3E%3Ccircle cx='14' cy='14' r='9' fill='%23FFFFFF' stroke='%23757473'/%3E%3C/svg%3E"></button>
+  </div>
+
+  <!-- 5e. a square wrapper holding a rounded card, both the same white.
+       Invisible on a white page; two distinct surfaces on a dark one. -->
+  <div class="positions-content-container" id="sqWrapper" style="background-color:#ffffff;padding:8px">
+    <div class="apex-kit-web-tile-root">
+      <div class="pvd-tile__tile" id="roundTile" style="background-color:#ffffff;border-radius:24px;height:40px"></div>
+    </div>
+  </div>
+
+  <!-- 5f. a skeleton with no class that says so: a light box with no text,
+       and a shimmer gradient. This is the shape the name-based rules miss. -->
+  <div class="wgt" id="namelessSkeleton" style="padding:8px">
+    <div id="skelBar" style="background-color:#e8e8e8;height:12px;width:60%;margin:6px 0"></div>
+    <div id="skelShine" style="background-image:linear-gradient(90deg,#ededed 0%,#ffffff 50%,#ededed 100%);height:12px;width:80%;margin:6px 0"></div>
+  </div>
+
+  <!-- 5g. an outline icon: fill="none" on the root, the shape drawn as a
+       1.5px stroke. Filling it turns the outline into a solid disc. -->
+  <div class="fds-card__card">
+    <button class="icon-btn" id="strokeIconBtn" aria-label="Filter" style="width:24px;height:24px;border:0;background:transparent">
+      <svg id="strokeIcon" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path id="strokePath" stroke="#141414" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 6h16M6 11h10M9 16h4"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- 5h. a sprite: the icon on the page is a <use> clone of a <symbol> whose
+       path carries its colour as an attribute. A stylesheet rule matching the
+       symbol's path changes nothing about the clone; only the attribute does.
+       This is the "i" beside Balance on the performance page. -->
+  <div style="position:absolute;width:0;height:0;overflow:hidden">
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <symbol viewBox="0 0 24 24" fill="none" id="fx-info">
+        <path id="fxInfoPath" vector-effect="non-scaling-stroke" stroke="#1D3986" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M12 3a9 9 0 1 1 0 18 9 9 0 0 1 0-18Zm0 5v1m0 3v5"/>
+      </symbol>
+      <symbol viewBox="0 0 24 24" id="fx-solid">
+        <path id="fxSolidPath" fill="#141414" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Z"/>
+      </symbol>
+    </svg>
+  </div>
+  <div class="fds-card__card">
+    <span class="apex-kit-web-link-root pvd-link--icon-only">
+      <button class="pvd-link__link" id="infoLink" aria-label="Get more balance information" style="background:none;border:0;padding:0">
+        <svg class="apex-kit-web-icon-root" id="infoUseSvg" width="24" height="24"><use id="infoUse" href="#fx-info"></use></svg>
+      </button>
+    </span>
+    <svg class="apex-kit-web-icon-root" id="solidUseSvg" width="24" height="24"><use href="#fx-solid"></use></svg>
+  </div>
+
+  <!-- 5i. the trade ticket's controls. A select's chevron is a rotated square
+       with two painted borders inside a `.dropdown` wrapper; the Shares unit
+       trigger carries role="listbox" (on the trigger, not a popup) with a
+       divider beside it; the footer wordmark is a stand-in raster, black
+       blocks with a white bar knocked out, on a card. -->
+  <div class="fds-card__card eq-ticket-standalone" id="ticket" style="background:#ffffff">
+    <div class="eq-ticket__dropdown dropdown" style="position:relative;width:160px;height:38px">
+      <button class="dropdown-label-in-field btn btn-secondary" id="ticketSelect" style="width:100%;height:100%;background:#fff;border:0.667px solid #7f7f7f;text-align:left">Action</button>
+      <div class="dropdown-arrow" id="ticketArrow"></div>
+    </div>
+    <div class="eq-ticket__more-trade-selections__quantity-outline" id="qtyOutline" style="position:relative;display:flex;width:236px;height:40px;background:#fff;border:0.667px solid #666;border-radius:3px;margin-top:8px">
+      <input type="text" id="qtyInput" placeholder="Quantity" style="border:0;background:transparent;width:120px">
+      <div class="eq-ticket__more-trade-quantity-type-wrapper input-label-in-field" id="qtyType" role="listbox" tabindex="0" aria-expanded="false" style="position:relative;width:105px;border:0.667px solid transparent;border-radius:4px">
+        <div class="eq-ticket__more-trade-divider" id="qtyDivider"></div>
+        <div class="eq-ticket__more-trade-quantity-type-select">Shares</div>
+        <div class="eq-ticket__more-trade-quantity-type-dropdown" id="qtyOptions" style="position:absolute;top:100%;left:-1.5rem;width:calc(100% + 1.5rem);background:#fff;border:0.667px solid #666;display:none">
+          <div role="option">Shares</div><div role="option">Dollars</div>
+        </div>
+      </div>
+    </div>
+    <footer class="footer-simple" id="ticketFooter" style="background:#ffffff;padding:12px;margin-top:12px">
+      <div class="footer-simple--logo"><img id="rasterLogo" alt="" width="40" height="24" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAYCAYAAACIhL/AAAAATElEQVR42u2VMQ4AIAgDqfH/X8bV0YFGoncTE2m4JkQA3EXbnMX7ShjdL9g+4DTuzoq6oNiiOPPcjqS/L0hASwfdvULxK59EKAaAiAVYAQUshauxjAAAAABJRU5ErkJggg=="></div>
+    </footer>
+  </div>
+
+  <!-- 5j. the Assistant panel's field and its menu button: a wrapper box with a
+       bare textarea inside (both white in light mode; the box takes the focus
+       ring), and four 6px dots drawn as spans with an inline black fill. -->
+  <div class="fds-card__card">
+    <div class="va-input-wrapper" id="vaWrap" style="border:0.667px solid #666;border-radius:5px;background:#fff;padding:8px;width:300px">
+      <textarea class="va-input" id="vaInput" placeholder="Type your question here..." style="background:#fff;border:0;width:100%"></textarea>
+    </div>
+    <button class="va-bento-menu-button va-button-default" id="vaMenu" style="background:#fff;border:0;width:22px;height:22px;display:grid;grid-template-columns:1fr 1fr;gap:3px;padding:2px;margin-top:8px">
+      <span class="va-menu-button-dot-span" id="vaDot1" style="width:6px;height:6px;border-radius:50%;border:1px solid #000;background-color:#000;display:block"></span>
+      <span class="va-menu-button-dot-span" style="width:6px;height:6px;border-radius:50%;border:1px solid #000;background-color:#000;display:block"></span>
+      <span class="va-menu-button-dot-span" style="width:6px;height:6px;border-radius:50%;border:1px solid #000;background-color:#000;display:block"></span>
+      <span class="va-menu-button-dot-span" style="width:6px;height:6px;border-radius:50%;border:1px solid #000;background-color:#000;display:block"></span>
+    </button>
+    <!-- the same button while the panel is still closed: no layout box yet -->
+    <button class="va-bento-menu-button va-button-default" id="vaMenuHidden" style="background:#fff;border:0;width:22px;height:22px;display:none;grid-template-columns:1fr 1fr;gap:3px;padding:2px;margin-top:8px">
+      <span class="va-menu-button-dot-span" id="vaDotHidden" style="width:6px;height:6px;border-radius:50%;border:1px solid #000;background-color:#000;display:block"></span>
+    </button>
+  </div>
+
+  <!-- 5k. the marketing CTA: its stylesheet declares a shadow, then turns it
+       off; only the declaration with a colour in it gets re-emitted. -->
+  <div class="fds-card__card">
+    <div class="pvd--tridion-button generic-button"><a href="#" id="ctaShadow">View your tax forms</a></div>
+  </div>
+
+  <!-- 5l. "divider" in a name: a line, and a row that merely owns one. -->
+  <div class="fds-card__card">
+    <div class="content_item content-item-divider" id="rowWithDivider" style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #e6e4e1"><span>Account registration</span><a href="#">Manage</a></div>
+    <div class="section-divider" id="lineDivider" style="height:1px;background-color:#e6e4e1"></div>
+  </div>
+
+  <!-- 5m. the prospect header: a white glyph on a green bar, drawn as a
+       data: SVG background on a round link. -->
+  <div class="nav-utility" id="prospectBar">
+    <ul class="nav-utility-links">
+      <li class="pre-login-only header-icon-utility-customer-support-white"><a id="supportIcon" href="#"><span class="screen-reader-only">Customer Support</span></a></li>
+    </ul>
+  </div>
+
+  <!-- 5n. the legacy header (#pgnb) -->
+  <div id="pgnb" class="pgnb">
+    <div class="pbn" id="legacyBar"><a class="pnlogout" id="legacyLogo" href="#"><span class="screen-reader-only">Fidelity.com Home</span></a></div>
+  </div>
+
+  <!-- 5o. a checked-but-locked checkbox (Similar Fund Picks), pvd- markup -->
+  <div class="fds-card__card">
+    <div class="pvd-checkbox-root pvd-checkbox--label-hidden" id="lockedCheckRoot">
+      <input type="checkbox" class="pvd-checkbox__checkbox" id="lockedCheck" checked disabled style="position:absolute;width:1px;height:1px;opacity:0">
+      <label class="pvd-checkbox__label" for="lockedCheck">
+        <div class="pvd-checkbox__checkbox-wrap" id="lockedWrap" style="display:inline-block;width:18px;height:18px;border:1px solid #bbbbbb;background-color:#f2f2f2;border-radius:2px;color:#bbbbbb">
+          <svg class="pvd-icon-root pvd-checkbox__checkbox-wrap-icon pvd-checkbox__checkbox-wrap-icon--checked" id="lockedTickSvg" width="16" height="16" viewBox="0 0 24 24"><use id="lockedTick" href="#fx-tick"></use></svg>
+        </div>
+      </label>
+    </div>
+    <svg style="position:absolute;width:0;height:0"><symbol id="fx-tick" viewBox="0 0 24 24"><path d="M4 12l5 5L20 6" stroke-width="2"/></symbol></svg>
+  </div>
+
+  <!-- 5o2. the Alerts Center's search magnifier: a 15px GIF, a #8C8C8C ring
+       whose edge was anti-aliased against white, so on a dark page it wears a
+       ring of near-white specks -->
+  <div class="fds-card__card">
+    <input type="text" id="alertSearch" value="Search Alerts"> <a href="#"><img id="searchMatte" alt="" src="search_matte.gif" style="vertical-align:bottom"></a>
+  </div>
+
+  <!-- 5p. an ACE chart: Fidelity's own dark theme class goes on, the tokens
+       are restated in the palette, ChartIQ's probes follow, and the chart
+       (a stand-in engine on its container) is told to draw again -->
+  <div class="fds-card__card">
+    <div class="ace-chart ace-container" id="aceBox" style="width:300px;height:60px">
+      <div class="ace-toolbar" id="aceToolbar">
+        <span class="ace-icon ace-icon-atn-draw" id="aceIcon"></span>
+        <span class="ace-icon ace-icon-atn-crosshair" id="aceIconOn"></span>
+        <span class="ace-save-button-status-display" id="aceSave">Save</span>
+      </div>
+      <div class="chartContainer" id="aceContainer" style="width:100px;height:20px">
+        <div class="stx_grid" id="aceGrid" style="display:none"></div>
+        <div class="stx_yaxis" id="aceYaxis" style="display:none"></div>
+        <div class="stx_candle_up" id="aceCandle" style="display:none"></div>
+      </div>
+      <span class="ace-color" id="aceSwatch" style="--line-color: rgb(128, 0, 128);"></span>
+      <span class="ace-name" id="aceName">FXAIX</span>
+      <ul class="ace-ohlc"><li class="ace-ohlc-delta">&#916;: <span class="ace-ohlc-delta--positive" id="aceDelta">1.0000 (1.00%)</span></li></ul>
+      <span class="ace-input-link-label" id="aceLink">Compare</span>
+      <script>
+        /* ChartIQ keeps its engine on the container; the theme asks it to
+           forget its cached styles and draw again */
+        document.getElementById('aceContainer').stx = {
+          cleared: 0, drawn: 0,
+          clearStyles() { this.cleared++; },
+          draw() { this.drawn++; }
+        };
+      </script>
+    </div>
+  </div>
+
+  <!-- 5q. fund research: legacy buttons, rating scales, a medal on a white
+       plate, a dark blue chevron, a word between two controls, an unstyled
+       button. The medal is a stand-in, a gold block with a white window over
+       a navy one; the chevron a plain dark blue triangle. -->
+  <div class="fds-card__card" id="frCard">
+    <div class="fidelity-search-bar"><div class="search-box"><input type="submit" value="Go" id="legacyGo"></div></div>
+    <button class="disabled-btn" id="legacyDisabled">Compare Funds</button>
+    <span class="box-scale-blue" id="boxBlue"></span><span class="box-scale-gray" id="boxGray"></span>
+    <div class="risk-icon-gradient" id="riskBar"></div>
+    <img id="medalImg" alt="Fund Picks" width="14" height="23" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAXCAYAAAA7kX6CAAAATklEQVR42mP8////fwYyAAsDAwPDy5WMJGkSD//PwMRAJiBbIwsupyADbF6hv1Op60diomcI+ZGRorQKA7KOtXgVP97fPBQDZ1QjLVIOAJmYFrsXmxDrAAAAAElFTkSuQmCC">
+    <img id="chevImg" alt="" width="8" height="15" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAPCAYAAADZCo4zAAAAN0lEQVR42mNgoBqQC136H5s4EyFFTIRMYiJkNRMh9zARcjROBY9WRzPiVACTJM+RyLqJCknKAQD+ghJY+mP05wAAAABJRU5ErkJggg==">
+    <div class="search-criteria">Search: <input type="text"> <div class="separator-text" id="orText">OR</div> <a href="#">View All</a></div>
+    <button id="uaButton" style="border:0;width:26px;height:19px"></button>
+  </div>
+
+  <!-- 5s. the fund screener: rating pickers, a select whose chevron is a
+       pseudo-element image on a white field, the risk slider, the madlib
+       sentence's chevrons (a JPEG sprite: a black arrow over a pale disabled
+       one, on white), an unanswered field, and a sorted results header that
+       carries its arrow as a background behind its own label. All three
+       pictures are stand-ins: plain carets, and a plain arrow. -->
+  <div class="fds-card__card" id="scCard">
+    <div class="quick-criteria-morningstar-ratings"><span class="box" id="rateOn"></span><span class="box greyed-out" id="rateOff"></span></div>
+    <div class="quick-criteria-fund-type"><div class="category-criterion"><div class="class-options dropdown-arrows" id="classOptions">All Classes, All Categories</div></div></div>
+    <div class="quick-criteria-risk-slider"><input type="range" class="slider-input" id="riskSlider" min="1" max="11" value="11"></div>
+    <div class="madlib-label-field enabled"><div class="madlib-select-wrap" role="combobox" aria-disabled="false"><div class="madlib-dropdown-arrow" id="madlibOn"></div></div></div>
+    <div class="madlib-label-field disabled"><div class="madlib-select-wrap" role="combobox" aria-disabled="true" id="madlibWrapOff"><div class="madlib-dropdown-arrow" id="madlibOff"></div></div></div>
+    <button class="criteria-group-header" style="background:none;border:0"><span class="expander"><img id="plusImg" alt="" width="20" height="20" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAABH0lEQVR42rWUQWrEIBiFnzJkG4iCWfUQBQ+QY3TbCyQ36eQCPcHcxNBDdKUQBckuFOymhmliMoydvqXCx4fv9ydIZBiGDsAbDhJC6KWU3fqc7MHKskRRFEnYPM/w3iehJAVjjEEIcSQIYwystRsozYEBgBACjDEQQlql1PmX4S3Y0+sHAODz/XlzZ62FMWYxPd1rts6PJbTWrVIKNBaQA4upqgqccxBCWgpgt817EhkUD85pr4BUUnfrov7fMDUaR2OzzsMNafybf01k0BBC772HMSYb5pzDOI4AcKFSyi6E0McvlAPTWgPAZZqml2XbKKXOhJC2rmtUVZUFa5rmayklmmqt4ZzLgiUXbDTlnB8u2Phm17Ak8Bp6Q3IDA4BvMty2hw1joMAAAAAASUVORK5CYII="></span></button>
+    <table id="results-header"><thead><tr><th class="sort sort-desc left" id="sortedTh"><button class="header-label-container" style="background:none;border:0"><span class="header-label" id="sortedLabel">3 Yr</span></button></th></tr></thead></table>
+  </div>
+
+  <!-- 5v. the screener's results header and a criteria row. "(show funds)"
+       is a link-styled button, off until a fund is ticked. The help button is
+       a stand-in for the screener's 14px PNG: a blue disc touching all four
+       edges of a white square, its rim blended into the white, so only part
+       of its border is white, and a white "i" knocked out of it. It arrives
+       as an inline style, the way the screener sets it. -->
+  <div class="fds-card__card" id="showCard">
+    <span>0 Funds Selected</span> <button class="show-funds-selected as-link disabled" id="showFunds">(show funds)</button>
+    <ul style="list-style:none;padding:0"><li class="inactive-criterion top-level-criterion"><span class="inactive-criterion-help-control"><span><button class="inactive-criterion-help-button" id="helpBtn" aria-label="Sustainable Attributes Help" style="background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAIAAACQKrqGAAAA5UlEQVR42mP8//8/AwMDAwPDqw+/5+54vu3U2zvPvjMwMKhIcXqZCSd7SIoJsEIUMEKUbj/9LnPSra8//jKgAm4O5ul5ap6mQlCl20+/S+q98efvfwZsgIWZcV6xhqepEOPL97/Mcs8im/d6tTUDA4No6FFks09NNmaau+M5pr1o4OuPv3N3PGe0KTx34/E3BkJAQ5aLCeJfZPB6tTXEDcjgzrPvTAxEAyYVKU5i1KlIcTJ5mQkTo9TLTJgp2UOSm4MZvzpuDuZkD0kSooCJgYHB01RoXrEGVrO5OZgh6hBpgJjkAgD2omza7FLu6AAAAABJRU5ErkJggg==)"></button></span></span></li></ul>
+  </div>
+
+  <!-- 5x. a close button whose picture is named for its colour -->
+  <div class="fds-card__card"><a class="popin--close-button" id="popinClose" aria-label="Close"></a></div>
+
+  <!-- 5w. an apex-kit popover opened below its trigger: a panel and the
+       pointer that joins it to the (i) -->
+  <div class="fds-card__card">
+    <div class="apex-kit-web-popover-root pvd-popover--placement-bottom" id="popRoot"><div class="pvd-popover__wrapper"><div class="pvd-popover__arrow" id="popArrow"></div><div class="pvd-popover__popover" id="popPanel">Popover</div></div></div>
+  </div>
+
+  <!-- 5t. the Assistant panel's send button, and a picture set inline under
+       a reset rule -->
+  <div class="fds-card__card">
+    <div id="va-container" class="va"><button id="va-submit" class="va-submit va-button-default"><span class="screen-reader-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Send</span></button></div>
+    <div class="va-avatar-row"><span id="inlinePic" style="display:inline-block;width:24px;height:24px;background-image:url(&quot;icon_print.svg&quot;)"></span></div>
+  </div>
+
+  <!-- 5u. small inline icons in a colour drawn for white: the account rail's
+       day-change triangle, a dark glyph on a yellow disc, and the same purple
+       inside a disabled button -->
+  <div class="fds-card__card" id="iconCard">
+    <span class="am-gain-loss--root">+$10.00 <svg class="am-gain-loss--indicator" width="6" height="6" viewBox="0 0 6 6"><path id="dayTri" d="M3 0L6 6H0z" fill="#7c33ac"/></svg></span>
+    <svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="#FFCD00"/><path id="discGlyph" d="M9 5h2v7H9zM9 13h2v2H9z" fill="#4C4C4C"/></svg>
+    <button disabled style="background:none;border:0"><svg width="12" height="12" viewBox="0 0 6 6"><path id="disabledTri" d="M3 0L6 6H0z" fill="#7c33ac"/></svg></button>
+  </div>
+
+  <!-- 5r. ChartIQ compare chart: a canvas, a key swatch with its series
+       colour inline, a probe -->
+  <div class="fds-card__card">
+    <div class="chartContainer" id="ciqContainer" style="position:relative;width:300px;height:80px">
+      <canvas id="ciqCanvas" width="300" height="80"></canvas>
+      <div class="stx_jump_today" id="ciqJump" style="position:absolute;right:4px;bottom:4px;width:20px;height:12px"></div>
+    </div>
+    <cq-comparison-item><cq-swatch id="ciqSwatch" style="background: rgb(58, 87, 22); opacity: 1;"></cq-swatch><span>MSCI EAFE Index</span></cq-comparison-item>
+    <div class="stx_grid" id="ciqProbe" style="display:none"></div>
+  </div>
+
+  <!-- 6. a selected chip -->
+  <div class="fds-card__card">
+    <!-- the real markup: a checked input, a label, and the text in a span of
+         its own. The label was readable long before the span inside it was. -->
+    <div class="fds-chip-root">
+      <input type="checkbox" class="fds-chip__checkbox" id="chipInput" checked hidden>
+      <label class="fds-chip__label" id="chip" for="chipInput">
+        <span class="fds-chip__icon" id="chipIcon">&#10003;</span>
+        <span class="fds-chip__text" id="chipText">Orders</span>
+      </label>
+    </div>
+  </div>
+
+
+  <!-- 7. the real design system.
+       Every value in here is the light-mode value read off the running site, so
+       the assertions can ask whether the dark counterpart is the one intended
+       rather than merely whether something changed. -->
+  <div class="fds-card__card" style="background-color:#FFFFFF;border:1px solid #E6E4E1;border-radius:24px">
+
+    <!-- radios: the input is invisible, the visible control is a sibling div -->
+    <div class="fds-radio-root">
+      <input type="radio" name="reinvest" class="fds-radio__radio" id="radioOff">
+      <label class="fds-radio__label" for="radioOff">
+        <div class="fds-radio__radio-wrap" id="radioWrapOff"
+             style="background-color:#FFFFFF;border:1px solid #757473;border-radius:50%;width:16px;height:16px"></div>
+        <span class="fds-radio__label-text">Reinvest in SPAXX</span>
+      </label>
+    </div>
+    <div class="fds-radio-root">
+      <input type="radio" name="reinvest" class="fds-radio__radio" id="radioOn" checked>
+      <label class="fds-radio__label" for="radioOn">
+        <div class="fds-radio__radio-wrap" id="radioWrapOn"
+             style="background-color:#368727;border:1px solid #0F5319;border-radius:50%;width:16px;height:16px"></div>
+        <span class="fds-radio__label-text">Pay to cash</span>
+      </label>
+    </div>
+
+    <!-- checkbox, checked: the tick is an icon element, not a pseudo -->
+    <div class="fds-checkbox-root">
+      <input type="checkbox" class="fds-checkbox__checkbox" id="cbOn" checked>
+      <label class="fds-checkbox__label" for="cbOn">
+        <div class="fds-checkbox__checkbox-wrap" id="cbWrapOn"
+             style="background-color:#368727;border:1px solid #0F5319;border-radius:4px;width:16px;height:16px">
+          <span class="fds-checkbox__checkbox-wrap-icon fds-checkbox__checkbox-wrap-icon--checked"
+                id="cbTick" style="color:#FFFFFF">&#10003;</span>
+        </div>
+        <span class="fds-checkbox__label-text">Include closed positions</span>
+      </label>
+    </div>
+
+    <!-- an icon-only button. Fidelity's border here is TRANSPARENT; drawing it
+         is what put a grey circle round "Ask the Fidelity Assistant". -->
+    <button class="fds-button-root fds-button--icon-only fds-button--with-icon" id="askBtn"
+            style="background-color:rgba(0,0,0,0);border:1px solid rgba(0,0,0,0);border-radius:14400px;width:41px;height:41px">
+      <span class="fds-button__icon" id="askIcon" style="color:#141414">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path id="askPath" stroke="#141414" stroke-width="1.5" d="M4 5h12M4 10h12M4 15h8"/>
+        </svg>
+      </span>
+    </button>
+
+    <!-- a filled button: Fidelity's green under a white label -->
+    <button class="fds-button-root fds-button--primary" id="primaryBtn"
+            style="background-color:#368727;color:#FFFFFF;border:1px solid rgba(0,0,0,0);border-radius:14400px">
+      <span class="fds-button__text" id="primaryLabel" style="color:#FFFFFF">Continue</span>
+    </button>
+
+    <!-- the positions experience's filled button, built on apex-kit: the label
+         is read through a token chain that ends in neutral-0, which is white,
+         and white is a surface everywhere else -->
+    <style>
+      :root { --reference-color-neutral-0: #fff; }
+      .apex-kit-fds-theme .pwefds-button-root { --apex-kit-button-text-color: var(--reference-color-neutral-0); color: var(--apex-kit-button-text-color); }
+      .apex-kit-fds-theme .pwefds-button-root.pvd-button--primary { background-color: #368727; }
+    </style>
+    <div class="apex-kit-fds-theme">
+      <button class="pwefds-button-root pvd-button--primary pvd-button--small" id="apexPrimary"><div id="apexPrimaryLabel">Apply</div></button>
+    </div>
+
+    <!-- a text field. The surface is on the ROOT; the inner input is bare. -->
+    <div class="fds-input-root fds-input--medium fds-input--text-left" id="inputRoot"
+         style="background-color:#FFFFFF;border:1px solid #757473;border-radius:8px">
+      <input class="fds-input__input" id="inputInner" placeholder="Search" style="background-color:rgba(0,0,0,0)">
+    </div>
+
+    <!-- a popover, with the shadow FDS actually writes -->
+    <div class="fds-popover__popover" id="popover"
+         style="background-color:#FFFFFF;border:1px solid #757473;border-radius:8px;box-shadow:color(srgb 0.458824 0.454902 0.45098 / 0.892) 0px 2px 8px">
+      <div class="fds-popover__heading" id="popHeading" style="color:#141414">Analysis</div>
+      <div class="fds-popover__slot-area" id="popBody" style="color:#DC1616">-10.0%</div>
+    </div>
+
+    <!-- a table -->
+    <table class="fds-table__container">
+      <thead class="fds-table__head"><tr>
+        <th class="fds-table__column-header-cell" id="thCell" style="background-color:#E6E4E1;border:1px solid #ABAAA8">Symbol</th>
+      </tr></thead>
+      <tbody class="fds-table__body" style="border:1px solid #ABAAA8">
+        <tr class="fds-table__row" id="tblRow" style="background-color:#FFFFFF">
+          <td class="fds-table__data-cell fds-table__data-cell--left" id="tdCell" style="border:1px solid #ABAAA8">FXAIX</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- a ring spinner. The arc IS the two transparent borders. -->
+    <div class="pvd-spinner__spinner" id="spinRoot">
+      <div class="pvd-spinner__visual">
+        <div class="pvd-spinner__mask pvd-spinner__mask--left">
+          <div class="pvd-spinner__mask-inner" id="spinLeft"
+               style="border:2.667px solid #757473;border-right-color:transparent;border-bottom-color:transparent;border-radius:50%;width:24px;height:24px"></div>
+        </div>
+        <div class="pvd-spinner__mask pvd-spinner__mask--right">
+          <div class="pvd-spinner__mask-inner" id="spinRight"
+               style="border:2.667px solid #757473;border-bottom-color:transparent;border-left-color:transparent;border-radius:50%;width:24px;height:24px"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- a spinner nobody named "pvd-spinner": a rotating ring whose arc is two
+         transparent borders, with its lit edge in Fidelity's near-black. Every
+         route has its own spinner, so the pass has to find this by what it does
+         rather than by what it is called. -->
+    <style>@keyframes someRouteSpin { to { transform: rotate(360deg) } }</style>
+    <div class="widget-loading-indicator" id="mysterySpinner"
+         style="animation: someRouteSpin 1s linear infinite; width:24px; height:24px;
+                border:3px solid #141414; border-right-color:transparent;
+                border-bottom-color:transparent; border-radius:50%"></div>
+    <svg id="svgSpinner" class="chart-loading" width="24" height="24" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9" fill="none" stroke="#141414" stroke-width="3" stroke-dasharray="40 20"/>
+    </svg>
+
+    <!-- The composite search control, with the geometry measured off the live
+         page by toggling fdm-off on the SAME elements:
+
+           div.fa-input-container--standalone  297x40  filled   radius 12px
+             div.pvd-5-search-input-root       276x33  transparent  radius 0
+               input.pvd-input__input          233x33  transparent  radius 12px
+
+         Three nested boxes, only the outer one painted. Fill the middle one and
+         the control turns square and narrow - which is what shipped, because the
+         middle one is the one whose class name says "search input root". -->
+    <div class="fa-input-container fa-input-container--standalone" id="cmpBox"
+         style="display:flex;align-items:center;width:297px;background-color:#FFFFFF;border:1px solid #E6E4E1;border-radius:12px;padding:3px 8px">
+      <div class="pvd-5-search-input-root pvd-5-search-input--small pvd-5-search-input--icon-left" id="cmpRoot"
+           style="display:flex;align-items:center;width:276px;background-color:rgba(0,0,0,0);border:0;border-radius:0">
+        <span class="pvd-5-search-input__icon" id="cmpIcon" style="width:20px;height:20px"></span>
+        <input class="pvd-input__input fa-input-box" id="cmpField" placeholder="How can we help?"
+               style="width:233px;background-color:rgba(0,0,0,0);border:0;border-radius:12px">
+      </div>
+    </div>
+
+    <!-- Fidelity's homepage CTA, with the two-rule cascade it really ships:
+         a legacy gradient in one rule and `background-image: none` in a more
+         specific one that kills it. An engine that re-emits only the
+         declarations it CHANGED drops the `none` and keeps the gradient, then
+         marks the gradient !important - and a style that lost in light mode
+         wins in dark. -->
+    <style>
+      .scl-button--primary a {
+        background-color: #1373B4;
+        background-image: linear-gradient(to bottom, #5CA2E6, #1373B4 50%);
+      }
+      body .scl-button--primary a {
+        background-image: none;
+        background-color: #368727;
+      }
+      .scl-button--primary-open-account a {
+        background-color: #E87700;
+        background-image: linear-gradient(to bottom, #FF9E41, #E87700 50%);
+      }
+    </style>
+    <!-- The style box's tooltip. `tooltip-container` is the bubble and each
+         `tooltip-content` is a ROW in it; light mode leaves the rows
+         transparent. The standalone one below has no bubble above it, so it
+         has to keep its surface - the two cases are why the rule has to test an
+         ancestor rather than a class name. -->
+    <div class="tooltip-container" id="tipBubble" style="background-color:#FFFFFF;border:1px solid #113DA1;padding:8px;width:300px">
+      <h2 id="tipTitle" style="color:#141414">Large growth</h2>
+      <div class="tooltip-content" id="tipRow" style="background-color:rgba(0,0,0,0);color:#141414">Your selected accounts 50%</div>
+      <div class="tooltip-content" style="background-color:rgba(0,0,0,0);color:#141414">Dow Jones U.S. Total Market Index 20%</div>
+    </div>
+    <div class="tooltip-content" id="tipStandalone" style="background-color:#FFFFFF;color:#141414;padding:8px;width:200px">a tooltip that IS its content</div>
+
+    <!-- The account rail, as Fidelity structures it: a white nav (the card),
+         a group wrapper, and account rows that carry their own hover tints.
+         Fidelity animates every property on the nav. -->
+    <nav class="acct-selector__container acct-selector__container--expanded" id="acctRail"
+         style="background-color:#FFFFFF;width:300px;padding:12px;transition:all .2s">
+      <div class="acct-selector-content">
+        <div class="acct-selector__group-wrapper">
+          <div class="acct-selector__group">
+            <div class="acct-selector__acct-list">
+              <div class="acct-selector__acct-wrapper" id="acctRow" style="padding:8px"><a class="acct-selector-link" href="#">Individual - TOD</a></div>
+              <div class="acct-selector__acct-wrapper" style="padding:8px"><a class="acct-selector-link" href="#">Roth IRA</a></div>
+            </div>
+          </div>
+        </div>
+        <div id="acctBlank" style="height:120px"></div>
+      </div>
+    </nav>
+
+    <!-- A position's Purchase history drawer: a pvd table whose cells carry
+         gain and loss classes. `[class*="pvd-tab"]` (a tab rule) is a prefix of
+         pvd-table and painted every one of these cells tab grey. -->
+    <style>
+      .positions-web-experience .pvd-table__data-cell { color: #141414; }
+      .positions-web-experience .posweb-cell-gain { color: #0d6f3f; }
+      .positions-web-experience .posweb-cell-loss { color: #b41212; }
+    </style>
+    <div class="positions-web-experience"><div class="posweb-drawer-container">
+      <table class="pvd-table__table posweb-purchase-history"><tbody class="pvd-table__body"><tr class="pvd-table__row posweb-lots-table-row">
+        <td class="pvd-table__data-cell pvd-table__data-cell--right posweb-cell-gain" id="lotGain">+$5.00</td>
+        <td class="pvd-table__data-cell pvd-table__data-cell--right posweb-cell-loss" id="lotLoss">-$1.00</td>
+        <td class="pvd-table__data-cell pvd-table__data-cell--right" id="lotPlain">$300.00</td>
+      </tr></tbody></table>
+    </div></div>
+
+    <!-- CSS nesting, as AG Grid ships it. A nested rule's selectorText is
+         relative ("&:focus-visible", "& .cell") and is meaningless bare: emitted
+         at the top level it matched EVERY focused element on the page. -->
+    <style>
+      .nestHost { color: #141414; padding: 4px;
+        & .nestChild { background-color: #FFFFFF; padding: 4px; }
+        &:focus-visible { box-shadow: 0 0 0 2px #368727; }
+      }
+    </style>
+    <div class="nestHost" id="nestHost"><div class="nestChild" id="nestIn">inside</div></div>
+    <div class="nestChild" id="nestOut" style="padding:4px">outside</div>
+
+    <!-- The Documents page. Its side nav spaces every item with a 1.5rem WHITE
+         border-left (invisible on the white nav); its table root carries a
+         --disable-column-dividers modifier (a name with "divider" in it that
+         is not a line); and its row lines come in two greys, #abaaa8 on the
+         data cells and #cccccc on the row-header cells. -->
+    <style>
+      #docNav { background-color: #FFFFFF; border: 1px solid #E6E4E1; border-radius: 16px; padding: 24px 0; width: 260px; }
+      #docNav a.section { display: block; border-left: 1.5rem solid #FFFFFF; padding: 8px 12px; color: #141414; text-decoration: none; }
+      #docTableRoot { background-color: var(--apex-kit-table-background-color); }
+      #docTableRoot th { background-color: #E6E4E1; padding: 8px; text-align: left; }
+      #docTableRoot th:first-child { border-top-left-radius: 12px; }
+      #docTableRoot td, #docTableRoot tbody th { background-color: #FFFFFF; padding: 8px; border-top: 1px solid #ABAAA8; }
+      #docTableRoot td.pvd-table__row-header-cell { border-top-color: #CCCCCC; }
+    </style>
+    <nav class="main" id="docNav">
+      <a class="section selected" id="docNavItem" href="#">Statements</a>
+      <a class="section" href="#">Tax forms</a>
+    </nav>
+    <documents-new-documents-table>
+    <div class="pvd-table-root pvd-table--disable-column-dividers pvd-table--large" id="docTableRoot">
+      <div class="pvd-table__container">
+        <table class="pvd-table__table" style="border-collapse: separate; border-spacing: 0; width: 520px">
+          <thead><tr><th>Description</th><th>Account</th><th style="border-top-right-radius: 12px">Date</th></tr></thead>
+          <tbody>
+            <tr><td class="pvd-table__data-cell" id="docCellData">Jan 2026 Statement</td><td class="pvd-table__row-header-cell" id="docCellHead">ROTH IRA</td><td class="pvd-table__data-cell">Jan-31-2026</td></tr>
+            <tr><th class="pvd-table__row-header-cell" id="docLastFirst" style="font-weight:400;text-align:left">Dec 2025 Statement</th><td class="pvd-table__row-header-cell">Multiple Accounts</td><td class="pvd-table__data-cell" id="docLastLast" style="border-bottom-right-radius: 12px">Dec-31-2025</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    </documents-new-documents-table>
+
+    <!-- The Positions grid, as the dashboard nests it: a white tile holding an
+         AG Grid whose header, account rows and traded-today row carry the
+         values measured off the live page (#fff, #fff, #fffae5, lines #ccc).
+         Fidelity's app draws this list on the LOW surface, so the tile is the
+         thing under test, not just the rows. -->
+    <style>
+      #gridTile .ag-row { display: flex; border-bottom: 1px solid #CCCCCC; }
+      #gridTile .ag-cell { flex: 1; padding: 6px 8px; border-right: 1px solid #CCCCCC; }
+      #gridTile .ag-header { background-color: #FFFFFF; border-bottom: 1px solid #CCCCCC; display: flex; }
+      #gridTile .posweb-row-account { background-color: #FFFFFF; }
+      #gridTile .posweb-row-intraday { background-color: #FFFAE5; }
+      #gridTile .posweb-row-spacer { background-color: #FFFFFF; border-bottom-color: #929292; }
+      #gridTile .ag-row-hover { background-color: #F5F3F0; }
+    </style>
+    <div class="pvd-tile__tile" id="gridTile" style="background-color:#FFFFFF;border:1px solid #E6E4E1;border-radius:8px;width:520px;padding:12px">
+      <!-- the toolbar's kebab menu: a <pwe-popover> that draws its own rounded
+           bubble and arrow in its root, opened upward past the tile's top -->
+      <div class="posweb-grid_top-kebab-container" style="position:relative;height:0">
+        <pwe-popover class="posweb-grid_top-kebab_popover" id="kebabHost" style="position:absolute;right:40px;top:-60px;display:block;width:117px">
+          <div class="popover-pvd posweb-grid_top-kebab_popover_content" id="kebabContent">
+            <ul class="posweb-kebab-menu" id="kebabList" role="menu" style="margin:0;padding:0;list-style:none"><li class="posweb-kebabmenu"><button class="posweb-kebabmenu_item" id="kebabItem">Print</button></li></ul>
+          </div>
+        </pwe-popover>
+      </div>
+      <script>
+        (() => {
+          const host = document.getElementById('kebabHost');
+          const sr = host.attachShadow({ mode: 'open' });
+          sr.innerHTML = '<style>:host{--popover-background-color:#fff;--popover-border-color:#ccc}' +
+            '.popover-pvd{display:block;position:relative;background-color:var(--popover-background-color);border:1px solid var(--popover-border-color);border-radius:8px;padding:16px 0}' +
+            '.popover-pvd .arrow{position:absolute;top:20px;left:100%;border-width:10px;border-style:solid}' +
+            '.popover-pvd.left .arrow{border-color:transparent transparent transparent #fff}</style>' +
+            '<div class="popover-pvd left" id="kebabBubble"><div class="popover-content"><slot></slot></div><div class="arrow"></div></div>';
+        })();
+      </script>
+      <div class="posweb-grid-layout ag-theme-material">
+        <div class="ag-root-wrapper ag-layout-auto-height" id="gridRoot" style="background-color:#FFFFFF">
+          <div class="ag-header" id="gridHead"><span class="ag-header-cell" id="gridHeadCell" style="color:#000000">Symbol</span><span class="ag-header-cell">Last price</span></div>
+          <div class="ag-row posweb-row-account" id="gridAcct"><div class="ag-cell" style="color:#000000">Individual - TOD</div><div class="ag-cell"></div></div>
+          <div class="ag-row posweb-row-position" id="gridPos"><div class="ag-cell" id="gridPosCell" style="color:#000000">NVDA</div><div class="ag-cell" style="color:#0d6f3f">+$3.00</div></div>
+          <div class="ag-row posweb-row-position posweb-row-intraday" id="gridToday"><div class="ag-cell" style="color:#000000">VOO</div><div class="ag-cell" id="gridTodayGain" style="color:#0d6f3f">+$2.00</div><div class="ag-cell" id="gridTodayLoss" style="color:#b41212">-$1.00</div></div>
+          <div class="ag-row posweb-row-position" id="gridPos2"><div class="ag-cell" style="color:#000000">AAPL</div><div class="ag-cell"></div></div>
+          <div class="ag-row posweb-row-spacer" id="gridSpacer"><div class="ag-cell"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- The signed-out marketing masthead: a Fidelity-green utility bar with a
+         WHITE wordmark on it, a primary nav whose level-2 items carry a lock
+         drawn into ::after as an SVG background, and the hero's Log In button
+         as an unclassed <a> inside a scl-button wrapper. -->
+    <style>
+      #outBar { background-color: #368727; height: 48px; display: flex; align-items: center; padding: 0 16px; }
+      #lockItem::after { content: ""; display: inline-block; width: 36px; height: 36px; vertical-align: middle;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M6 10V8a6 6 0 1 1 12 0v2h1a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h1zm2 0h8V8a4 4 0 1 0-8 0v2z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat; background-size: 24px; background-position: center; }
+      #navL1 span::after { content: ""; display: block; height: 3px; background-color: #121316; }
+    </style>
+    <style>
+      #outBar ul { list-style: none; display: flex; gap: 12px; margin: 0 0 0 auto; padding: 0; }
+      #outBar li > a { display: inline-block; padding: 6px 14px; border-radius: 999px; text-decoration: none; }
+      #outBar .button-secondary > a { background-color: #FFFFFF; border: 1px solid #FFFFFF; }
+      #outBar .button-secondary > a span { color: #141414; }
+      #outBar .button-secondary > a:hover { background-color: #E6E4E1; border-color: #E6E4E1; }
+      #outBar .button-primary > a { background-color: #368727; border: 1px solid rgba(255,255,255,.64); }
+      #outBar .button-primary > a span { color: #FFFFFF; }
+      #outBar .button-primary > a:hover { background-color: #1E6F1D; }
+    </style>
+    <div class="nav-utility" id="outBar">
+      <a class="logo pre-login-only" href="#" aria-label="Fidelity"><svg id="outLogo" width="120" height="28" viewBox="0 0 120 28"><path id="outLogoPath" fill="#FFFFFE" d="M4 4h112v20H4z"/></svg></a>
+      <ul>
+        <li class="pre-login-only web-only button-secondary"><a href="#" id="barOpen"><span id="barOpenLabel">Open an account</span></a></li>
+        <li class="pre-login-only web-only button-primary"><a href="#" id="barLogin"><span id="barLoginLabel">Log in</span></a></li>
+      </ul>
+    </div>
+    <nav class="nav-primary" id="outNav">
+      <a id="navL1" href="#"><span>Accounts &amp; Trade</span></a>
+      <ul class="nav-primary-level2"><li><a class="locked pre-login-level2" id="lockItem" href="#">Portfolio</a></li></ul>
+    </nav>
+    <div class="scl-hero-container scl-hero-logged-out">
+      <div class="scl-button-component scl-button--primary"><a id="heroLogin" href="#" style="display:inline-block;padding:8px 20px;background-color:#368727;color:#FFFFFF">Log In</a></div>
+      <div class="scl-button-component scl-button--secondary"><a id="heroOpen" href="#" style="display:inline-block;padding:8px 20px;background-color:#FFFFFF;color:#1D3986;border:1px solid #525150">Open an Account</a></div>
+      <p><a id="heroLink" href="#" style="color:#1D3986">Explore Active ETFs</a></p>
+    </div>
+
+    <!-- a link whose class contains a skeleton synonym: the login page's
+         disclaimer link is `pi-disclaimer__ghostlink`, a ghost-BUTTON style,
+         and it has text that must stay readable -->
+    <p><a class="pvd-link__link pi-disclaimer__ghostlink" id="ghostLink" href="#" style="color:#1D3986">National Financial Services LLC Statement</a></p>
+    <span class="ghost-line" id="ghostBar" style="display:block;width:200px;height:12px;background:#E8E8E8"></span>
+
+    <!-- a brand-green marketing band: a whole section painted #368727 with
+         white ink, which is a surface and not a button -->
+    <div class="scl-flexible-images-with-column scl-green-background" id="greenBand" style="background-color:#368727;padding:24px;width:600px">
+      <h3 id="greenBandTitle" style="color:#FFFFFF">Customer service and security</h3>
+      <p id="greenBandText" style="color:#FFFFFF">Get in touch with us 24/7.</p>
+    </div>
+
+    <!-- and the wrapper they really sit in. The class matters: it is what a
+         rule written for nav dropdowns matched on, turning both CTAs into menu
+         items whose underline follows their text. Each border is set to the
+         button's own colour, the way the live page has it, so a border that
+         stops matching is a border that became visible. -->
+    <div class="login-widget-homepage--container homepage-logged-decisiontree-post-login">
+      <div class="scl-button-component scl-button--primary scl-button--primary-open-account">
+        <a id="sclOpen" href="#" style="display:inline-block;padding:8px 20px;border:1px solid #E87700;border-radius:32px;color:#FFFFFF">Open an Account</a>
+      </div>
+      <div class="scl-button-component scl-button--primary">
+        <a id="sclLogout" href="#" style="display:inline-block;padding:8px 20px;border:1px solid #368727;border-radius:32px;color:#FFFFFF">Log Out</a>
+      </div>
+      <!-- a real menu item in the same container, with a bottom border of its
+           own: the engine's colour map keeps it a visible line -->
+      <a id="postLoginItem" href="#" style="border-bottom:1px solid #141414;color:#0D5FA8">Account Positions</a>
+    </div>
+
+    <!-- The signed-in header's Profile menu, as the live page styles it: each
+         item wears a 2px transparent border that only :focus/:active colours
+         in, and a hover is marked by a 1px ::after bar under the label. A rule
+         that named the hovered border currentColor drew a second, heavier line
+         under the bar that light mode never shows. -->
+    <style>
+      #utilNav .nav-utility-dropdown-container { display: inline-block; background-color: #FFFFFF; border: 0.0625rem solid #757473; box-shadow: rgba(20,20,20,.06) 0 2px 4px -2px; }
+      #utilNav .nav-utility-dropdown { list-style: none; margin: 0; padding: 8px 0; width: 140px; }
+      #utilNav .nav-utility-dropdown li a { display: block; position: relative; padding: 6px 12px; border: 0.125rem solid rgba(0,0,0,0); border-radius: 0.25rem; color: #141414; text-decoration: none; }
+      #utilNav .nav-utility-dropdown li a:active, #utilNav .nav-utility-dropdown li a:focus { border-color: #141414; outline: 0.125rem solid #141414; }
+      #utilNav .nav-utility-dropdown li a span { position: relative; display: inline-block; }
+      #utilNav .nav-utility-dropdown li a:hover span::after { content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 1px; background-color: #141414; }
+    </style>
+    <nav class="header-navigation post-login" id="utilNav">
+      <ul class="nav-utility-links arrow-links" style="list-style:none;margin:0;padding:0">
+        <li class="post-login-only utility-dropdown">
+          <div class="nav-utility-dropdown-container">
+            <ul class="nav-utility-dropdown">
+              <li><a id="utilProfile" href="#"><span id="utilProfileLabel">Profile</span></a></li>
+              <li><a id="utilSecurity" href="#"><span>Security</span></a></li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- a filled brand button whose border is the SAME green as its fill, the
+         way the marketing site draws it. In light mode the border is invisible;
+         split across two greens it becomes a bright ring the button never had. -->
+    <a id="brandBtn" href="#"
+       style="display:inline-block;background-color:#368727;color:#FFFFFF;border:1px solid #368727;border-radius:32px;padding:8px 20px">Log Out</a>
+
+    <!-- the Fidelity Assistant control: a field and the shell around it, both
+         white in light mode so they read as one box, plus the icon button that
+         really does carry a ring. -->
+    <div class="fa-input-container" id="faShell" style="background-color:#FFFFFF;border:1px solid #E6E4E1;border-radius:12px;padding:6px">
+      <div class="pvd-5-search-input-root pvd-5-search-input--small">
+        <input class="pvd-input__input fa-input-box" id="faField" placeholder="How can we help?"
+               style="background-color:#FFFFFF;border:1px solid #757473;border-radius:12px">
+      </div>
+      <button class="pvd-5-search-button-root pvd-5-search-button--icon-only" id="faBtn"
+              style="background-color:rgba(0,0,0,0);border:1px solid #757473;border-radius:50%;width:40px;height:40px"></button>
+    </div>
+
+    <!-- the customer service page's "Ask the Fidelity Assistant" field: an
+         fds- root (transparent, square, 4px wider than the field) around a pvd-
+         input that carries the surface with 8px corners, and a send arrow drawn
+         as a background picture that the page swaps by class once the field
+         has text: a pale circle, then a filled one. -->
+    <style>
+      #csvaRoot { display: flex; align-items: center; width: 400px; }
+      #csvaRoot .pvd-input__input { flex: 1 1 auto; height: 40px; padding: 0 40px 0 12px; background-color: #FFFFFF; border: 1px solid #757473; border-radius: 8px; color: #141414; }
+      #csvaRoot .pvd-input__icon--right { width: 24px; height: 24px; margin-left: -32px; }
+      .cs-submit-button { background-color: transparent; border: 0; padding: 0; width: 24px; height: 24px; color: #757473; }
+      .cs-submit { display: inline-block; width: 24px; height: 24px; background-repeat: no-repeat; background-size: 24px;
+        background-image: url("data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAgMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBvcGFjaXR5PSIwLjI1IiBjeD0iMTAiIGN5PSIxMCIgcj0iMTAiIGZpbGw9IiMwRTY3QTkiLz48cGF0aCBpZD0icmVzdEFycm93IiBkPSJNMTAgNWwtNCA0aDN2NmgyVjloM3oiIGZpbGw9IiMwRTY3QTkiLz48L3N2Zz4="); }
+      .cs-submit.active {
+        background-image: url("data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAgMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMTAiIGN5PSIxMCIgcj0iMTAiIGZpbGw9IiMwRTY3QTkiLz48cGF0aCBpZD0iYWN0aXZlQXJyb3ciIGQ9Ik0xMCA1bC00IDRoM3Y2aDJWOWgzeiIgZmlsbD0id2hpdGUiLz48L3N2Zz4="); }
+    </style>
+    <div class="fds-input-root pvd-input--icon-right pvd-input--medium" id="csvaRoot">
+      <input class="pvd-input__input" id="csvaField" placeholder="Questions? Ask the Fidelity Assistant.">
+      <span class="pvd-input__icon pvd-input__icon--right"><button class="cs-submit-button" id="csvaSend" disabled><span class="cs-submit" id="csvaArrow"></span></button></span>
+    </div>
+
+    <!-- the nav's hover indicator: a 3px bar drawn as a pseudo-element's
+         background, in Fidelity's near-black. A background-colour mapper has to
+         invert it, which turns it into the page colour - a black underline on a
+         dark header. -->
+    <style>
+      .nav-primary-level1-li a span { position: relative; display: inline-block; padding-bottom: 6px }
+      .nav-primary-level1-li a span::after {
+        content: ""; position: absolute; left: 0; bottom: 0;
+        width: 100px; height: 3px; background-color: #141414;
+      }
+    </style>
+    <ul class="nav-primary-level1">
+      <li class="nav-primary-level1-li level2-popup">
+        <a class="nav-primary-button post-login-level1" id="navItem" href="#"><span id="navLabel">Planning</span></a>
+      </li>
+    </ul>
+
+    <!-- a pvd radio, which is a different namespace from the fds one above and
+         really does exist - on the Performance route's allocation card. Its
+         checked indicator is a small empty div filled with the brand green,
+         which is the exact shape the placeholder pass mistakes for a skeleton. -->
+    <div class="apex-kit-web-radio-root pvd-radio--medium">
+      <input type="radio" name="units" class="pvd-radio__radio" id="pvdOn" checked>
+      <label class="pvd-radio__label" for="pvdOn">
+        <div class="pvd-radio__radio-wrap" id="pvdWrapOn"
+             style="background-color:#368727;border:1px solid #0F5319;border-radius:50%;width:16px;height:16px"></div>
+        <div class="pvd-radio__label-text">Percentages</div>
+      </label>
+    </div>
+    <div class="apex-kit-web-radio-root pvd-radio--medium">
+      <input type="radio" name="units" class="pvd-radio__radio" id="pvdOff">
+      <label class="pvd-radio__label" for="pvdOff">
+        <div class="pvd-radio__radio-wrap" id="pvdWrapOff"
+             style="background-color:#FFFFFF;border:1px solid #757473;border-radius:50%;width:16px;height:16px"></div>
+        <div class="pvd-radio__label-text">Dollars</div>
+      </label>
+    </div>
+
+    <!-- Fidelity's ACTUAL spinner, with its real class names and keyframes.
+         `loading-indicator` is the spinner; `va-loading-indicator__shimmer` is
+         the skeleton. The two differ only by a suffix, and treating the first
+         as the second gives the spinner a surface and a shimmer - a grey block
+         pulsing and turning where a spinner should be. -->
+    <style>
+      @keyframes container-rotate { to { transform: rotate(360deg) } }
+      @keyframes fill-unfill-rotate { to { transform: rotate(360deg) } }
+      @keyframes gradientShimmer { to { background-position: 200% 0 } }
+    </style>
+    <div class="loading-indicator__container" id="fdsSpinContainer">
+      <div class="loading-indicator loading-indicator--M" id="fdsSpin"
+           style="animation: container-rotate 1.6s linear infinite; width:28px; height:28px">
+        <div class="loading-indicator__orb" id="fdsSpinOrb"
+             style="animation: fill-unfill-rotate 4.8s linear infinite; width:28px; height:28px;
+                    border:3px solid #368727; border-right-color:transparent;
+                    border-bottom-color:transparent; border-radius:50%"></div>
+      </div>
+    </div>
+    <!-- and the skeleton that really does want the shimmer treatment -->
+    <div class="va-loading-indicator__shimmer" id="vaShimmer"
+         style="animation: gradientShimmer 2.5s ease-out infinite;
+                background: linear-gradient(26.02deg, rgb(217,216,213) 0%, rgb(245,243,240) 50%, rgb(217,216,213) 100%);
+                width:160px; height:16px"></div>
+
+    <!-- a named skeleton, which CSS must catch before any pass runs -->
+    <div class="perf-card__skeleton-bar" id="namedSkeleton"
+         style="background-image:linear-gradient(90deg,#EDEDED 0%,#F7F7F7 50%,#EDEDED 100%);height:14px;width:70%"></div>
+
+    <!-- the two legend shapes that were in the mapper's list but not the
+         exclusion, so both passes ran on them and the key drifted -->
+    <ul class="chart-legend" style="list-style:none;padding:0">
+      <li class="legend-item"><span class="legend-color" id="swItemColor" style="background-color:#143960"></span>Domestic</li>
+    </ul>
+    <ul class="asset-legend" style="list-style:none;padding:0">
+      <li><span class="legend-symbol-box" id="swSymbolBox" style="background-color:#568200"></span>Bonds</li>
+    </ul>
+  </div>
+
+</div>
+<!-- the Fidelity Rewards card site's top bar: Fidelity green, a white
+     wordmark on it (a transparent PNG; a white block stands in for it) -->
+<div class="top-menu-bar__content-wrapper" id="rewardsBar" style="padding:20px"><div class="TopMenuBarContainer"><div class="logo"><span id="rewardsMark" style="display:inline-block;width:120px;height:28px;background:#FFFFFF"></span></div></div></div>
+<!-- the retirement-score teaser: a 200px gauge drawn for a white page, five
+     coloured segments with white separators and "??" in #333 in the middle -->
+<div class="fds-card__card" id="gaugeCard"><img id="retireGauge" src="retire_gauge.svg" width="200" height="200" alt=""></div>
+<!-- fund research's simple footer, on the page itself -->
+<div class="pg-simple-footer" id="pgFooter"><div class="pg-simple-footer--logo" id="pgLogo"></div></div>
+</body>
+</html>

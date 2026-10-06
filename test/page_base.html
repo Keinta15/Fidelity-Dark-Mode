@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<base href="/">
+<title>A page with a base url</title>
+<!-- The portfolio app, reduced to what hid the account rail's collapse
+     button. The document declares <base href="/">, and a component's inline
+     <style> names the icon by a path relative to that base. The test opens
+     this page from a deep path, the way the app lives at
+     /ftgw/digital/portfolio/summary, so a url resolved against the page's
+     own address instead of the base points somewhere that does not exist.
+     The icon is a stand-in for the rail's collapse-panel icon, a #242424 drawing. -->
+<style>
+  body { background-color: #FFFFFF; margin: 0; font: 14px Arial, sans-serif; color: #333333; }
+  .acct-selector { background: #FFFFFF; width: 320px; padding: 16px; }
+  .acct-selector__header { display: flex; align-items: center; gap: 8px; }
+  .acct-selector__expand-collapse-button { width: 40px; height: 40px; border: 0; background: transparent; padding: 8px; }
+  .acct-selector__expand-collapse-button-icon[_ngcontent-ng-c1] { width: 24px; height: 24px; background-image: url("collapse_panel.svg"); background-repeat: no-repeat; }
+</style>
+</head>
+<body>
+  <div class="acct-selector">
+    <div class="acct-selector__header">
+      <h2>Accounts</h2>
+      <button class="acct-selector__expand-collapse-button" id="pbBtn" aria-label="account selector"><div _ngcontent-ng-c1 class="acct-selector__expand-collapse-button-icon" id="pbIcon"></div></button>
+    </div>
+  </div>
+</body>
+</html>

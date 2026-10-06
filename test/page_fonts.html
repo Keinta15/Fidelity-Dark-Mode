@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>fonts that fail to decode</title>
+<!-- Three widgets each bring the same @font-face, and the file is not a font
+     (research2relay serves a JavaScript stub under a .woff2 name). The browser
+     logs the failure once per copy; nothing the theme does should make it
+     fetch and fail again. -->
+<style>
+  body { margin: 0; padding: 16px; background: #ffffff; color: #141414; font-family: Arial, sans-serif; }
+  .card { background: #ffffff; border: 1px solid #e6e4e1; padding: 8px; margin-bottom: 8px; }
+  .key { display: inline-block; width: 12px; height: 12px; background-color: #053161; }
+</style>
+<style>@font-face { font-family: 'Broken Sans'; src: url("broken.woff2") format("woff2"); } .w1 { font-family: 'Broken Sans', Arial, sans-serif; }</style>
+<style>@font-face { font-family: 'Broken Sans'; src: url("broken.woff2") format("woff2"); } .w2 { font-family: 'Broken Sans', Arial, sans-serif; }</style>
+<style>@font-face { font-family: 'Broken Sans'; src: url("broken.woff2") format("woff2"); } .w3 { font-family: 'Broken Sans', Arial, sans-serif; }</style>
+</head>
+<body>
+  <div class="card w1" id="w1">Holdings <span class="key"></span> Domestic stock</div>
+  <div class="card w2" id="w2">Sector exposure</div>
+  <div class="card w3" id="w3">Key statistics</div>
+</body>
+</html>

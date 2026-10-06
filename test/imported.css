@@ -1,0 +1,2 @@
+/* reached only through @import from the fixture, never linked directly */
+.imported-box { background-color: #ffffff; color: #1d252c; padding: 4px; }

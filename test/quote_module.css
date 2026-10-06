@@ -1,0 +1,5 @@
+/* A research module's own stylesheet, served from another origin (the quote
+   pages load these from Fidelity's research provider). */
+.MOD.appContent { background: #fff; color: #000; }
+.MOD .profile-item { padding-left: 20px; background: #fff url(sort_ascending.svg) no-repeat 0 50%; }
+.MOD a { color: #368727; }

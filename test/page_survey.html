@@ -1,0 +1,67 @@
+<!doctype html>
+<!-- The Feedback survey: what the Feedback tab opens, served by Qualtrics from
+     Fidelity's own account (fmrpi.az1.qualtrics.com) into a frame in the
+     dialog. Its skin's colours, copied from the live stylesheet: a white page,
+     answer tiles shaded with 6% black, a chosen answer and the Submit button in
+     #6F9824 under white, text fields with a 2px #D2D2D6 border, and links in
+     #4B86EE. The banner is a picture: white lettering on a flat #448800. The
+     dialog's close button, which lives in Fidelity's page, is here too. -->
+<html class="JFEScope">
+<head>
+<meta charset="utf-8">
+<title>survey</title>
+<style>
+  body { margin: 0; background: #fff; font: 15px Arial, sans-serif; }
+  .Skin { color: rgb(67, 70, 77); width: 640px; margin: 0 auto; }
+  #Header img { display: block; width: 533px; height: 60px; }
+  .Skin label.MultipleAnswer, .Skin label.SingleAnswer {
+    cursor: pointer; background: rgba(0, 0, 0, 0.06); border: medium none currentcolor;
+    display: block; padding: 18px 22px; margin: 8px 0;
+  }
+  .Skin label.MultipleAnswer:hover, .Skin label.SingleAnswer:hover {
+    background: rgba(0, 0, 0, 0.11); border-color: rgb(154, 208, 57);
+  }
+  .Skin label.MultipleAnswer.q-checked, .Skin label.SingleAnswer.q-checked {
+    background: rgb(111, 152, 36); border-color: rgb(51, 70, 16); color: rgb(255, 255, 255);
+  }
+  .Skin .TE textarea, .Skin input.TextEntryBox { border: 2px solid rgb(210, 210, 214); border-radius: 2px; }
+  .Skin .TE textarea:focus, .Skin input.TextEntryBox:focus { border-color: rgb(111, 152, 36); outline: 0; }
+  .Skin #Buttons #NextButton {
+    border: medium none currentcolor; color: rgb(255, 255, 255); border-radius: 4px;
+    background: rgb(111, 152, 36); width: 100%; padding: 8px;
+  }
+  .Skin #Buttons #NextButton:hover { background: rgb(96, 131, 31); border-color: rgb(111, 152, 36); }
+  .Skin #Footer { color: rgb(67, 70, 77); }
+  .Skin a { color: rgb(75, 134, 238); }
+  .Separator { height: 2px; background: rgba(210, 210, 214, 0.3); margin: 16px 0; }
+  #closeRow { text-align: right; }
+  #closeRow button { background: rgba(255, 255, 255, 0.6); border: 0; width: 26px; height: 26px; }
+</style>
+</head>
+<body>
+  <div id="closeRow"><button class="QSIWebResponsiveDialog-Layout1-SI_0AsPpi6JZXIjgMZ_close-btn" aria-label="Close"><img id="closeX" src="wr-dialog-close-btn-black.png" alt="Close" style="height: 16px; width: 16px; margin-top: 1px;"></button></div>
+  <div id="Wrapper"><div class="Skin"><div id="SkinContent">
+    <div id="Header"><img id="surveyBand" src="survey_band.png" alt=""></div>
+    <div id="Questions">
+      <div class="QuestionText">What kind of feedback are you sharing?</div>
+      <label class="SingleAnswer" id="tileA">Reporting an issue</label>
+      <label class="SingleAnswer q-checked" id="tileChosen">Providing a suggestion</label>
+      <label class="SingleAnswer" id="tileB">Other</label>
+      <div class="Separator"></div>
+      <div class="QuestionText">What would you like to share about your experience on Fidelity.com?</div>
+      <div class="TE"><textarea id="surveyText" class="InputText"></textarea></div>
+    </div>
+    <div id="Buttons"><input type="button" id="NextButton" class="NextButton Button" value="Submit"></div>
+    <div id="Footer"><a href="#" id="legalLink">Legal Disclaimer</a> | 851745.4.2</div>
+    <!-- not a band: the same green and white with a red rule through it -->
+    <img id="notBand" src="survey_band_third_ink.png" alt="" style="display:block;width:533px;height:60px">
+  </div></div></div>
+  <script>
+    /* The real close glyph comes from siteintercept.qualtrics.com, another
+       origin, so the raster passes cannot read it and only the stylesheet can
+       help. Asked for under another host name, this copy is unreadable in the
+       same way, which is the case the stylesheet rule is for. */
+    document.getElementById('closeX').src = location.protocol + '//localhost:' + location.port + '/wr-dialog-close-btn-black.png';
+  </script>
+</body>
+</html>

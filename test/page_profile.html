@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Profile pages: loading dialog, wheel, tracker</title>
+<!-- Shapes from the Profile and Transfer pages, reduced:
+     - a dialog component whose shadow root draws a white box in a 2px black
+       frame (Providence's pvd-modal),
+     - a loading wheel whose shadow root draws its arc in currentColor borders
+       with two sides transparent (pvd-loading-spinner),
+     - the transfer tracker's completed step: a green ring holding a picture of
+       a green disc with a white tick,
+     - an inline outline colour beside ordinary inline colours. -->
+<style>
+  body { background-color: #FFFFFF; margin: 0; padding: 20px; font: 14px Arial, sans-serif; color: #333333; }
+  .apex3-graphical-progress-item-image-wrapper {
+    width: 64px; height: 64px; border-radius: 50%;
+    background-color: #568200; border: 2px solid #568200;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .apex3-graphical-progress-item-image { width: 60px; height: 60px; border-radius: 50%; }
+</style>
+</head>
+<body>
+  <test-dialog id="dlg"></test-dialog>
+  <test-wheel id="wheel"></test-wheel>
+  <div class="apex3-graphical-progress-item" status="complete">
+    <div class="apex3-graphical-progress-item-image-wrapper">
+      <img class="apex3-graphical-progress-item-image" id="tick" src="submitted_icon.svg" alt="">
+    </div>
+    <span>Request submitted</span>
+  </div>
+  <div id="outlined" style="outline: 2px solid #4a90e2; color: #141414">Focused</div>
+  <div id="afterOutline" style="background-color: #ffffff; color: #141414">Next to it</div>
+
+  <!-- The Profile landing's page-loading box (pvd4-spinner, scoped styles in
+       the page): a white card with a 2px black frame and a shadow, its colours
+       reached through a token chain, with the ring wheel in the middle. -->
+  <style>
+    :root { --color-white: #ffffff; --color-black: #000000; }
+    :root .pvd4-spinner-root.pvd-spinner--disable-background { --apex-kit-spinner-background-color: var(--color-white); --apex-kit-spinner-border-color: var(--color-black); --apex-kit-spinner-border-radius: .1875rem; --apex-kit-spinner-padding: 2rem; }
+    .pvd4-spinner-root.pvd-spinner--disable-background { background-color: var(--apex-kit-spinner-background-color); border: solid 2px var(--apex-kit-spinner-border-color); border-radius: var(--apex-kit-spinner-border-radius); padding: var(--apex-kit-spinner-padding); box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 200px; min-height: 200px; width: 226px; }
+    .pvd4-spinner-root .pvd-spinner__spinner { position: relative; width: 48px; height: 48px; }
+    .pvd4-spinner-root .pvd-spinner__visual { position: absolute; inset: 0; color: #368727; }
+    .pvd4-spinner-root .pvd-spinner__mask { position: absolute; width: 50%; height: 100%; overflow: hidden; }
+    .pvd4-spinner-root .pvd-spinner__mask-inner { width: 200%; height: 100%; border-radius: 50%; border-style: solid; border-width: 4px; border-bottom-color: transparent; }
+    .pvd4-spinner-root .pvd-spinner__mask.pvd-spinner__mask--left .pvd-spinner__mask-inner { border-right-color: transparent; }
+  </style>
+  <ent-ds-spinner><pvd4-spinner>
+    <div class="pvd4-spinner-root pvd-spinner--neutral pvd-spinner--medium pvd-spinner--disable-background" id="pageBox">
+      <div class="pvd-spinner__spinner"><div class="pvd-spinner__visual">
+        <div class="pvd-spinner__mask pvd-spinner__mask--left"><div class="pvd-spinner__mask-inner" id="pageArc"></div></div>
+      </div></div>
+    </div>
+  </pvd4-spinner></ent-ds-spinner>
+  <script>
+    customElements.define('test-dialog', class extends HTMLElement {
+      constructor() {
+        super();
+        const sr = this.attachShadow({ mode: 'open' });
+        sr.innerHTML = '<style>' +
+          '.layer-modal-container{width:240px;padding:24px;background-color:#fff;border-radius:.25em;border:2px solid #000}' +
+          '.layer-modal-container button.modal__close{border:none;background:transparent}' +
+          '</style><div class="layer-modal-container" role="dialog"><button class="modal__close">x</button><slot></slot></div>';
+      }
+    });
+    customElements.define('test-wheel', class extends HTMLElement {
+      constructor() {
+        super();
+        const sr = this.attachShadow({ mode: 'open' });
+        sr.innerHTML = '<style>' +
+          '.loading-spinner-pvd{display:block;position:relative;width:48px;height:48px}' +
+          '.loading-spinner-pvd .loading-spinner-layer{position:absolute;width:100%;height:100%;color:#568200}' +
+          '.loading-spinner-pvd .loading-spinner-mask{position:absolute;width:50%;height:100%;overflow:hidden}' +
+          '.loading-spinner-pvd .loading-spinner-mask .loading-spinner-mask-after{width:200%;height:100%;border-radius:50%;border-style:solid;border-width:4px;border-bottom-color:transparent !important}' +
+          '.loading-spinner-pvd .loading-spinner-mask.mask-left .loading-spinner-mask-after{border-right-color:transparent !important}' +
+          '</style><div class="loading-spinner-pvd"><div class="loading-spinner-layer">' +
+          '<div class="loading-spinner-mask mask-left"><div class="loading-spinner-mask-after"></div></div>' +
+          '</div></div>';
+      }
+    });
+  </script>
+</body>
+</html>

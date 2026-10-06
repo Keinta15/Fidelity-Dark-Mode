@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>A loading screen</title>
+<!-- The sign-in code step's loading screen, reduced to its shape: a white
+     overlay over the whole page, and in its middle a small white box holding
+     a spinning ring. In light mode the box cannot be seen. A second box, a
+     card that says something under its own spinner, is a card and stays. -->
+<style>
+  body { background-color: #FFFFFF; margin: 0; font: 14px Arial, sans-serif; color: #333333; }
+  .loading-overlay { position: fixed; inset: 0; background-color: #FFFFFF; display: flex; align-items: center; justify-content: center; gap: 40px; }
+  .loading-box { width: 120px; height: 120px; background-color: #FFFFFF; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
+  .loading-card { width: 220px; padding: 20px; background-color: #F2F2F2; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .ring-spinner { width: 48px; height: 48px; border-radius: 50%; border: 4px solid #368727; border-right-color: transparent; border-bottom-color: transparent; animation: fdmTestSpin 1s linear infinite; }
+  @keyframes fdmTestSpin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+  <div class="loading-overlay">
+    <div class="loading-box" id="spinBox"><div class="ring-spinner" role="progressbar" aria-label="Loading"></div></div>
+    <div class="loading-card" id="spinCard"><div class="ring-spinner" role="progressbar"></div><span>Verifying your code</span></div>
+  </div>
+</body>
+</html>

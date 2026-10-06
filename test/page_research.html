@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Research view-all fixture</title>
+<!-- A made-up research page with the structures that broke on the quote
+     "view all" route: canvas charts and their HTML keys, bars and a pointer
+     drawn as inline-coloured boxes, a striped table with a sorted column, a
+     card that always scrolls, and a chart delivered as a PNG. -->
+<style>
+  body { margin: 0; font: 14px/1.4 sans-serif; background: #ffffff; color: #000000; }
+  .card { background: #ffffff; width: 900px; padding: 16px; margin: 16px; }
+
+  /* canvas charts; the script below stands in for Chart.js */
+  .donut-box { width: 200px; height: 180px; }
+  .growth-box { width: 600px; height: 160px; }
+  .legend .tile { width: 12px; height: 12px; display: inline-block; margin-right: 8px; }
+  .holders .legend-icon { width: 10px; height: 10px; display: inline-block; }
+
+  /* exposure bars: the class paints grey, the inline colour wins */
+  .bar-chart-row { display: flex; align-items: center; padding: 11px 10px; }
+  .bar-chart-track { position: relative; height: 16px; width: 480px; background-color: #eeeeee; }
+  .bar-chart-fill { position: absolute; inset: 0; background-color: gray; transform-origin: left center; }
+
+  /* the percentile pointer on its scale */
+  .line-chart { position: relative; width: 136px; height: 10px; }
+  .line-chart .axis { position: absolute; top: 4px; left: 0; right: 0; height: 2px; background: #999999; }
+  .line-chart .diamond-indicator { position: absolute; top: 2px; width: 6px; height: 6px; transform: rotate(-45deg); }
+  /* the same grey on a box too tall to be a line */
+  .grey-plate { height: 12px; width: 136px; background-color: #999999; }
+
+  /* a striped table whose sorted column is underlined in the keyword green */
+  .table { border-collapse: separate; border-spacing: 0; width: 600px; border-bottom: 1px solid #acacac; }
+  .table thead { background: #ffffff; }
+  .table thead th { border-top: 1px solid #acacac; border-bottom: 2px solid rgba(0, 0, 0, 0); text-align: left; }
+  .active.th { border-bottom: 2px solid green; }
+  .active { border-bottom: 2px solid green !important; }
+  .table tbody tr.zebra-stripe:nth-child(2n+1) { background: rgb(242, 242, 242); }
+  .table-striped > tbody > tr:nth-of-type(odd) { background-color: #f9f9f9; }
+  .named-red { color: red; }
+
+  /* the style map: a pale steel cell for the historical box, a navy dot for the current one */
+  .styleMap .td { width: 42px; height: 42px; border: 1px solid #cccccc; text-align: center; }
+  .historical, .historicalIcon { background: #90abc8; }
+  .current, .currentIcon { background: #24486c; width: 16px; height: 16px; border-radius: 8px; display: inline-block; }
+  .historicalIcon { width: 16px; height: 16px; display: inline-block; }
+
+  /* a chart's key in a <legend>, coloured by class; a rating scale's 1px average marker */
+  .box { display: inline-block; width: 10px; height: 10px; }
+  .box.green { background: rgb(66, 121, 49); }
+  .box.red { background: rgb(231, 97, 9); }
+  .rating-scale { position: relative; width: 200px; height: 10px; background: #e6e6e6; }
+  .rating-scale .filler { height: 100%; width: 96%; background: #1dade2; }
+  .rating-scale .avg-marker { position: absolute; top: 0; width: 1px; height: 100%; background-color: #013b61; }
+
+  /* the Distributions chart's tooltip: a box outlined on three sides, a GIF
+     strip drawing the left edge and the pointer (made by the script below) */
+  .tip-host { position: relative; height: 140px; }
+  .modal-ab12cd34ef { position: absolute; top: 10px; left: 10px; border-right: 1px solid rgb(0, 0, 0); border-left: rgba(0, 0, 0, 0); padding: 0 0 0 24px; width: 226px; overflow: hidden; }
+  .leftArrow-ab12cd34ef { position: absolute; left: 0; top: 0; }
+  .chartTipText-ab12cd34ef { padding: 9px 10px 15px; border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); background-color: rgb(255, 255, 255); height: 90px; }
+
+  /* a card that keeps both scrollbars whether or not anything overflows */
+  .scroll-card { overflow: scroll; height: 120px; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <section class="wrapper" id="holdings">
+      <div class="donut-box"><canvas id="donut"></canvas></div>
+      <div class="legend"><table><tbody>
+        <tr><td><div class="tile" id="tileTop" style="background-color: rgb(5, 49, 97);"></div>Top 10</td></tr>
+        <tr><td><div class="tile" id="tileOther" style="background-color: rgb(245, 165, 40);"></div>Other</td></tr>
+      </tbody></table></div>
+    </section>
+    <!-- a canvas that is not a chart draws exactly as it always did -->
+    <canvas id="plainCanvas" width="40" height="40"></canvas>
+    <div class="growth-box"><canvas id="growth"></canvas></div>
+    <div id="lateHost"></div>
+  </div>
+
+  <div class="card holders">
+    <table class="table-striped"><tbody>
+      <tr id="holderOdd"><td><i class="legend-icon" id="iconNavy" style="background-color: rgb(4, 52, 100);"></i> Institutions</td></tr>
+      <tr id="holderEven"><td><i class="legend-icon" id="iconGreen" style="background-color: rgb(69, 137, 21);"></i> Other</td></tr>
+    </tbody></table>
+    <span id="statusDot" style="display: inline-block; width: 10px; height: 10px; background-color: #cccccc;"></span>
+    <span class="named-red" id="namedRed">Down 2.1%</span>
+  </div>
+
+  <div class="card">
+    <figure class="composition-bar-chart">
+      <div class="bar-chart-row"><div>Industrials</div>
+        <div class="bar-chart-track"><div class="bar-chart-fill" id="fillNavy" style="transform: scaleX(0.2051); background-color: rgb(8, 50, 96);"></div></div></div>
+      <div class="bar-chart-row"><div>Software</div>
+        <div class="bar-chart-track"><div class="bar-chart-fill" id="fillOrange" style="transform: scaleX(0.4); background-color: rgb(222, 94, 41);"></div></div></div>
+    </figure>
+    <!-- a second set of bars behind a tab, not shown when the page loads -->
+    <figure class="composition-bar-chart" id="geoPanel" style="display: none;">
+      <div class="bar-chart-row"><div>North America</div>
+        <div class="bar-chart-track"><div class="bar-chart-fill" id="fillHidden" style="transform: scaleX(0.9929); background-color: rgb(8, 50, 96);"></div></div></div>
+    </figure>
+    <figure class="line-chart-container"><div class="line-chart">
+      <div class="axis" id="axis"></div>
+      <div class="diamond-indicator" id="diamond" style="left: 81%; margin-left: -3px; background-color: rgb(0, 0, 0);"></div>
+    </div></figure>
+    <div class="grey-plate" id="greyPlate"></div>
+  </div>
+
+  <div class="card">
+    <table class="table borderBottom"><thead><tr>
+      <th class="th sort-th active" id="thActive">Date</th>
+      <th class="th sort-th" id="thPlain">Value</th>
+    </tr></thead><tbody>
+      <tr class="zebra-stripe" id="row1"><td>08/29/2025</td><td>$10,532</td></tr>
+      <tr class="zebra-stripe" id="row2"><td>07/31/2025</td><td>$10,271</td></tr>
+      <tr class="zebra-stripe" id="row3"><td>06/30/2025</td><td>$10,104</td></tr>
+    </tbody></table>
+  </div>
+
+  <div class="card">
+    <table class="styleMap"><tbody><tr>
+      <td class="td" id="cellPlain"></td>
+      <td class="td historical" id="cellHist"><span class="current" id="curDot"></span></td>
+    </tr></tbody></table>
+    <div><span class="currentIcon" id="curIcon"></span> Current</div>
+    <div><span class="historicalIcon" id="histIcon"></span> Historical</div>
+    <legend class="chartLegend"><ul>
+      <li><span class="box green" id="keyGreen"></span> dividends</li>
+      <li><span class="box red" id="keyRed"></span> long-term capital gains</li>
+    </ul></legend>
+    <div class="rating-scale"><div class="filler"></div><div class="avg-marker" id="avgMarker" style="left: 89.8%;"></div></div>
+  </div>
+
+  <div class="card tip-host">
+    <div class="modal-ab12cd34ef" id="tipModal">
+      <img class="leftArrow-ab12cd34ef" id="tipArrow" alt="">
+      <div class="chartTipText-ab12cd34ef" id="tipText">Distributions paid on Q4 2025</div>
+    </div>
+  </div>
+
+  <div class="card scroll-card" id="scrollCard">Nothing here overflows.</div>
+
+  <div class="card"><div class="chart-wrapper"><img id="distImg" alt="Distributions by quarter"></div></div>
+
+<script>
+  /* Chart.js in miniature: it marks the canvas with $chartjs, styles it,
+     draws (at once, or on the next frame when it animates), and draws again
+     whenever its box changes width. */
+  function makeChart(canvas, draw, animated) {
+    canvas.$chartjs = { initial: {} };
+    canvas.style.display = 'block';
+    canvas.style.boxSizing = 'border-box';
+    const box = canvas.parentNode, ctx = canvas.getContext('2d');
+    let drawn = -1;
+    canvas.renders = 0;
+    const render = () => {
+      const w = Math.round(box.getBoundingClientRect().width), h = Math.round(box.getBoundingClientRect().height);
+      canvas.width = w; canvas.height = h;
+      canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+      ctx.clearRect(0, 0, w, h);
+      draw(ctx, w, h);
+      drawn = w;
+      canvas.renders++;
+    };
+    new ResizeObserver(() => {
+      if (drawn !== -1 && Math.round(box.getBoundingClientRect().width) !== drawn) requestAnimationFrame(render);
+    }).observe(box);
+    if (animated) requestAnimationFrame(render); else render();
+  }
+  function donut(ctx, w, h) {
+    const cx = 100, cy = 90;
+    const slice = (a0, a1, colour) => {
+      ctx.beginPath(); ctx.arc(cx, cy, 80, a0, a1); ctx.arc(cx, cy, 45, a1, a0, true); ctx.closePath();
+      ctx.fillStyle = colour; ctx.fill();
+      ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2; ctx.stroke();
+    };
+    slice(-Math.PI / 2, 0, '#053161');
+    slice(0, Math.PI * 1.5, '#F5A528');
+  }
+  function growth(ctx, w, h) {
+    ctx.strokeStyle = 'rgba(0, 0, 0, 0.1)'; ctx.lineWidth = 1;
+    for (let y = 20; y < h; y += 40) { ctx.beginPath(); ctx.moveTo(40, y + 0.5); ctx.lineTo(w, y + 0.5); ctx.stroke(); }
+    /* a label, as a full block so a pixel inside it is all ink */
+    ctx.fillStyle = '#666666'; ctx.font = '40px monospace'; ctx.fillText('█', 2, 60);
+    ctx.strokeStyle = '#000000'; ctx.lineWidth = 6;
+    ctx.beginPath(); ctx.moveTo(40, 120); ctx.lineTo(w - 20, 120); ctx.stroke();
+    ctx.fillStyle = '#0F57C2'; ctx.fillRect(300, 130, 40, 20);
+  }
+  makeChart(document.getElementById('donut'), donut);
+  makeChart(document.getElementById('growth'), growth);
+  {
+    const ctx = document.getElementById('plainCanvas').getContext('2d');
+    ctx.fillStyle = '#053161'; ctx.fillRect(0, 0, 40, 40);
+  }
+  /* a chart built after the theme is running, as a route change builds one */
+  window.makeLateChart = (id, animated) => {
+    const box = document.createElement('div');
+    box.className = 'donut-box';
+    box.innerHTML = '<canvas id="' + id + '"></canvas>';
+    document.getElementById('lateHost').appendChild(box);
+    makeChart(box.firstChild, donut, animated);
+  };
+
+  /* The tooltip's left strip: clear, then a white pointer outlined in black,
+     and the box's black left edge down its right side. */
+  {
+    const cv = document.createElement('canvas');
+    cv.width = 25; cv.height = 120;
+    const c = cv.getContext('2d');
+    c.fillStyle = '#000000'; c.fillRect(24, 0, 1, 120);
+    c.beginPath(); c.moveTo(24, 30); c.lineTo(4, 45); c.lineTo(24, 60); c.closePath();
+    c.fillStyle = '#ffffff'; c.fill();
+    c.strokeStyle = '#000000'; c.lineWidth = 1; c.stroke();
+    document.getElementById('tipArrow').src = cv.toDataURL('image/png');
+  }
+
+  /* The Distributions chart: a PNG of green bars, a pale rule and black
+     labels on white paper. */
+  {
+    const cv = document.createElement('canvas');
+    cv.width = 300; cv.height = 100;
+    const c = cv.getContext('2d');
+    c.fillStyle = '#ffffff'; c.fillRect(0, 0, 300, 100);
+    c.fillStyle = '#ced5db'; c.fillRect(0, 70, 300, 1);
+    c.fillStyle = '#51823c'; c.fillRect(40, 20, 40, 50); c.fillRect(120, 40, 40, 30);
+    c.fillStyle = '#000000'; c.fillRect(200, 80, 30, 12);
+    document.getElementById('distImg').src = cv.toDataURL('image/png');
+  }
+</script>
+</body>
+</html>

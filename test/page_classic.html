@@ -1,0 +1,157 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>The classic Performance view</title>
+<!-- Portfolio > Performance with "New experience" switched off, reduced to
+     what went wrong in dark mode: its "?" help marks, the legacy uxd tooltip
+     they open, the balance table's frozen column and scrollbar gutters, the
+     Scroll-to tabs, the account <select>, and the apex-kit notice at the top.
+     Selectors and values are Fidelity's own, shortened; the pictures are
+     plain stand-ins and the balances are made up. -->
+<style>
+  :root {
+    --system-color-background-white: #ffffff;
+    --component-color-alert-info: #2751c2;
+    --color-white: #ffffff;
+  }
+  body { background-color: #f9f7f5; margin: 0; font: 14px Arial, sans-serif; color: #141414; }
+  a { color: #0f57c2; }
+  .card { background-color: #ffffff; border-radius: 8px; padding: 24px; width: 760px; margin: 24px; }
+
+  /* the reset every element under the tab content gets - written out in
+     longhands, as the page's compiled CSS has it, so the colour is a stated
+     currentcolor rather than an implicit initial */
+  #ptc div, #ptc span, #ptc table, #ptc th, #ptc td { margin: 0; padding: 0; border-width: 0; border-style: none; border-color: currentcolor; background: rgba(0, 0, 0, 0); }
+  #ptc a { color: #346e94; }
+  #ptc .nav a { color: #0e67a9; }
+
+  /* the apex-kit notice: a white body, a blue stripe, the "i" knocked out in white */
+  :root .pvd3-alert-root {
+    --apex-kit-alert-background-color: var(--system-color-background-white);
+    --apex-kit-alert-border-width: 2px;
+  }
+  .pvd3-alert-root.pvd-alert--info {
+    --apex-kit-alert-border-color: var(--component-color-alert-info);
+    --apex-kit-alert-icon-background-color: var(--component-color-alert-info);
+    --apex-kit-alert-icon-color: var(--color-white);
+  }
+  .pvd3-alert-root { background-color: var(--apex-kit-alert-background-color); border: var(--apex-kit-alert-border-width) solid var(--apex-kit-alert-border-color); display: flex; }
+  .pvd3-alert-root .pvd-alert__icon { background-color: var(--apex-kit-alert-icon-background-color); width: 38px; display: flex; align-items: center; justify-content: center; color: #000000; }
+  .pvd3-alert-root .pvd-alert__icon .pvd3-icon-root {
+    background-color: var(--apex-kit-alert-icon-color); width: 24px; height: 24px; display: flex;
+    -webkit-mask-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%2210%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%222%22%2F%3E%3Crect%20x%3D%2211%22%20y%3D%2210%22%20width%3D%222%22%20height%3D%227%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%227%22%20r%3D%221.2%22%2F%3E%3C%2Fsvg%3E");
+    mask-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%2210%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%222%22%2F%3E%3Crect%20x%3D%2211%22%20y%3D%2210%22%20width%3D%222%22%20height%3D%227%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%227%22%20r%3D%221.2%22%2F%3E%3C%2Fsvg%3E");
+  }
+  .pvd3-alert-root .pvd-alert__content { color: #141414; padding: 12px; }
+
+  /* the "?" help mark, as a stand-in: a disc filled transparent, under a
+     #0E67A9 ring and a #0E67A9 bar and dot where the site draws its "?" */
+  #ptc .performance-help-tooltip {
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2026%2026'%3E%3Ccircle%20cx%3D'13'%20cy%3D'13'%20r%3D'12'%20fill%3D'transparent'%2F%3E%3Cpath%20fill%3D'%230E67A9'%20fill-rule%3D'evenodd'%20d%3D'M13%201a12%2012%200%201%201%200%2024a12%2012%200%201%201%200-24zM13%203a10%2010%200%201%200%200%2020a10%2010%200%201%200%200-20z'%2F%3E%3Cpath%20fill%3D'%230E67A9'%20d%3D'M12%206.5h2v2.5h-2zM12%2011h2v8.5h-2z'%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat; background-position: center center; background-size: 14px auto;
+    height: 14px; width: 14px; display: inline-block; margin-left: 6px; vertical-align: middle;
+  }
+
+  /* the uxd tooltip it opens */
+  .uxd-tooltip { line-height: 1.375; position: relative; width: 18em; font-size: 16px; color: rgba(0, 0, 0, 0.87); margin: 8px 0 40px; }
+  .uxd-tooltip-inner { padding: 0.75em; background-color: #ffffff; border: 2px solid #999999; border-radius: 0.25em; }
+  .uxd-tooltip-pointer {
+    position: absolute;
+    background: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 23 23%27 fill=%27white%27 stroke=%27%23999%27 stroke-width=%271.5px%27%3E%3Cpath d=%27M2 5h19l-9.5 13z%27/%3E%3C/svg%3E") 0% 0% / 2em 2em no-repeat rgba(0, 0, 0, 0);
+    display: block; width: 2em; height: 1em;
+  }
+  .uxd-tooltip.top .uxd-tooltip-pointer { top: 100%; margin-top: -2px; left: 50%; margin-left: -1em; background-position: center -1em; }
+  .uxd-tooltip-title { font-size: 1.3em; font-weight: 400; margin: 0 0 4px; }
+  .uxd-tooltip-content { overflow: hidden auto; font-size: 0.8em; white-space: pre-wrap; }
+
+  /* the balance table: a frozen Month column, a 14px gutter kept clear for
+     the scrollbar beside Ending Balance */
+  #ptc .balance-over-time__table { overflow: hidden; display: flex; }
+  #ptc .balance-over-time__table .col-sticky { box-shadow: rgb(204, 204, 204) 4px 0px 2px -2px; }
+  #ptc .balance-over-time__table table tr td, #ptc .balance-over-time__table table tr th { border: 1px solid #cccccc; text-align: right; padding: 6px; color: #000000; }
+  #ptc .balance-over-time__table table tr td:last-child, #ptc .balance-over-time__table table tr th:last-child { border-right-width: medium; border-right-style: none; border-right-color: currentcolor; }
+  #ptc .balance-over-time__table table th.end-balance { border-right: 14px solid rgba(0, 0, 0, 0) !important; }
+
+  /* the Month header's sort arrow: a black data: SVG in an <img>, rebuilt
+     by the page on every click, ascending or descending */
+  #ptc .performance-summary_sorticon { width: 12px; height: 6px; margin-left: 8px; vertical-align: middle; }
+  #ptc .details-panel--closed { display: none; }
+
+  /* the Scroll-to tabs: a transparent border on each, until focused */
+  #ptc .perf-tabs { border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc; background-color: #ffffff; display: flex; }
+  #ptc .perf-tab { background-color: #ffffff; border: 1px solid rgba(0, 0, 0, 0); color: #356f95; padding: 12px; }
+  #ptc .perf-tab.perf-tab_label { color: #000000; font-size: 12px; font-weight: bold; }
+
+  /* the account select: its chevron is a black data: SVG (here a plain
+     caret with no fill), set once at the right of a wide control */
+  #ptc select.pvd-select {
+    appearance: none; -webkit-appearance: none; width: 650px; height: 41px; padding: 0 40px 0 12px; font: inherit;
+    border: 1px solid #757473; background-color: #ffffff; color: #000000;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 39 26%22%3E%3Cpath d=%22M4 8h18l-9 10z%22/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: 100% 50%; background-size: 23.36px 16px;
+  }
+
+  /* a soft card shadow is still a shadow; a hard ring is a line */
+  #ptc .lifted { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); padding: 8px; }
+  #ptc .ringed { box-shadow: 0 0 0 1px #000000; padding: 8px; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <pvd3-alert><div class="pvd3-alert-root pvd-alert--info" id="noticeAlert">
+      <div class="pvd-alert__icon" id="noticeStripe"><span class="pvd3-icon-root pvd-icon--large" id="noticeIcon"></span></div>
+      <div class="pvd-alert__content"><p class="pvd-alert__message" id="noticeText">We are continuing to enhance the new Performance experience.</p></div>
+    </div></pvd3-alert>
+  </div>
+  <div class="card" id="ptcCard">
+    <div id="ptc">
+      <p><a href="#" id="plainLink">Share your feedback</a></p>
+      <div class="nav"><a href="#" id="navLink">Create Account Groups</a></div>
+      <select class="pvd-select" id="acctSelect"><option>All Accounts</option></select>
+      <div class="perf-tabs" id="perfTabs"><div class="perf-tab perf-tab_label" id="tabLabel">Scroll to:</div><div class="perf-tab" id="tabLink">Personal Returns</div></div>
+      <p>Ending Balance <span class="performance-help-tooltip" id="helpMark" role="button" aria-label="Ending Balance Tooltip"></span></p>
+      <div class="balance-over-time__table">
+        <div class="col-sticky" id="stickyCol"><table><tr><th class="sortable" id="monthTh"><div class="header__cell" id="monthCell">Month <img class="performance-summary_sorticon" id="sortIcon" alt="" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3IiBoZWlnaHQ9IjQiIHZpZXdCb3g9IjAgMCA3IDQiPjxwYXRoIGQ9Ik0zLjUgNGwzLjUtNGgtN3oiLz48L3N2Zz4="></div></th></tr><tr><td>Sep 2026</td></tr></table></div>
+        <div class="col-scrollable"><table><tr><th>Beginning Balance</th><th class="end-balance" id="endBalance">Ending Balance</th></tr><tr><td>$100,000.00</td><td>$110,000.00</td></tr></table></div>
+      </div>
+      <!-- the same table as the page really ships it: rendered at load inside
+           a panel that is hidden, and shown by flipping a class -->
+      <div class="details-panel details-panel--closed" id="detailsPanel">
+        <table><tr><th class="sortable"><div class="header__cell">Month <img class="performance-summary_sorticon" id="hiddenSortIcon" alt="" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3IiBoZWlnaHQ9IjQiIHZpZXdCb3g9IjAgMCA3IDQiPjxwYXRoIGQ9Ik0zLjUgNGwzLjUtNGgtN3oiLz48L3N2Zz4="></div></th></tr></table>
+      </div>
+      <div class="lifted" id="liftedBox">a card that floats</div>
+      <div class="ringed" id="ringedBox">a box with a ring for an edge</div>
+    </div>
+  </div>
+  <!-- the tooltips open in a layer of their own, outside the tab content,
+       over whatever is below - here the page itself, not a card, so the
+       pointer cannot get its colour from what happens to be under it -->
+  <div id="tipLayer" style="margin: 24px; padding-bottom: 24px">
+    <div class="uxd-tooltip top" id="uxdTip">
+      <div class="uxd-tooltip-pointer" id="uxdPointer"></div>
+      <div class="uxd-tooltip-inner" id="uxdInner"><h3 class="uxd-tooltip-title">Time-weighted rate of return</h3><div class="uxd-tooltip-content" id="uxdContent" role="link" tabindex="0">This measures your investment performance for the time period specified.</div></div>
+    </div>
+  </div>
+<script>
+  /* What Angular does on a click on the Month header: a fresh <img> for the
+     other direction, or the same one pointed at the other arrow. */
+  const ARROWS = {
+    desc: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3IiBoZWlnaHQ9IjQiIHZpZXdCb3g9IjAgMCA3IDQiPjxwYXRoIGQ9Ik0zLjUgNGwzLjUtNGgtN3oiLz48L3N2Zz4=',
+    asc: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3IiBoZWlnaHQ9IjQiIHZpZXdCb3g9IjAgMCA3IDQiPjxwYXRoIGQ9Ik0zLjUgMGwtMy41IDRoN3oiLz48L3N2Zz4='
+  };
+  window.rebuildSortIcon = () => {
+    const old = document.getElementById('sortIcon');
+    const img = document.createElement('img');
+    img.className = 'performance-summary_sorticon';
+    img.alt = '';
+    img.src = ARROWS.asc;
+    old.replaceWith(img);
+    img.id = 'sortIcon';
+  };
+  window.repointSortIcon = () => { document.getElementById('sortIcon').setAttribute('src', ARROWS.desc); };
+  /* "Show details": a class, nothing else */
+  window.showDetails = () => { document.getElementById('detailsPanel').classList.remove('details-panel--closed'); };
+</script>
+</body>
+</html>

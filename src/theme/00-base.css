@@ -1,0 +1,180 @@
+/* =============================================================================
+ * 00-base.css - Fidelity Dark Mode's --fdm-* palette, page basics, boot veil.
+ *
+ * Every theme rule is gated on html:not(.fdm-off). A content script cannot read
+ * storage before first paint, so the theme starts on and "off" adds the class.
+ * =========================================================================== */
+
+/* Rules in 02 and 03, nearly all of 06 and part of 05 carry :not(#\9). No
+   element has that id, so it matches everything but adds an id's specificity:
+   the rule then outranks the engine's !important copy of any Fidelity selector
+   without an id, however long. (IMPORTANT_BOOST copies in recolor.js add an id
+   too, so against those, classes decide.) */
+
+@media screen {
+
+/* Mirrors src/palette.js; test/audit.js fails if a value here differs. */
+html:not(.fdm-off) {
+  color-scheme: dark;
+
+  /* surfaces */
+  --fdm-sunken:      #0E0E0E;
+  --fdm-canvas:      #141414;
+  --fdm-recess:      #1C1B1B;   /* data grids: the app's Positions list */
+  --fdm-grid-head:   #000000;   /* the app's grid header row */
+  --fdm-surf-1:      #292928;
+  --fdm-surf-2:      #2F2F2F;
+  --fdm-surf-3:      #323232;
+  --fdm-surf-4:      #403F3E;
+
+  /* ink */
+  --fdm-text:        #FFFFFF;
+  --fdm-text-2:      #D9D8D5;
+  --fdm-text-3:      #ABAAA8;
+  --fdm-text-dis:    #757473;
+  --fdm-text-inv:    #141414;
+
+  /* lines */
+  --fdm-hair:        #323232;
+  --fdm-border:      #403F3E;
+  --fdm-border-str:  #757473;
+  --fdm-border-ctl:  #ABAAA8;
+
+  /* brand + action */
+  --fdm-green:       #5CBF4A;   /* the app's green (Display P3 #76BD5A -> sRGB) */
+  --fdm-green-hov:   #7FC773;
+  --fdm-green-act:   #48AC36;
+  --fdm-green-txt:   #5CBF4A;
+
+  /* finance semantics */
+  --fdm-gain:        #5CBF4A;
+  --fdm-loss:        #FF6868;
+  --fdm-gain-bg:     #0F5319;
+  --fdm-row-mark:    #262100;   /* dividend paid / traded today: the app's value */
+
+  /* Columns, bars and area fills: the gain and loss hues a step deeper, so a
+     large area does not glare. Both still clear 3:1 on the card. */
+  --fdm-gain-fill:   #48AC36;
+  --fdm-loss-fill:   #FA3939;
+
+  /* links */
+  --fdm-link:        #8CC1FD;
+  --fdm-link-hov:    #B8D9FF;
+  --fdm-visited:     #D4B3FB;
+
+  /* status */
+  --fdm-info:        #60A5FA;  --fdm-info-bg:    #132454;
+  --fdm-warn:        #FFC371;  --fdm-warn-bg:    #7F330F;
+  --fdm-crit:        #FF6868;  --fdm-crit-bg:    #861616;
+  --fdm-success:     #5CBF4A;  --fdm-success-bg: #0F5319;
+  --fdm-focus:       #FFFFFF;
+
+  /* categorical chart hues, in Fidelity's asset-class order */
+  --fdm-c-domestic:  #3880F3;
+  --fdm-c-foreign:   #A3E2FF;
+  --fdm-c-bonds:     #8AD97C;
+  --fdm-c-fixed:     #E2D698;
+  --fdm-c-other:     #FFC371;
+  --fdm-c-short:     #E2D698;
+  --fdm-c-unknown:   #D4B3FB;
+
+  /* Filter chains that turn a black glyph into an ink, for components that
+     colour their icons that way (the ACE chart's --fidchart-* filter tokens).
+     Each lands within a few steps of the colour it is named for; test/audit.js
+     works the chain through and checks. */
+  --fdm-f-text-2: brightness(0) saturate(100%) invert(96%) sepia(6%) saturate(99%) hue-rotate(13deg) brightness(92%) contrast(88%);
+  --fdm-f-text-3: brightness(0) saturate(100%) invert(77%) sepia(8%) saturate(62%) hue-rotate(2deg) brightness(90%) contrast(82%);
+  --fdm-f-gain:   brightness(0) saturate(100%) invert(57%) sepia(64%) saturate(423%) hue-rotate(65deg) brightness(99%) contrast(93%);
+  --fdm-f-loss:   brightness(0) saturate(100%) invert(55%) sepia(9%) saturate(6689%) hue-rotate(321deg) brightness(103%) contrast(98%);
+
+  background-color: var(--fdm-canvas) !important;
+}
+
+/* --- scrollbars ----------------------------------------------------------- */
+/* None set here: color-scheme: dark above already gives native dark ones.
+   Any scrollbar-color or scrollbar-width would swap them for the plain kind,
+   which on Windows draws arrow buttons on every overflow: scroll box (the
+   research cards) even where there is nothing to scroll. The corner where
+   two native scrollbars meet stays white, though, so it shows the box. */
+html:not(.fdm-off) ::-webkit-scrollbar-corner { background: transparent; }
+
+/* --- selection ------------------------------------------------------------ */
+html:not(.fdm-off) ::selection {
+  background: rgba(140, 193, 253, .35);   /* the link blue, as a tint */
+  color: var(--fdm-text);
+}
+
+/* --- focus ---------------------------------------------------------------- */
+/* Fidelity's near-black focus outline vanishes here; this replaces it. */
+html:not(.fdm-off) :focus-visible {
+  outline: 2px solid var(--fdm-focus) !important;
+  outline-offset: 2px !important;
+  border-radius: 3px;
+}
+
+/* --- form controls -------------------------------------------------------- */
+html:not(.fdm-off) input,
+html:not(.fdm-off) select,
+html:not(.fdm-off) textarea { color-scheme: dark; }
+
+/* Unstyled buttons get ButtonFace, mid grey under color-scheme: dark (the fund
+   screener's Criteria funnel). At zero specificity any site rule still wins. */
+:where(html:not(.fdm-off)) :where(button, input[type="button"], input[type="submit"], input[type="reset"]) {
+  background-color: var(--fdm-surf-2);
+}
+
+html:not(.fdm-off) input::placeholder,
+html:not(.fdm-off) textarea::placeholder { color: var(--fdm-text-3) !important; opacity: 1; }
+
+/* Chrome's autofill background is a user-agent !important that no author rule
+   can override; a large inset shadow covers it. */
+html:not(.fdm-off) input:-webkit-autofill,
+html:not(.fdm-off) input:-webkit-autofill:hover,
+html:not(.fdm-off) input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--fdm-text) !important;
+  -webkit-box-shadow: 0 0 0 1000px var(--fdm-surf-2) inset !important;
+  caret-color: var(--fdm-text);
+  transition: background-color 9999s ease-out 0s;
+}
+
+
+/* --- the boot veil -------------------------------------------------------- */
+/* While html.fdm-boot is set (content.js removes it after its first pass, or on
+   a timer), every surface is suppressed, so nothing the engine has not reached
+   yet can flash white. Media is exempt: a blank image reads as broken. */
+html.fdm-boot:not(.fdm-off) body,
+html.fdm-boot:not(.fdm-off) body *:not(svg):not(svg *):not(img):not(video):not(canvas):not(iframe):not(picture):not(source):not([class*="spinner"]):not([class*="spin"]):not([class*="Spinner"]) {
+  background-color: transparent !important;
+  border-color: var(--fdm-hair) !important;
+  box-shadow: none !important;
+  color: var(--fdm-text) !important;
+}
+
+/* Spinners keep their border colours (set in 06-fds.css): a ring spinner's arc
+   is its non-transparent border sides, which one border-color would close. */
+html.fdm-boot:not(.fdm-off) body [class*="spinner"],
+html.fdm-boot:not(.fdm-off) body [class*="spinner"] *,
+html.fdm-boot:not(.fdm-off) body [class*="Spinner"],
+html.fdm-boot:not(.fdm-off) body [class*="Spinner"] * {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* html and body keep the canvas under the veil. */
+html.fdm-boot:not(.fdm-off),
+html.fdm-boot:not(.fdm-off) body {
+  background-color: var(--fdm-canvas) !important;
+}
+
+/* Skeleton shimmers are gradients, so background images go too, except on
+   logo, brand, icon and avatar classes, where the image is the content. */
+html.fdm-boot:not(.fdm-off) body *:not(svg):not(svg *):not(img):not(video):not(canvas):not(iframe):not(picture):not(source):not([class*="logo"]):not([class*="brand"]):not([class*="icon"]):not([class*="avatar"]) {
+  background-image: none !important;
+}
+
+/* Animations stop under the veil, except where a class contains "spin". */
+html.fdm-boot:not(.fdm-off) body *:not(svg):not(svg *):not([class*="spinner"]):not([class*="spin" i]) {
+  animation-name: none !important;
+}
+
+} /* @media screen */

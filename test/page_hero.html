@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>The homepage hero</title>
+<!-- www.fidelity.com's hero, reduced to its shape: a page-level row painted
+     white with a brand banner drawn across its top at "100% auto", pale on
+     the left and dark diagonal lines with white lettering on the right. The
+     hero copy and the Log In button sit on the pale half, in Fidelity's black.
+     Below it, a news section on its own white surface. A second hero tiles
+     its picture, the one shape the scrim does not take on. -->
+<style>
+  body { background-color: #FFFFFF; margin: 0; font: 16px Arial, sans-serif; color: #333333; }
+  #layout-region-content { background: #FFFFFF url("hero_banner.png") 0 0 / 100% auto no-repeat; min-height: 900px; }
+  .scl-hero-container { margin-left: 28%; width: 24%; padding-top: 70px; }
+  .login-widget a { display: inline-block; background-color: #368727; color: #FFFFFF; padding: 8px 24px; border-radius: 20px; text-decoration: none; }
+  .scl-hero--msg-text-header { color: rgb(0, 0, 0); font-size: 30px; line-height: 36px; margin: 16px 0 12px; }
+  .scl-hero--msg-text-desc p { color: rgb(0, 0, 0); margin: 0; }
+  .news { background-color: #FFFFFF; padding: 20px; margin-top: 220px; }
+  #tiled { background: #FFFFFF url("hero_banner.png") 0 0 / 400px auto repeat; min-height: 260px; margin: 0; width: 100%; padding: 40px 0 0 0; }
+</style>
+</head>
+<body>
+<div id="page-container">
+  <div id="layout-region-content" class="fidgrid--row">
+    <div class="scl-hero-container">
+      <div class="scl-hero scl-hero--50-50">
+        <div class="login-widget"><a href="#" id="heroLogin">Log In</a></div>
+        <div class="scl-hero--msg-text">
+          <h1 class="scl-hero--msg-text-header" id="heroH1">Ride the index, or beat it?</h1>
+          <div class="scl-hero--msg-text-desc"><p id="heroP">Fidelity Active ETFs: invest commission-free.</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="news" id="heroNews">Top news</div>
+  </div>
+  <div id="tiled" class="scl-hero-container"><div class="scl-hero"><h1 class="scl-hero--msg-text-header" id="tiledH1">A pattern behind copy</h1></div></div>
+</div>
+</body>
+</html>

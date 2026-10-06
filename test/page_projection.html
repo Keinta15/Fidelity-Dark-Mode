@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>A retirement projection</title>
+<!-- The retirement analysis page, reduced to the parts that went wrong.
+
+     Captions: each figure on the goal cards is followed by a caption in a
+     span named `no_separator`, and the age after the name sits in a span
+     named `separator` with its "|". In light mode none of them has a fill.
+
+     The projection: three outcomes drawn as SOLID areas in three blues that
+     light mode tells apart only by lightness, each topped by a white 4px rule,
+     and a black "retirement year" line with a white halo. Its key list sits
+     below the chart and paints the same three blues, and the year line's key,
+     from a stylesheet. The tooltip is Highcharts' outside container, its rows
+     built as HTML with each dot painted inline.
+
+     The chart itself arrives late, the way a chart does: after the key list
+     below it has already been drawn. -->
+<style>
+  body { background-color: #FFFFFF; margin: 0; padding: 24px; font: 14px Arial, sans-serif; color: #141414; }
+  .fds-card__card { background-color: #FFFFFF; border: 1px solid #CCCCCC; border-radius: 12px; padding: 20px; margin-bottom: 16px; width: 720px; }
+  .summary-analysis-info-item-title { font-size: 16px; color: #141414; }
+  .summary-analysis-info-item-title.green { color: #368727; font-weight: 700; }
+  .summary-analysis-info-item-title > span { color: #666666; font-weight: 400; }
+  .asset-projection-chart-legend { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
+  .asset-projection-chart-legend_items { display: flex; gap: 24px; }
+  .asset-projection-chart-legend_items_series { display: flex; flex-direction: column; gap: 12px; }
+  .asset-projection-chart-legend_items_series_item { display: flex; align-items: center; gap: 8px; }
+  .asset-projection-chart-legend_items_series_item__color { border-radius: 999px; width: 12px; height: 12px; }
+  .asset-projection-chart-legend_items_series_item__color--average { background-color: rgb(56, 128, 243); }
+  .asset-projection-chart-legend_items_series_item__color--below-average { background-color: rgb(39, 81, 194); }
+  .asset-projection-chart-legend_items_series_item__color--significantly-below-average { background-color: rgb(42, 57, 101); }
+  .asset-projection-chart-legend_items_plotline_year { display: flex; align-items: center; gap: 8px; }
+  .asset-projection-chart-legend_items_plotline_year__shape { background-color: rgb(0, 0, 0); width: 12px; height: 2px; }
+  .highcharts-tooltip-container { position: absolute; left: 60px; top: 40px; z-index: 10; }
+  .asset-project-container_content__item__band { display: flex; align-items: center; gap: 8px; }
+  .asset-project-container_content__item__band__color { width: 12px; height: 12px; border-radius: 50%; }
+</style>
+</head>
+<body>
+  <div class="fds-card__card" id="profileCard">
+    <div class="summary-analysis-info-item-title"><b>Pat Example</b> <span class="separator" id="ageSep">| 40</span></div>
+    <div class="summary-analysis-info-item-title green" id="savedTitle">$500,000 <span class="no_separator" id="capSaved">from 2 out of 3 accounts</span></div>
+    <div class="summary-analysis-info-item-title contrast">65 <span class="no_separator" id="capAge">retirement age</span></div>
+    <div class="summary-analysis-info-item-title contrast">$5,000 monthly <span class="no_separator" id="capExp">total expenses</span></div>
+    <div class="divider-line" id="realLine" style="height: 1px; margin: 8px 0; background-color: #cccccc;"></div>
+  </div>
+
+  <div class="fds-card__card" id="chartCard">
+    <div id="chartSlot" style="height: 220px;"></div>
+    <div class="asset-projection-chart-legend">
+      <span class="asset-projection-chart-legend_title">Category details</span>
+      <div class="asset-projection-chart-legend_items">
+        <div class="asset-projection-chart-legend_items_series">
+          <div class="asset-projection-chart-legend_items_series_item"><div id="keyAvg" class="asset-projection-chart-legend_items_series_item__color asset-projection-chart-legend_items_series_item__color--average"></div><span>Average market</span></div>
+          <div class="asset-projection-chart-legend_items_series_item"><div id="keyBelow" class="asset-projection-chart-legend_items_series_item__color asset-projection-chart-legend_items_series_item__color--below-average"></div><span>Below-average market</span></div>
+          <div class="asset-projection-chart-legend_items_series_item"><div id="keySig" class="asset-projection-chart-legend_items_series_item__color asset-projection-chart-legend_items_series_item__color--significantly-below-average"></div><span>Significantly below-average market</span></div>
+        </div>
+        <div class="asset-projection-chart-legend_items_plotline">
+          <div class="asset-projection-chart-legend_items_plotline_year"><div id="keyYear" class="asset-projection-chart-legend_items_plotline_year__shape"></div><span>Retirement Year</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- an ordinary area chart, for contrast: a translucent wash and a gradient
+       wash, both of which stay held back -->
+  <div class="fds-card__card">
+    <div class="highcharts-container" style="height: 90px;">
+      <svg class="highcharts-root" width="600" height="90" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="washRamp" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#368727" stop-opacity="0.4"/><stop offset="1" stop-color="#368727" stop-opacity="0"/></linearGradient></defs>
+        <g class="highcharts-series highcharts-series-0 highcharts-areaspline-series">
+          <path id="washFlat" class="highcharts-area" fill="#2caffe" fill-opacity="0.75" d="M0 80 L100 40 L200 50 L300 30 L300 90 L0 90 Z"/>
+          <path id="washGrad" class="highcharts-area" fill="url(#washRamp)" fill-opacity="1" d="M300 80 L400 40 L500 50 L600 30 L600 90 L300 90 Z"/>
+          <text x="10" y="15">$2.5M</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+<script>
+  /* The chart, late. */
+  setTimeout(() => {
+    const NS = 'http://www.w3.org/2000/svg';
+    const slot = document.getElementById('chartSlot');
+    slot.innerHTML =
+      '<div class="highcharts-container" id="projBox" style="position:relative;width:640px;height:220px">' +
+      '<svg class="highcharts-root" width="640" height="220" xmlns="' + NS + '">' +
+      '<rect class="highcharts-background" fill="#ffffff" x="0" y="0" width="640" height="220"/>' +
+      '<g class="highcharts-grid highcharts-yaxis-grid"><path class="highcharts-grid-line" stroke="#e6e6e6" stroke-width="1" d="M 0 100 L 640 100"/></g>' +
+      '<g class="highcharts-series-group">' +
+        '<g class="highcharts-series highcharts-series-0 highcharts-area-series">' +
+          '<path id="areaAvg" class="highcharts-area" fill="#3880F3" fill-opacity="1" d="M0 200 L200 150 L400 90 L640 20 L640 200 Z"/>' +
+          '<path id="graphAvg" class="highcharts-graph" fill="none" stroke="#FFFFFF" stroke-width="4" d="M0 200 L200 150 L400 90 L640 20"/>' +
+        '</g>' +
+        '<g class="highcharts-markers highcharts-series-0 highcharts-area-series highcharts-tracker">' +
+          '<path id="ptAvg" class="highcharts-point" fill="#3880F3" stroke="#ffffff" stroke-width="0" d="M 400 86 A 4 4 0 1 1 400 94 Z"/>' +
+        '</g>' +
+        '<g class="highcharts-series highcharts-series-1 highcharts-area-series">' +
+          '<path id="areaBelow" class="highcharts-area" fill="#2751C2" fill-opacity="1" d="M0 200 L200 175 L400 150 L640 130 L640 200 Z"/>' +
+          '<path class="highcharts-graph" fill="none" stroke="#FFFFFF" stroke-width="4" d="M0 200 L200 175 L400 150 L640 130"/>' +
+        '</g>' +
+        '<g class="highcharts-series highcharts-series-2 highcharts-area-series">' +
+          '<path id="areaSig" class="highcharts-area" fill="#2A3965" fill-opacity="1" d="M0 200 L200 188 L400 178 L640 170 L640 200 Z"/>' +
+          '<path class="highcharts-graph" fill="none" stroke="#FFFFFF" stroke-width="4" d="M0 200 L200 188 L400 178 L640 170"/>' +
+        '</g>' +
+      '</g>' +
+      '<g class="highcharts-plot-lines-4"><path class="highcharts-plot-line" fill="none" stroke="white" stroke-width="4.5" d="M 300 10 L 300 200"/></g>' +
+      '<g class="highcharts-plot-lines-5"><path id="yearLine" class="highcharts-plot-line" fill="none" stroke="#000" stroke-width="2" d="M 300 10 L 300 200"/></g>' +
+      '<g class="highcharts-axis-labels highcharts-yaxis-labels"><text x="600" y="20">$12.5M</text></g>' +
+      '</svg></div>';
+  }, 3000);
+</script>
+</body>
+</html>

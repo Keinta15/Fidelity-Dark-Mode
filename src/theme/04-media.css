@@ -1,0 +1,46 @@
+/* =============================================================================
+ * 04-media.css - inline SVG icons, logo SVGs and embedded frames. Raster images
+ * are handled by the engine (recolor.js), not here.
+ * =========================================================================== */
+
+@media screen {
+
+/* No filter on logo SVGs; 05-charts.css brand-mark rules set their colours. */
+html:not(.fdm-off) [class*="logo"] svg { filter: none !important; }
+
+/* SVG's initial fill is black, so an icon drawn without one (the account rail's
+   expand arrows) vanishes, and the engine has no colour to map. Set on the svg
+   root without !important, so a child's own fill or Fidelity's CSS (as copied
+   by the engine) wins. Kept to icons, never charts: the asset-allocation key's
+   swatches inherit their fill from the root svg. */
+html:not(.fdm-off) :is(button, a, [class*="icon"], [class*="Icon"]) svg:not(.highcharts-root):not([fill="none" i]),
+html:not(.fdm-off) svg[class*="icon"]:not(.highcharts-root):not([fill="none" i]) { fill: currentColor; }
+
+/* --- fill="none" roots ---------------------------------------------------- */
+/* The rule above skips these roots because any CSS fill overrides a
+   presentation attribute. Under one, a stroked shape with no fill is an outline
+   (the Positions filter icon) and stays unfilled; a shape with neither is a
+   solid glyph painted by CSS (the Assistant button's fa-chat-icon). */
+html:not(.fdm-off) svg[fill="none" i] > *[stroke]:not([fill]),
+html:not(.fdm-off) svg[fill="none" i] g > *[stroke]:not([fill]) { fill: none !important; }
+
+/* Near-black fills inside an icon SVG take the text colour. */
+html:not(.fdm-off) svg[class*="icon"]:not([class*="logo"]) [fill="#000000"],
+html:not(.fdm-off) svg[class*="icon"]:not([class*="logo"]) [fill="#141414"],
+html:not(.fdm-off) svg[class*="icon"]:not([class*="logo"]) [fill="black"] {
+  fill: currentColor !important;
+}
+/* Near-black icon strokes become secondary ink. Buttons and links are matched
+   too: the Positions toolbar's icon is marked with slot=, not an icon class. */
+html:not(.fdm-off) :is(button, a, [class*="icon"], [class*="Icon"]) svg [stroke="#000000" i],
+html:not(.fdm-off) :is(button, a, [class*="icon"], [class*="Icon"]) svg [stroke="#141414" i],
+html:not(.fdm-off) :is(button, a, [class*="icon"], [class*="Icon"]) svg [stroke="black" i],
+html:not(.fdm-off) svg[class*="icon"]:not([class*="logo"]) [stroke="#000000" i],
+html:not(.fdm-off) svg[class*="icon"]:not([class*="logo"]) [stroke="#141414" i] {
+  stroke: var(--fdm-text-2) !important;
+}
+
+/* Other sites' frames are out of reach; a dark backdrop avoids a white box. */
+html:not(.fdm-off) iframe { background-color: var(--fdm-surf-1); color-scheme: dark; }
+
+} /* @media screen */

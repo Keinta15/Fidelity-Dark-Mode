@@ -1,0 +1,74 @@
+{
+  "manifest_version": 3,
+  "name": "Fidelity Dark Mode",
+  "version": "1.0.1",
+  "description": "Dark mode for Fidelity.com",
+  "homepage_url": "https://github.com/bradleyw95/Fidelity-Dark-Mode",
+  "minimum_chrome_version": "111",
+  "permissions": [
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://*.fidelity.com/*",
+    "https://*.fidelityrewards.com/*",
+    "https://*.fidelity.wallst.com/*",
+    "https://fmrpi.az1.qualtrics.com/*"
+  ],
+  "background": {
+    "service_worker": "src/background.js"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "Fidelity Dark Mode",
+    "default_icon": {
+      "16": "icons/mark16.png",
+      "32": "icons/mark32.png",
+      "48": "icons/mark48.png",
+      "128": "icons/mark128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/mark16.png",
+    "32": "icons/mark32.png",
+    "48": "icons/mark48.png",
+    "128": "icons/mark128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.fidelity.com/*",
+        "https://*.fidelityrewards.com/*",
+        "https://fmrpi.az1.qualtrics.com/*"
+      ],
+      "css": [
+        "src/theme/00-base.css",
+        "src/theme/01-tokens.css",
+        "src/theme/02-structure.css",
+        "src/theme/03-components.css",
+        "src/theme/04-media.css",
+        "src/theme/05-charts.css",
+        "src/theme/06-fds.css"
+      ],
+      "js": [
+        "src/palette.js",
+        "src/recolor.js",
+        "src/content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": true
+    },
+    {
+      "matches": [
+        "https://*.fidelity.com/*",
+        "https://*.fidelityrewards.com/*"
+      ],
+      "js": [
+        "src/canvas.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": true,
+      "world": "MAIN"
+    }
+  ]
+}

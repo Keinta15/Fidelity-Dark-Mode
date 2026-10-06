@@ -1,0 +1,4 @@
+/* served from another origin in the tests, so the engine cannot read it and
+   the band it paints stays light until the worker would hand it over */
+.late-band { background-color: #f2f2f2; min-height: 120px; padding: 16px; }
+.late-band.loaded { background-color: transparent; }

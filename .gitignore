@@ -1,0 +1,19 @@
+# Node
+node_modules/
+npm-debug.log*
+
+# Chrome packaging
+*.pem
+*.crx
+*.zip
+
+# Test artifacts
+test/out/
+test/screenshots/
+playwright-report/
+test-results/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini

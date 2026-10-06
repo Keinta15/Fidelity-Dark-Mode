@@ -1,0 +1,1314 @@
+/* =============================================================================
+ * 06-fds.css - Fidelity's own components (fds-*, pvd-*), the public marketing
+ * site (scl-*), and the page widgets the colour map alone gets wrong (account
+ * rail, trade ticket, nav, fund research, Qualtrics); loaded last. Values are
+ * the dark counterparts of the light values the live site uses.
+ * =========================================================================== */
+
+@media screen {
+
+html:not(.fdm-off) {
+  /* Filled controls: dark ink on light green, as the Fidelity app's dark mode
+     draws them. Fill and hover are the app's greens; pressed is the web token
+     (accent-primary-background). Ink: 7.90:1 on the fill, 9.05:1 on hover. */
+  --fdm-btn:      #5CBF4A;
+  --fdm-btn-hov:  #7FC773;
+  --fdm-btn-act:  #8AD97C;
+  --fdm-btn-ink:  #141414;   /* accent-primary-foreground */
+}
+
+/* --- surfaces ------------------------------------------------------------- */
+
+html:not(.fdm-off):not(#\9) [class*="fds-card__card"] {
+  background-color: var(--fdm-surf-1) !important;
+  border-color: var(--fdm-border) !important;
+  color: var(--fdm-text) !important;
+}
+/* A card's inner wrappers are not surfaces: painting them draws a square
+   block inside the rounded card. */
+html:not(.fdm-off):not(#\9) .fds-card__content,
+html:not(.fdm-off):not(#\9) .fds-card-root,
+html:not(.fdm-off):not(#\9) .fds-card-details-section,
+html:not(.fdm-off):not(#\9) .fds-grid__grid,
+html:not(.fdm-off):not(#\9) .fds-grid-root,
+html:not(.fdm-off):not(#\9) .fds-grid-root-upd,
+html:not(.fdm-off):not(#\9) .fds-header,
+html:not(.fdm-off):not(#\9) .fds-form__form,
+html:not(.fdm-off):not(#\9) .fds-form-root,
+html:not(.fdm-off):not(#\9) .fds-field-group__field-group,
+html:not(.fdm-off):not(#\9) .fds-field-group-root,
+html:not(.fdm-off):not(#\9) .fds-expand-collapse-root,
+html:not(.fdm-off):not(#\9) .fds-expand-collapse__content,
+html:not(.fdm-off):not(#\9) .fds-expand-collapse__content-wrapper,
+html:not(.fdm-off):not(#\9) .fds-expand-collapse__heading-wrapper,
+html:not(.fdm-off):not(#\9) .fds-tab-panel__panel,
+html:not(.fdm-off):not(#\9) .fds-tab-panel-root,
+html:not(.fdm-off):not(#\9) .fds-tab-group-root,
+html:not(.fdm-off):not(#\9) .fds-tab-group__tabs,
+html:not(.fdm-off):not(#\9) .fds-tab-group__tab-panels {
+  background-color: transparent !important;
+}
+
+/* A grid item is layout and paints no fill. */
+html:not(.fdm-off):not(#\9) .fds-grid__item { background-color: transparent !important; }
+html:not(.fdm-off):not(#\9) .fds-background-color,
+html:not(.fdm-off):not(#\9) .fds-design-enabled {
+  background-color: var(--fdm-canvas) !important;
+}
+
+/* --- type ----------------------------------------------------------------- */
+html:not(.fdm-off):not(#\9) .fds-footnote__text,
+html:not(.fdm-off):not(#\9) .fds-footnote-root,
+html:not(.fdm-off):not(#\9) .fds-microcopy__microcopy,
+html:not(.fdm-off):not(#\9) .fds-slider-text--label,
+html:not(.fdm-off):not(#\9) .fds-slider-text--paragraph { color: var(--fdm-text-2) !important; }
+
+html:not(.fdm-off):not(#\9) .fds-label__label,
+html:not(.fdm-off):not(#\9) .fds-label-root,
+html:not(.fdm-off):not(#\9) .fds-paragraph,
+html:not(.fdm-off):not(#\9) [class*="fds-title"] { color: var(--fdm-text) !important; }
+
+html:not(.fdm-off):not(#\9) .fds-label__annotation { color: var(--fdm-link) !important; }
+
+/* --- text fields and selects ---------------------------------------------- */
+/* The root carries the surface; `fds-input__input` is transparent in light
+   mode and inherits. A fill on the inner input shows as a block inside the
+   field. */
+html:not(.fdm-off):not(#\9) .fds-input-root,
+html:not(.fdm-off):not(#\9) [class*="fds-input--"],
+html:not(.fdm-off):not(#\9) .fds-select__select,
+html:not(.fdm-off):not(#\9) .fds-textarea-root {
+  background-color: var(--fdm-surf-2) !important;
+  border-color: var(--fdm-border-ctl) !important;
+  color: var(--fdm-text) !important;
+}
+html:not(.fdm-off):not(#\9) .fds-input__input,
+html:not(.fdm-off):not(#\9) .fds-input__with-slot,
+html:not(.fdm-off):not(#\9) .fds-input__icon,
+html:not(.fdm-off):not(#\9) .fds-input__icon--left,
+html:not(.fdm-off):not(#\9) .fds-input__icon--right,
+html:not(.fdm-off):not(#\9) .fds-select__wrapper,
+html:not(.fdm-off):not(#\9) .fds-select-root,
+html:not(.fdm-off):not(#\9) [class*="fds-select--"] {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  color: inherit !important;
+}
+html:not(.fdm-off):not(#\9) .fds-input-sub-text { color: var(--fdm-text-2) !important; }
+
+/* The focus ring goes round the root, not the inner input. */
+html:not(.fdm-off):not(#\9) .fds-input__input:focus,
+html:not(.fdm-off):not(#\9) .fds-input__input:focus-visible {
+  outline: none !important;
+}
+html:not(.fdm-off):not(#\9) .fds-input-root:focus-within,
+html:not(.fdm-off):not(#\9) .fds-select__select:focus-visible {
+  outline: 2px solid var(--fdm-focus) !important;
+  outline-offset: 1px !important;
+  border-color: var(--fdm-focus) !important;
+}
+
+/* A hybrid: an fds- root around a pvd- input (the customer service page's
+   "Ask the Fidelity Assistant" field, `fds-input-root pvd-input--icon-right`
+   holding a `pvd-input__input`). There the input carries the surface, with
+   8px corners, and the root paints nothing in light mode; filling the root as
+   well put a square plate behind the rounded field and 4px past its end. The
+   ring stays with the input (the pvd- rules below). */
+html:not(.fdm-off):not(#\9) .fds-input-root:has(> .pvd-input__input),
+html:not(.fdm-off):not(#\9) .fds-input-root:has(> .pvd-input__input):focus-within {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  outline: none !important;
+}
+
+/* --- buttons -------------------------------------------------------------- */
+/* Fidelity draws icon-only and tertiary buttons with a transparent fill and
+   border (0.667px solid rgba(0,0,0,0)). A mapped border becomes a ring light
+   mode never shows, so both are stated transparent. */
+html:not(.fdm-off):not(#\9) .fds-button--icon-only,
+html:not(.fdm-off):not(#\9) .fds-button--icon-only-equilateral,
+html:not(.fdm-off):not(#\9) .fds-button--tertiary,
+html:not(.fdm-off):not(#\9) .fds-button--with-icon:not(.fds-button--primary):not(.fds-button--secondary),
+html:not(.fdm-off):not(#\9) .fds-button__icon,
+html:not(.fdm-off):not(#\9) .fds-button__icon--left,
+html:not(.fdm-off):not(#\9) .fds-button__icon--right,
+html:not(.fdm-off):not(#\9) .fds-button__contents,
+html:not(.fdm-off):not(#\9) .fds-button__text {
+  background-color: transparent !important;
+  border-color: transparent !important;
+}
+html:not(.fdm-off):not(#\9) .fds-button--icon-only,
+html:not(.fdm-off):not(#\9) .fds-button--icon-only-equilateral,
+html:not(.fdm-off):not(#\9) .fds-button--tertiary,
+html:not(.fdm-off):not(#\9) .fds-button__icon,
+html:not(.fdm-off):not(#\9) .fds-button__text { color: var(--fdm-text) !important; }
+
+/* An icon button's feedback is a wash, not a ring. */
+html:not(.fdm-off):not(#\9) .fds-button--icon-only:hover,
+html:not(.fdm-off):not(#\9) .fds-button--icon-only-equilateral:hover,
+html:not(.fdm-off):not(#\9) .fds-button--tertiary:hover {
+  background-color: var(--fdm-surf-3) !important;
+  border-color: transparent !important;
+}
+
+/* Filled: dark ink on the light green (--fdm-btn above). */
+html:not(.fdm-off):not(#\9) .fds-button--primary,
+html:not(.fdm-off):not(#\9) .fds-button-root.fds-button--primary {
+  background-color: var(--fdm-btn) !important;
+  border-color: transparent !important;
+  color: var(--fdm-btn-ink) !important;
+}
+html:not(.fdm-off):not(#\9) .fds-button--primary:hover { background-color: var(--fdm-btn-hov) !important; }
+html:not(.fdm-off):not(#\9) .fds-button--primary:active { background-color: var(--fdm-btn-act) !important; }
+html:not(.fdm-off):not(#\9) .fds-button--primary .fds-button__text,
+html:not(.fdm-off):not(#\9) .fds-button--primary .fds-button__contents,
+html:not(.fdm-off):not(#\9) .fds-button--primary .fds-button__icon,
+html:not(.fdm-off):not(#\9) .fds-button--primary svg { color: var(--fdm-btn-ink) !important; }
+
+/* Positions' apex-kit filled buttons (Apply, Extend session) take their label
+   from --apex-kit-button-text-color -> --reference-color-neutral-0, which
+   01-tokens.css maps to the card colour, so the label is set here. Scoped to
+   pwefds: a bare pvd-button--primary is a rank, not a fill
+   (03-components.css). */
+html:not(.fdm-off):not(#\9) .pwefds-button-root.pvd-button--primary {
+  --apex-kit-button-text-color: var(--fdm-btn-ink) !important;
+  color: var(--fdm-btn-ink) !important;
+}
+html:not(.fdm-off):not(#\9) .pwefds-button-root.pvd-button--primary:hover { background-color: var(--fdm-btn-hov) !important; }
+html:not(.fdm-off):not(#\9) .pwefds-button-root.pvd-button--primary:active { background-color: var(--fdm-btn-act) !important; }
+
+/* Outline. */
+html:not(.fdm-off):not(#\9) .fds-button--secondary,
+html:not(.fdm-off):not(#\9) .fds-button-root.fds-button--secondary {
+  background-color: var(--fdm-surf-2) !important;
+  border-color: var(--fdm-border-ctl) !important;
+  color: var(--fdm-text) !important;
+}
+html:not(.fdm-off):not(#\9) .fds-button--secondary:hover {
+  background-color: var(--fdm-surf-3) !important;
+  border-color: var(--fdm-text-2) !important;
+}
+html:not(.fdm-off):not(#\9) [class*="fds-button"]:disabled { color: var(--fdm-text-dis) !important; }
+
+/* No control label has a text-shadow. A later Fidelity rule cancels the
+   marketing site's `.generic-button a` shadow, but the engine's !important
+   copy of the shadow can win that cascade, so it is stated off here. */
+html:not(.fdm-off):not(#\9) button,
+html:not(.fdm-off):not(#\9) [class*="button"],
+html:not(.fdm-off):not(#\9) [class*="button"] a,
+html:not(.fdm-off):not(#\9) [class*="button"] span,
+html:not(.fdm-off):not(#\9) [class*="btn"],
+html:not(.fdm-off):not(#\9) [class*="btn"] a,
+html:not(.fdm-off):not(#\9) [class*="cta"] a,
+html:not(.fdm-off):not(#\9) a[class*="cta"] {
+  text-shadow: none !important;
+}
+
+/* --- radios and checkboxes ------------------------------------------------ */
+/* The real input is 1px and invisible; the visible control is a div inside
+   the label (`__radio-wrap`, `__checkbox-wrap`), the radio dot its ::before.
+   Unchecked it is the card colour with a grey ring, so only the ring shows,
+   as on white; checked it is the button green with a dark dot or tick. fds-
+   and pvd- render the same control, so the base, checked and disabled rules
+   list both and cannot drift apart. */
+html:not(.fdm-off):not(#\9) .fds-radio__radio-wrap,
+html:not(.fdm-off):not(#\9) .fds-checkbox__checkbox-wrap,
+html:not(.fdm-off):not(#\9) .pvd-radio__radio-wrap,
+html:not(.fdm-off):not(#\9) .pvd-checkbox__checkbox-wrap {
+  background-color: var(--fdm-surf-1) !important;
+  border-color: var(--fdm-border-ctl) !important;
+}
+html:not(.fdm-off):not(#\9) .fds-radio__radio-wrap::before,
+html:not(.fdm-off):not(#\9) .fds-checkbox__checkbox-wrap::before,
+html:not(.fdm-off):not(#\9) .pvd-radio__radio-wrap::before,
+html:not(.fdm-off):not(#\9) .pvd-checkbox__checkbox-wrap::before {
+  background-color: var(--fdm-surf-1) !important;
+  border-color: var(--fdm-surf-1) !important;
+}
+
+/* The `:has()` forms do not depend on the input sitting immediately before
+   its label; the `+` forms do. */
+html:not(.fdm-off):not(#\9) :has(> .fds-radio__radio:checked) .fds-radio__radio-wrap,
+html:not(.fdm-off):not(#\9) :has(> .fds-checkbox__checkbox:checked) .fds-checkbox__checkbox-wrap,
+html:not(.fdm-off):not(#\9) :has(> .fds-checkbox__checkbox:indeterminate) .fds-checkbox__checkbox-wrap,
+html:not(.fdm-off):not(#\9) :has(> .pvd-radio__radio:checked) .pvd-radio__radio-wrap,
+html:not(.fdm-off):not(#\9) :has(> .pvd-checkbox__checkbox:checked) .pvd-checkbox__checkbox-wrap,
+html:not(.fdm-off):not(#\9) .fds-radio__radio:checked + .fds-radio__label .fds-radio__radio-wrap,
+html:not(.fdm-off):not(#\9) .fds-checkbox__checkbox:checked + .fds-checkbox__label .fds-checkbox__checkbox-wrap,
+html:not(.fdm-off):not(#\9) .pvd-radio__radio:checked + .pvd-radio__label .pvd-radio__radio-wrap,
+html:not(.fdm-off):not(#\9) .pvd-checkbox__checkbox:checked + .pvd-checkbox__label .pvd-checkbox__checkbox-wrap {
+  background-color: var(--fdm-btn) !important;
+  border-color: var(--fdm-btn-act) !important;
+}
+html:not(.fdm-off):not(#\9) :has(> .fds-radio__radio:checked) .fds-radio__radio-wrap::before,
+html:not(.fdm-off):not(#\9) :has(> .pvd-radio__radio:checked) .pvd-radio__radio-wrap::before,
+html:not(.fdm-off):not(#\9) .fds-radio__radio:checked + .fds-radio__label .fds-radio__radio-wrap::before,
+html:not(.fdm-off):not(#\9) .pvd-radio__radio:checked + .pvd-radio__label .pvd-radio__radio-wrap::before {
+  background-color: var(--fdm-btn-ink) !important;
+  border-color: var(--fdm-btn-ink) !important;
+}
+/* The tick is an icon, not a pseudo-element; pvd- draws it as a <use> of
+   #pvd-action__check inside the wrap. */
+html:not(.fdm-off):not(#\9) .fds-checkbox__checkbox-wrap-icon,
+html:not(.fdm-off):not(#\9) .fds-checkbox__checkbox-wrap-icon--checked,
+html:not(.fdm-off):not(#\9) .fds-checkbox__checkbox-wrap-icon--indeterminate,
+html:not(.fdm-off):not(#\9) .fds-checkbox__checkbox-wrap-icon svg,
+html:not(.fdm-off):not(#\9) .fds-checkbox__checkbox-wrap-icon--checked svg,
+html:not(.fdm-off):not(#\9) .pvd-checkbox__checkbox-wrap-icon,
+html:not(.fdm-off):not(#\9) .pvd-checkbox__checkbox-wrap-icon use {
+  color: var(--fdm-btn-ink) !important;
+  fill: var(--fdm-btn-ink) !important;
+  background-color: transparent !important;
+}
+
+/* Disabled. Light mode draws a checked-but-locked box (Similar Fund Picks'
+   current fund) pale grey with a grey tick, never green. Here it is a grey
+   box with a light tick, and an unchecked one keeps only a dim ring. Placed
+   after the checked rules at the same weight, so it wins. */
+html:not(.fdm-off):not(#\9) :has(> .fds-checkbox__checkbox:disabled) .fds-checkbox__checkbox-wrap,
+html:not(.fdm-off):not(#\9) :has(> .pvd-checkbox__checkbox:disabled) .pvd-checkbox__checkbox-wrap,
+html:not(.fdm-off):not(#\9) :has(> .fds-radio__radio:disabled) .fds-radio__radio-wrap,
+html:not(.fdm-off):not(#\9) :has(> .pvd-radio__radio:disabled) .pvd-radio__radio-wrap {
+  background-color: var(--fdm-surf-1) !important;
+  border-color: var(--fdm-border) !important;
+}
+html:not(.fdm-off):not(#\9) :has(> .fds-checkbox__checkbox:disabled:checked) .fds-checkbox__checkbox-wrap,
+html:not(.fdm-off):not(#\9) :has(> .pvd-checkbox__checkbox:disabled:checked) .pvd-checkbox__checkbox-wrap,
+html:not(.fdm-off):not(#\9) :has(> .fds-radio__radio:disabled:checked) .fds-radio__radio-wrap,
+html:not(.fdm-off):not(#\9) :has(> .pvd-radio__radio:disabled:checked) .pvd-radio__radio-wrap {
+  background-color: var(--fdm-surf-4) !important;
+  border-color: var(--fdm-surf-4) !important;
+}
+html:not(.fdm-off):not(#\9) :has(> .fds-checkbox__checkbox:disabled) .fds-checkbox__checkbox-wrap-icon,
+html:not(.fdm-off):not(#\9) :has(> .fds-checkbox__checkbox:disabled) .fds-checkbox__checkbox-wrap-icon svg,
+html:not(.fdm-off):not(#\9) :has(> .pvd-checkbox__checkbox:disabled) .pvd-checkbox__checkbox-wrap-icon,
+html:not(.fdm-off):not(#\9) :has(> .pvd-checkbox__checkbox:disabled) .pvd-checkbox__checkbox-wrap-icon use {
+  color: var(--fdm-text-2) !important;
+  fill: var(--fdm-text-2) !important;
+}
+html:not(.fdm-off):not(#\9) :has(> .fds-radio__radio:disabled:checked) .fds-radio__radio-wrap::before,
+html:not(.fdm-off):not(#\9) :has(> .pvd-radio__radio:disabled:checked) .pvd-radio__radio-wrap::before {
+  background-color: var(--fdm-text-2) !important;
+  border-color: var(--fdm-text-2) !important;
+}
+
+html:not(.fdm-off):not(#\9) .fds-radio__label:hover .fds-radio__radio-wrap,
+html:not(.fdm-off):not(#\9) .fds-checkbox__label:hover .fds-checkbox__checkbox-wrap {
+  border-color: var(--fdm-text-2) !important;
+}
+html:not(.fdm-off):not(#\9) .fds-radio__radio:checked + .fds-radio__label:hover .fds-radio__radio-wrap,
+html:not(.fdm-off):not(#\9) .fds-checkbox__checkbox:checked + .fds-checkbox__label:hover .fds-checkbox__checkbox-wrap {
+  background-color: var(--fdm-btn-hov) !important;
+  border-color: var(--fdm-btn-act) !important;
+}
+html:not(.fdm-off):not(#\9) .fds-radio__radio:focus-visible + .fds-radio__label .fds-radio__radio-wrap,
+html:not(.fdm-off):not(#\9) .fds-checkbox__checkbox:focus-visible + .fds-checkbox__label .fds-checkbox__checkbox-wrap {
+  outline: 2px solid var(--fdm-focus) !important;
+  outline-offset: 2px !important;
+}
+html:not(.fdm-off):not(#\9) .fds-radio__label,
+html:not(.fdm-off):not(#\9) .fds-radio__label-text,
+html:not(.fdm-off):not(#\9) .fds-checkbox__label,
+html:not(.fdm-off):not(#\9) .fds-checkbox__label-text,
+html:not(.fdm-off):not(#\9) .fds-checkbox-root,
+html:not(.fdm-off):not(#\9) .fds-radio-root,
+html:not(.fdm-off):not(#\9) [class*="fds-checkbox--"],
+html:not(.fdm-off):not(#\9) [class*="fds-radio--"] {
+  background-color: transparent !important;
+  color: var(--fdm-text) !important;
+}
+html:not(.fdm-off):not(#\9) .fds-checkbox__microcopy,
+html:not(.fdm-off):not(#\9) .fds-radio__microcopy { color: var(--fdm-text-2) !important; }
+
+/* --- tabs ----------------------------------------------------------------- */
+html:not(.fdm-off):not(#\9) .fds-tab__tab,
+html:not(.fdm-off):not(#\9) .fds-tab-root,
+html:not(.fdm-off):not(#\9) .fds-tab__text-wrapper {
+  background-color: transparent !important;
+  color: var(--fdm-text-2) !important;
+}
+html:not(.fdm-off):not(#\9) .fds-tab--selected,
+html:not(.fdm-off):not(#\9) .fds-tab--selected .fds-tab__tab,
+html:not(.fdm-off):not(#\9) .fds-tab--selected .fds-tab__text-wrapper { color: var(--fdm-text) !important; }
+html:not(.fdm-off):not(#\9) .fds-tab--selected::after,
+html:not(.fdm-off):not(#\9) .fds-tab__tab::after { background-color: var(--fdm-green) !important; }
+html:not(.fdm-off):not(#\9) .fds-tab__tab:hover { color: var(--fdm-text) !important; }
+html:not(.fdm-off):not(#\9) .fds-tab-group__truncation-menu-icon { color: var(--fdm-text-2) !important; }
+
+/* --- popovers, tooltips and modals ---------------------------------------- */
+/* FDS draws the popover shadow in a mid grey at 89% opacity: a drop shadow on
+   white, a pale halo on a dark card. The shadow is stated, not mapped. */
+html:not(.fdm-off):not(#\9) .fds-popover__popover {
+  background-color: var(--fdm-surf-3) !important;
+  border-color: var(--fdm-border-str) !important;
+  color: var(--fdm-text) !important;
+  box-shadow: 0 12px 28px -8px rgba(0, 0, 0, .72), 0 2px 6px rgba(0, 0, 0, .5) !important;
+}
+html:not(.fdm-off):not(#\9) .fds-popover__arrow {
+  background-color: var(--fdm-surf-3) !important;
+  border-color: var(--fdm-border-str) !important;
+}
+/* The trigger side is not a surface; a fill puts a plate behind each (i). */
+html:not(.fdm-off):not(#\9) .fds-popover-root,
+html:not(.fdm-off):not(#\9) .fds-popover__wrapper,
+html:not(.fdm-off):not(#\9) .fds-popover__trigger-wrapper,
+html:not(.fdm-off):not(#\9) .fds-popover__slot-area,
+html:not(.fdm-off):not(#\9) .fds-popover__close-button,
+html:not(.fdm-off):not(#\9) .fds-popover__close-button-area,
+html:not(.fdm-off):not(#\9) [class*="fds-popover--placement"] {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
+}
+html:not(.fdm-off):not(#\9) .fds-popover__heading { color: var(--fdm-text) !important; }
+html:not(.fdm-off):not(#\9) .fds-popover__close-button { color: var(--fdm-text-2) !important; }
+
+html:not(.fdm-off):not(#\9) .fds-modal__dialog {
+  background-color: var(--fdm-surf-2) !important;
+  color: var(--fdm-text) !important;
+  box-shadow: 0 24px 48px -12px rgba(0, 0, 0, .8), 0 8px 16px rgba(0, 0, 0, .55) !important;
+}
+html:not(.fdm-off):not(#\9) .fds-modal__overlay { background-color: rgba(0, 0, 0, .66) !important; }
+html:not(.fdm-off):not(#\9) .fds-modal,
+html:not(.fdm-off):not(#\9) .fds-modal__content,
+html:not(.fdm-off):not(#\9) .fds-modal__body-wrapper,
+html:not(.fdm-off):not(#\9) .fds-modal__heading-wrapper {
+  background-color: transparent !important;
+}
+html:not(.fdm-off):not(#\9) .fds-modal__heading { color: var(--fdm-text) !important; }
+html:not(.fdm-off):not(#\9) .fds-modal__close-button {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  color: var(--fdm-text-2) !important;
+}
+
+/* --- tables --------------------------------------------------------------- */
+html:not(.fdm-off):not(#\9) .fds-table__row { background-color: var(--fdm-surf-1) !important; }
+html:not(.fdm-off):not(#\9) .fds-table__row:hover { background-color: var(--fdm-surf-2) !important; }
+html:not(.fdm-off):not(#\9) .fds-table__column-header-cell {
+  background-color: var(--fdm-surf-3) !important;
+  color: var(--fdm-text) !important;
+  border-color: var(--fdm-hair) !important;
+}
+html:not(.fdm-off):not(#\9) [class*="fds-table__data-cell"],
+html:not(.fdm-off):not(#\9) .fds-table__body {
+  border-color: var(--fdm-hair) !important;
+  color: var(--fdm-text) !important;
+}
+html:not(.fdm-off):not(#\9) .fds-table__container,
+html:not(.fdm-off):not(#\9) .fds-table__head,
+html:not(.fdm-off):not(#\9) .fds-table__column-header-cell-content {
+  background-color: transparent !important;
+}
+
+/* --- status colour -------------------------------------------------------- */
+html:not(.fdm-off):not(#\9) .fds-inline-message--critical,
+html:not(.fdm-off):not(#\9) .fds-inline-message--critical .fds-inline-message__icon { color: var(--fdm-crit) !important; }
+html:not(.fdm-off):not(#\9) .fds-inline-message--info,
+html:not(.fdm-off):not(#\9) .fds-inline-message--info .fds-inline-message__icon { color: var(--fdm-info) !important; }
+html:not(.fdm-off):not(#\9) .fds-inline-message--warning,
+html:not(.fdm-off):not(#\9) .fds-inline-message--warning .fds-inline-message__icon { color: var(--fdm-warn) !important; }
+html:not(.fdm-off):not(#\9) .fds-inline-message__content,
+html:not(.fdm-off):not(#\9) .fds-inline-message-root,
+html:not(.fdm-off):not(#\9) [class*="fds-inline-message--"] { background-color: transparent !important; }
+
+html:not(.fdm-off):not(#\9) .fds-icon-root,
+html:not(.fdm-off):not(#\9) [class*="fds-icon--"] { background-color: transparent !important; }
+
+/* --- sliders -------------------------------------------------------------- */
+html:not(.fdm-off):not(#\9) .fds-slider__slider-wrapper,
+html:not(.fdm-off):not(#\9) .fds-slider-root,
+html:not(.fdm-off):not(#\9) .fds-slider__input-wrapper,
+html:not(.fdm-off):not(#\9) .fds-slider__info-wrapper,
+html:not(.fdm-off):not(#\9) .fds-slider__labels,
+html:not(.fdm-off):not(#\9) .fds-slider__markers,
+html:not(.fdm-off):not(#\9) .fds-slider__data-list { background-color: transparent !important; }
+html:not(.fdm-off):not(#\9) .fds-slider__value,
+html:not(.fdm-off):not(#\9) .fds-slider__label { color: var(--fdm-text) !important; }
+
+/* --- spinners ------------------------------------------------------------- */
+/* A ring spinner's arc is its non-transparent border sides, so the mask rules
+   restate the other two as transparent. The arc takes the app's green, as the
+   app draws every spinner (Fidelity's desktop draws it grey). */
+html:not(.fdm-off) [class*="spinner"],
+html:not(.fdm-off) [class*="spinner"] *,
+html:not(.fdm-off) [class*="Spinner"],
+html:not(.fdm-off) [class*="Spinner"] * {
+  background-color: transparent !important;
+}
+html:not(.fdm-off):not(#\9) [class*="spinner__mask-inner"],
+html:not(.fdm-off):not(#\9) [class*="spinner__visual"],
+html:not(.fdm-off):not(#\9) [class*="spinner__spinner"] {
+  border-top-color: var(--fdm-green) !important;
+  border-left-color: var(--fdm-green) !important;
+}
+html:not(.fdm-off):not(#\9) [class*="spinner__mask--right"] [class*="mask-inner"] {
+  border-top-color: var(--fdm-green) !important;
+  border-right-color: var(--fdm-green) !important;
+  border-bottom-color: transparent !important;
+  border-left-color: transparent !important;
+}
+html:not(.fdm-off):not(#\9) [class*="spinner__mask--left"] [class*="mask-inner"] {
+  border-top-color: var(--fdm-green) !important;
+  border-left-color: var(--fdm-green) !important;
+  border-right-color: transparent !important;
+  border-bottom-color: transparent !important;
+}
+/* An SVG spinner draws its arc as a stroke instead. */
+html:not(.fdm-off):not(#\9) [class*="spinner"] circle,
+html:not(.fdm-off):not(#\9) [class*="loading"] circle,
+html:not(.fdm-off):not(#\9) [role="progressbar"] circle {
+  stroke: var(--fdm-green) !important;
+  fill: none !important;
+}
+
+/* --- skeleton loaders ----------------------------------------------------- */
+/* dimPlaceholders() (recolor.js) finds skeletons by shape, but only once
+   script has run over them; naming Fidelity's classes covers them from first
+   paint. `action-bar--skeleton-bar` and `va-loading-indicator__shimmer` ship
+   the light gradients (keyframes `gradientShimmer` and a scoped `_shine`).
+   ghost, pulse and stencil also occur in other names (the login page's
+   `pi-disclaimer__ghostlink` is a link), so those match only empty elements. */
+html:not(.fdm-off) [class*="skeleton" i]:not(a):not(button):not(input):not(label),
+html:not(.fdm-off) [class*="shimmer" i]:not(a):not(button):not(input):not(label),
+html:not(.fdm-off) [class*="placeholder" i]:empty:not(input):not(textarea),
+html:not(.fdm-off) [class*="ghost" i]:empty:not(a):not(button):not(input),
+html:not(.fdm-off) [class*="pulse" i]:empty:not(a):not(button):not(input),
+html:not(.fdm-off) [class*="stencil" i]:empty:not(a):not(button):not(input),
+html:not(.fdm-off) [class*="loading-bar" i]:not(a):not(button),
+html:not(.fdm-off) [class*="loading-block" i]:not(a):not(button),
+html:not(.fdm-off) [class*="loading-placeholder" i]:not(a):not(button),
+html:not(.fdm-off) [class*="content-loader" i]:not(a):not(button),
+html:not(.fdm-off) [class*="blur-load" i]:empty:not(a):not(button) {
+  background-color: var(--fdm-surf-2) !important;
+  background-image: linear-gradient(90deg,
+    var(--fdm-surf-2) 0%, var(--fdm-surf-3) 50%, var(--fdm-surf-2) 100%) !important;
+  color: transparent !important;
+  /* No border-color: a skeleton name can land on a ring spinner, and a border
+     colour closes its arc. */
+}
+/* The shimmer sweep keeps its animation; only its gradient is dimmed. */
+html:not(.fdm-off) [class*="shine" i],
+html:not(.fdm-off) [class*="skeleton" i]::before,
+html:not(.fdm-off) [class*="skeleton" i]::after,
+html:not(.fdm-off) [class*="shimmer" i]::before,
+html:not(.fdm-off) [class*="shimmer" i]::after {
+  background-image: linear-gradient(90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, .055) 50%,
+    rgba(255, 255, 255, 0) 100%) !important;
+  background-color: transparent !important;
+}
+/* A spinner is never a skeleton. `loading-indicator` alone is Fidelity's
+   spinner (`__container`, `__orb`, `__cog`); only the `__shimmer` variant is
+   a skeleton. A spinner gets no surface and no gradient. */
+html:not(.fdm-off):not(#\9) [class*="loading-indicator" i]:not([class*="shimmer" i]),
+html:not(.fdm-off):not(#\9) [class*="spinner" i][class*="loading" i],
+html:not(.fdm-off):not(#\9) [class*="spinner" i] [class*="mask" i] {
+  background-color: transparent !important;
+  background-image: none !important;
+}
+/* The full-screen veil behind a page spinner: the sunken colour, never a
+   skeleton gradient. */
+html:not(.fdm-off):not(#\9) [class*="page-loading-background"] {
+  background-color: var(--fdm-sunken) !important;
+  background-image: none !important;
+}
+/* The page-loading box (pvd4-spinner with `pvd-spinner--disable-background`,
+   the Profile landing while it loads): in light mode a 200px white card with a
+   2px black frame and a shadow, the wheel in the middle. The spinner rule
+   above empties every spinner's background, and the frame's black arrives
+   through a token chain (--color-black) as the text colour, so the box showed
+   as a bare white rectangle round the wheel. It is a dialog: the card surface
+   and the dialog's subtle frame. */
+html:not(.fdm-off):not(#\9) [class*="spinner-root"][class*="disable-background"] {
+  background-color: var(--fdm-surf-1) !important;
+  border-color: var(--fdm-border) !important;
+}
+
+/* --- the account rail ----------------------------------------------------- */
+/* Light mode hovers two nested elements per account: the group wrapper
+   (#F5F3F0) and the account wrapper (#F9F7F5, the page colour). Mapped, the
+   outer one matches the rail and the inner one sinks below it, a dark block in
+   an invisible plate. So the intent is stated instead: one raised plate per
+   item, and nothing inside it paints. */
+
+/* Ancestors are structure: hovering an account lights that account, not its
+   group. */
+html:not(.fdm-off):not(#\9) .acct-selector-content,
+html:not(.fdm-off):not(#\9) .acct-selector__acct-list,
+html:not(.fdm-off):not(#\9) .acct-selector__group,
+html:not(.fdm-off):not(#\9) .acct-selector__group-wrapper,
+html:not(.fdm-off):not(#\9) .acct-selector__group-wrapper:hover,
+html:not(.fdm-off):not(#\9) .acct-selector__group-wrapper:focus-within,
+html:not(.fdm-off):not(#\9) .acct-selector-footer-wrapper,
+html:not(.fdm-off):not(#\9) .acct-selector-footer-wrapper li {
+  background-color: transparent !important;
+}
+
+/* The rail is a card and keeps its surface in every state. Fidelity gives it
+   `transition: all`; the list here leaves background out, so no colour change
+   is ever animated. */
+html:not(.fdm-off):not(#\9) .acct-selector__container,
+html:not(.fdm-off):not(#\9) .acct-selector__container:hover,
+html:not(.fdm-off):not(#\9) .acct-selector__container:focus-within {
+  background-color: var(--fdm-surf-1) !important;
+  transition-property: width, min-width, max-width, transform, opacity !important;
+}
+
+/* The one plate, raised: on a dark field a lowered plate reads as a hole. */
+html:not(.fdm-off):not(#\9) .acct-selector__acct-wrapper:not(.selected-hint):hover,
+html:not(.fdm-off):not(#\9) .acct-selector__acct-wrapper:not(.selected-hint):focus-within,
+html:not(.fdm-off):not(#\9) .acct-selector__all-accounts-wrapper:hover,
+html:not(.fdm-off):not(#\9) .acct-selector__all-accounts-wrapper:focus-within,
+html:not(.fdm-off):not(#\9) .acct-selector__group > .acct-selector-link:hover,
+html:not(.fdm-off):not(#\9) .acct-selector__group > section:hover,
+html:not(.fdm-off):not(#\9) .acct-selector__acct-list > .acct-selector-link:hover {
+  background-color: var(--fdm-surf-2) !important;
+}
+
+/* Selected sits one step further up and stays there. Light mode gives every
+   .selected-hint the same tint (All accounts, a group, an account), so every
+   one gets the same plate here. */
+html:not(.fdm-off):not(#\9) .selected-hint:is([class*="acct-selector"]),
+html:not(.fdm-off):not(#\9) [class*="acct-selector"] .selected-hint,
+html:not(.fdm-off):not(#\9) [class*="acct-selector"] [aria-selected="true"] {
+  background-color: var(--fdm-surf-3) !important;
+}
+html:not(.fdm-off):not(#\9) .selected-hint:is([class*="acct-selector"]):hover,
+html:not(.fdm-off):not(#\9) [class*="acct-selector"] .selected-hint:hover {
+  background-color: var(--fdm-surf-4) !important;
+}
+
+/* Nothing inside a plate is a second plate, whatever hover tint the engine
+   mapped for it. Direct children only: avatars and status dots are content. */
+html:not(.fdm-off):not(#\9) .acct-selector__acct-wrapper:hover > *,
+html:not(.fdm-off):not(#\9) .acct-selector__acct-wrapper.selected-hint > *,
+html:not(.fdm-off):not(#\9) .acct-selector__all-accounts-wrapper:hover > *,
+html:not(.fdm-off):not(#\9) .acct-selector__acct-wrapper:hover .acct-selector-link,
+html:not(.fdm-off):not(#\9) .acct-selector__acct-wrapper.selected-hint .acct-selector-link {
+  background-color: transparent !important;
+}
+
+/* The plate carries the radius wherever it lands. */
+html:not(.fdm-off):not(#\9) .acct-selector__acct-wrapper:hover,
+html:not(.fdm-off):not(#\9) .acct-selector__acct-wrapper.selected-hint,
+html:not(.fdm-off):not(#\9) .acct-selector__all-accounts-wrapper:hover,
+html:not(.fdm-off):not(#\9) .acct-selector-link.selected-hint,
+html:not(.fdm-off):not(#\9) .acct-selector__group > .acct-selector-link:hover,
+html:not(.fdm-off):not(#\9) .acct-selector__group > section:hover {
+  border-radius: 12px !important;
+}
+
+/* --- the third namespace: pvd-5- ------------------------------------------ */
+/* Third vocabulary: pvd-5-search-*, the Fidelity Assistant's search field and
+   button, neither fds- nor pvd-. A plain pvd- field carries its surface on the
+   inner input (`.pvd-input__input`), unlike fds- fields where the root does. */
+html:not(.fdm-off):not(#\9) .pvd-input__input,
+html:not(.fdm-off):not(#\9) .fa-input-box {
+  background-color: var(--fdm-surf-2) !important;
+  border-color: var(--fdm-border-ctl) !important;
+  color: var(--fdm-text) !important;
+}
+
+/* The search control is a composite: `fa-input-container` is the box (filled
+   and 12px-rounded in light mode too) and takes the focus ring. The root
+   (radius 0), the input between its icons and the icons paint nothing. */
+html:not(.fdm-off):not(#\9) [class*="pvd-5-search-input-root"],
+html:not(.fdm-off):not(#\9) [class*="pvd-5-search-input-root"] .pvd-input__input,
+html:not(.fdm-off):not(#\9) [class*="pvd-5-search-input-root"] .fa-input-box,
+html:not(.fdm-off):not(#\9) [class*="pvd-5-search-input-root"] [class*="__icon"] {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+html:not(.fdm-off):not(#\9) [class*="pvd-5-search-input-root"] .pvd-input__input:focus,
+html:not(.fdm-off):not(#\9) [class*="pvd-5-search-input-root"] .fa-input-box:focus,
+html:not(.fdm-off):not(#\9) [class*="pvd-5-search-input-root"]:focus-within {
+  outline: none !important;
+}
+
+/* Wrappers further out are structure, not surfaces. */
+html:not(.fdm-off):not(#\9) [class*="pvd-5-search-form"],
+html:not(.fdm-off):not(#\9) [class*="pvd-5-search-fa-form"],
+html:not(.fdm-off):not(#\9) [class*="apex-kit-web-input-root"],
+html:not(.fdm-off):not(#\9) [class*="apex-kit-input-root"],
+html:not(.fdm-off):not(#\9) [class*="helios-input-root"],
+html:not(.fdm-off):not(#\9) [class*="pvd3-input-root"] {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+/* The ring belongs to the field, not to a wrapper. */
+html:not(.fdm-off):not(#\9) .pvd-input__input:focus,
+html:not(.fdm-off):not(#\9) .fa-input-box:focus,
+html:not(.fdm-off):not(#\9) .pvd-input__input:focus-visible {
+  outline: 2px solid var(--fdm-focus) !important;
+  outline-offset: 1px !important;
+  border-color: var(--fdm-focus) !important;
+  box-shadow: none !important;
+}
+html:not(.fdm-off):not(#\9) .pvd-input__input:hover:not(:disabled),
+html:not(.fdm-off):not(#\9) .fa-input-box:hover:not(:disabled) {
+  border-color: var(--fdm-text-2) !important;
+}
+html:not(.fdm-off):not(#\9) .pvd-input__input:disabled {
+  background-color: var(--fdm-surf-1) !important;
+  color: var(--fdm-text-dis) !important;
+}
+
+/* The container: the one surface in the search control's stack. */
+html:not(.fdm-off):not(#\9) [class*="fa-input-container"] {
+  background-color: var(--fdm-surf-1) !important;
+  border-color: var(--fdm-border) !important;
+}
+/* Its focus is the border, as in light mode (Fidelity swaps in
+   .fa-input-container-focus, a 2px border and no outline); an outline as well
+   draws a second ring. */
+html:not(.fdm-off):not(#\9) [class*="fa-input-container"]:focus-within {
+  outline: none !important;
+  border-color: var(--fdm-focus) !important;
+}
+
+/* The Assistant panel's field ("Type your question here") has the same shape:
+   `.va-input-wrapper` is the box and takes the focus ring (a 2px shadow, as in
+   light mode); the textarea inside paints nothing. */
+html:not(.fdm-off):not(#\9) .va-input-wrapper {
+  background-color: var(--fdm-surf-1) !important;
+  border-color: var(--fdm-border-ctl) !important;
+}
+html:not(.fdm-off):not(#\9) .va-input-wrapper:focus-within {
+  border-color: var(--fdm-focus) !important;
+  box-shadow: 0 0 0 2px var(--fdm-focus) !important;
+}
+html:not(.fdm-off):not(#\9) .va-input-wrapper textarea,
+html:not(.fdm-off):not(#\9) textarea.va-input,
+html:not(.fdm-off):not(#\9) textarea.va-input:focus,
+html:not(.fdm-off):not(#\9) textarea.va-input:focus-visible {
+  background-color: transparent !important;
+  outline: none !important;
+  box-shadow: none !important;
+  color: var(--fdm-text) !important;
+}
+
+/* The same borderless buttons, by substring, so prefixed variants match. */
+html:not(.fdm-off):not(#\9) [class*="fds-button--icon-only"],
+html:not(.fdm-off):not(#\9) [class*="fds-button--icon-only"]:hover,
+html:not(.fdm-off):not(#\9) [class*="fds-button--tertiary"],
+html:not(.fdm-off):not(#\9) [class*="fds-button--tertiary"]:hover {
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* The Ask Fidelity Assistant button (pvd-5-search-button--icon-only) does have
+   a circular ring in light mode. It keeps one at control-border weight, 6.27:1
+   on the card. */
+html:not(.fdm-off):not(#\9) [class*="search-button--icon-only"],
+html:not(.fdm-off):not(#\9) [class*="search-button--with-icon"] {
+  border-color: var(--fdm-border-ctl) !important;
+  box-shadow: none !important;
+}
+html:not(.fdm-off):not(#\9) [class*="search-button--icon-only"]:hover {
+  border-color: var(--fdm-text-2) !important;
+}
+html:not(.fdm-off):not(#\9) [class*="search-button--icon-only"] {
+  background-color: transparent !important;
+  color: var(--fdm-text) !important;
+}
+html:not(.fdm-off):not(#\9) [class*="search-button--icon-only"]:hover {
+  background-color: var(--fdm-surf-3) !important;
+}
+/* Its glyph is a CSS-painted shape inside a fill="none" root. */
+html:not(.fdm-off):not(#\9) .fa-chat-icon,
+html:not(.fdm-off):not(#\9) [class*="search-button"] svg,
+html:not(.fdm-off):not(#\9) [class*="search-input__icon"] svg {
+  fill: var(--fdm-text-2) !important;
+  color: var(--fdm-text-2) !important;
+}
+html:not(.fdm-off):not(#\9) .fa-chat-icon > *:not([stroke]):not([fill]),
+html:not(.fdm-off):not(#\9) [class*="search-button"] svg > *:not([stroke]):not([fill]) {
+  fill: var(--fdm-text-2) !important;
+}
+
+/* --- the trade ticket ----------------------------------------------------- */
+/* Fourth vocabulary: `eq-ticket__*`, `pvd-ett-*` and custom elements such as
+   <dropdownlist-ett-ap122489>. It renders in the main document, not an iframe,
+   so the engine reaches it; recolor.js reads its --form-field-fill-* tokens as
+   backgrounds. */
+html:not(.fdm-off):not(#\9) .trade-container-popup,
+html:not(.fdm-off):not(#\9) .float-trade-container,
+html:not(.fdm-off):not(#\9) [class*="eq-ticket"] {
+  color: var(--fdm-text) !important;
+}
+
+/* One header surface for the title, Help-mode toggle and close control. */
+html:not(.fdm-off):not(#\9) [class*="float-trade-container-header"],
+html:not(.fdm-off):not(#\9) [class*="dialog-box-header"],
+html:not(.fdm-off):not(#\9) [class*="float-trade-container-header"] > *,
+html:not(.fdm-off):not(#\9) [class*="dialog-box-header"] > * {
+  background-color: var(--fdm-surf-2) !important;
+  color: var(--fdm-text) !important;
+}
+
+/* The ticket's switch (after-hours trading, help mode). The engine maps its
+   #BBBBBB knob as a surface, which vanishes on the card, so the knob takes
+   ink. Off, the track is an outline; on, it is green with a white knob, as
+   the app draws switches. */
+html:not(.fdm-off):not(#\9) .pvd-ett-switch-root .pvd-switch__button {
+  background-color: transparent !important;
+  border-color: var(--fdm-border-ctl) !important;
+}
+html:not(.fdm-off):not(#\9) .pvd-ett-switch-root .pvd-switch__handle {
+  background-color: var(--fdm-text-2) !important;
+  border-color: transparent !important;
+}
+html:not(.fdm-off):not(#\9) .pvd-ett-switch-root.pvd-switch--on .pvd-switch__button {
+  background-color: var(--fdm-green) !important;
+  border-color: var(--fdm-green) !important;
+}
+html:not(.fdm-off):not(#\9) .pvd-ett-switch-root.pvd-switch--on .pvd-switch__button:is(:hover, :focus, :active) {
+  border-color: var(--fdm-text) !important;
+}
+html:not(.fdm-off):not(#\9) .pvd-ett-switch-root.pvd-switch--on .pvd-switch__handle {
+  background-color: var(--fdm-text) !important;
+}
+
+/* Fields: the field is the surface, and nothing inside it paints again. */
+html:not(.fdm-off):not(#\9) .dropdown-label-in-field,
+html:not(.fdm-off):not(#\9) [class*="eq-ticket"] .btn-secondary,
+html:not(.fdm-off):not(#\9) [class*="quantity-outline"],
+html:not(.fdm-off):not(#\9) [class*="eq-ticket__more-trade-selections"] input,
+html:not(.fdm-off):not(#\9) [class*="eq-ticket"] select,
+html:not(.fdm-off):not(#\9) [class*="eq-ticket"] input[type="text"],
+html:not(.fdm-off):not(#\9) [class*="eq-ticket"] input[type="number"] {
+  background-color: var(--fdm-surf-2) !important;
+  border-color: var(--fdm-border-ctl) !important;
+  color: var(--fdm-text) !important;
+}
+html:not(.fdm-off):not(#\9) [class*="quantity-outline"] > *,
+html:not(.fdm-off):not(#\9) .dropdown-label-in-field > * {
+  background-color: transparent !important;
+  color: inherit !important;
+}
+/* The Shares/Dollars selector beside Quantity is a segment of the Quantity
+   box and paints nothing of its own. Only its options list
+   (`quantity-type-dropdown`) is a floating layer. */
+html:not(.fdm-off):not(#\9) [class*="eq-ticket"] [class*="quantity-type-wrapper"],
+html:not(.fdm-off):not(#\9) [class*="eq-ticket"] [class*="quantity-type-select"],
+html:not(.fdm-off):not(#\9) [class*="eq-ticket"] [class*="quantity-type-listbox"],
+html:not(.fdm-off):not(#\9) [class*="eq-ticket"] [class*="shares-selector"] {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  color: var(--fdm-text) !important;
+}
+html:not(.fdm-off):not(#\9) [class*="eq-ticket"] [class*="quantity-type-wrapper"]:is(:hover, :focus) {
+  border-color: var(--fdm-border-ctl) !important;
+}
+/* Doubled :not(#\9) on purpose: the separator rule in 02-structure.css also
+   matches this "divider", outweighs one guard with its :not() chain, and would
+   paint it the hairline colour, invisible on the field. */
+html:not(.fdm-off):not(#\9):not(#\9) [class*="eq-ticket"] [class*="more-trade-divider"] {
+  background-color: var(--fdm-border-ctl) !important;
+}
+html:not(.fdm-off):not(#\9) [class*="eq-ticket"] [class*="quantity-type-dropdown"] {
+  background-color: var(--fdm-surf-3) !important;
+  border-color: var(--fdm-border-str) !important;
+  color: var(--fdm-text) !important;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, .55) !important;
+}
+
+/* One focus ring. Fidelity marks a focused field with a black outline and a
+   black 1px shadow ring; mapped, those become two rings in two colours. The
+   theme's ring replaces both. */
+html:not(.fdm-off):not(#\9) .dropdown-label-in-field:focus,
+html:not(.fdm-off):not(#\9) .dropdown-label-in-field:focus-visible,
+html:not(.fdm-off):not(#\9) [class*="eq-ticket"] input:focus,
+html:not(.fdm-off):not(#\9) [class*="eq-ticket"] input:focus-visible,
+html:not(.fdm-off):not(#\9) [class*="eq-ticket"] [role="listbox"]:focus {
+  outline: 2px solid var(--fdm-focus) !important;
+  outline-offset: 2px !important;
+  box-shadow: none !important;
+}
+
+/* Preview order is a filled button: dark ink on the light green, like every
+   other filled control here. */
+html:not(.fdm-off):not(#\9) [class*="pvd-ett-button-root"][class*="full-width"],
+html:not(.fdm-off):not(#\9) [class*="eq-ticket"] [class*="button--primary"],
+html:not(.fdm-off):not(#\9) [class*="eq-ticket"] button[type="submit"] {
+  background-color: var(--fdm-btn) !important;
+  border-color: transparent !important;
+  color: var(--fdm-btn-ink) !important;
+}
+html:not(.fdm-off):not(#\9) [class*="pvd-ett-button-root"][class*="full-width"] *,
+html:not(.fdm-off):not(#\9) [class*="eq-ticket"] button[type="submit"] * {
+  color: var(--fdm-btn-ink) !important;
+  background-color: transparent !important;
+}
+html:not(.fdm-off):not(#\9) [class*="pvd-ett-button-root"][class*="full-width"]:hover {
+  background-color: var(--fdm-btn-hov) !important;
+}
+
+/* Links are text. Under color-scheme dark a system highlight colour gives the
+   disclosure line a solid blue block, and a system colour keyword is out of
+   the colour map's reach, so the background is stated transparent. */
+html:not(.fdm-off):not(#\9) [class*="eq-ticket"] a,
+html:not(.fdm-off):not(#\9) [class*="disclosure"] a,
+html:not(.fdm-off):not(#\9) a[class*="disclosure"],
+html:not(.fdm-off):not(#\9) [class*="trade-container"] a {
+  background-color: transparent !important;
+  color: var(--fdm-link) !important;
+  text-decoration-color: currentColor !important;
+}
+
+/* --- nav dropdown items --------------------------------------------------- */
+/* A hovered menu item's underline follows its text (currentColor), as in
+   light mode. Buttons are excluded by their own class or their wrapper's: the
+   signed-in homepage's Log Out and Open an Account CTAs sit in a `post-login`
+   container, and currentColor would draw a line in their label colour. Nothing
+   is set on them, so their own cascade decides; `inherit` would take the
+   wrapper's border colour.
+   Borders are left to the engine's colour map. The header's utility menu
+   (Profile, Security, Documents) gives each item a 2px transparent border that
+   only its focus ring colours in; naming it currentColor on hover painted a
+   second, heavier line under the 1px indicator bar that light mode never
+   shows, and the primary menus draw their hover bar with ::after and carry no
+   border at all. */
+html:not(.fdm-off):not(#\9) :is([class*="post-login"],[class*="submenu"],[class*="dropdown"],[class*="menu"]) a:hover:not([class*="button" i]):not([class*="btn" i]):not([class*="cta" i]):not(:is([class*="button" i],[class*="btn" i],[class*="cta" i]) > *),
+html:not(.fdm-off):not(#\9) [class*="nav"] [role="menuitem"]:hover {
+  text-decoration-color: currentColor !important;
+}
+
+/* --- nav indicator bars --------------------------------------------------- */
+/* Fidelity's nav marks a hovered item with a 3px ::after bar painted with
+   background-color. The engine maps that as a surface, near the canvas colour,
+   which reads as a black underline; the bars are named here and take ink. */
+html:not(.fdm-off):not(#\9) [class*="nav-primary"] a:not([class*="level2"]):not(.locked)::after,
+html:not(.fdm-off):not(#\9) [class*="nav-primary"] a:not([class*="level2"]):not(.locked) span::after,
+html:not(.fdm-off):not(#\9) [class*="nav-primary-button"]::after,
+html:not(.fdm-off):not(#\9) [class*="nav-primary-button"] span::after,
+html:not(.fdm-off):not(#\9) [class*="post-login"] a span::after,
+html:not(.fdm-off):not(#\9) [class*="nav-utility"] a span::after {
+  background-color: var(--fdm-text) !important;
+}
+/* A level-2 or locked item's ::after is not an indicator but a 36px lock
+   glyph (signed-out site): black artwork drawn as its background, so it is
+   inverted. */
+html:not(.fdm-off):not(#\9) [class*="nav-primary"] a.locked::after,
+html:not(.fdm-off):not(#\9) [class*="nav-primary"] a[class*="level2"]::after {
+  background-color: transparent !important;
+  filter: invert(1) !important;
+}
+/* The selected item's bar is green. */
+html:not(.fdm-off):not(#\9) [class*="nav-primary"] [aria-current] span::after,
+html:not(.fdm-off):not(#\9) [class*="nav-primary"] [class*="selected"] span::after,
+html:not(.fdm-off):not(#\9) [class*="nav-primary"] [class*="active"] span::after {
+  background-color: var(--fdm-green) !important;
+}
+
+/* --- popover carets ------------------------------------------------------- */
+/* A caret is a small rotated square with its own background, which the engine
+   maps as a surface of its own. It takes its panel's colour (the floating
+   layer) so the two join without a step. A tooltip's pointer inside a
+   popover-named container (the quote header's .price-range-popover) belongs
+   to the tooltip, which 03-components.css colours. */
+html:not(.fdm-off):not(#\9) [class*="popover"] [class*="arrow"]:not([class*="dropdown-arrow"]):not([class*="tooltip"]),
+html:not(.fdm-off):not(#\9) [class*="popover"] [class*="caret"]:not([class*="tooltip"]),
+html:not(.fdm-off):not(#\9) [class*="menu"] [class*="arrow"]:not([class*="icon"]):not([class*="dropdown-arrow"]),
+html:not(.fdm-off):not(#\9) [class*="dropdown"] [class*="arrow"]:not([class*="icon"]):not([class*="dropdown-arrow"]),
+html:not(.fdm-off):not(#\9) [class*="am-menu"] [class*="arrow"]:not([class*="dropdown-arrow"]),
+html:not(.fdm-off):not(#\9) [class*="menu-wrapper"] [class*="arrow"]:not([class*="dropdown-arrow"]) {
+  background-color: var(--fdm-surf-3) !important;
+  border-color: var(--fdm-surf-3) !important;
+  color: var(--fdm-surf-3) !important;
+}
+/* The apex-kit popover draws its pointer on the arrow's ::after from
+   --color-white (fill) and --color-neutral-40 (outline sides; -57 in the older
+   theme), which 01-tokens.css maps to card colours. Re-pointed in the
+   ::after's own scope they match the floating panel, and the transparent
+   sides stay transparent. */
+html:not(.fdm-off):not(#\9) .pvd-popover__arrow::after {
+  --color-white: var(--fdm-surf-3) !important;
+  --reference-color-neutral-0: var(--fdm-surf-3) !important;
+  --color-neutral-40: var(--fdm-border-str) !important;
+  --color-neutral-57: var(--fdm-border-str) !important;
+}
+/* A chevron is not a caret: the trade ticket's `dropdown-arrow` is a rotated
+   square with only its right and bottom borders painted, so the caret rule
+   excludes it. Its lines take ink; its field stays empty. */
+html:not(.fdm-off):not(#\9) [class*="dropdown-arrow"] {
+  background-color: transparent !important;
+  border-color: var(--fdm-text-2) !important;
+  color: var(--fdm-text-2) !important;
+}
+/* The menu panels those carets join, in the same colour. */
+html:not(.fdm-off):not(#\9) [class*="am-menu-wrapper"],
+html:not(.fdm-off):not(#\9) [class*="am-menu"] [class*="--root"],
+html:not(.fdm-off):not(#\9) [class*="action-bar--menu"] [class*="wrapper"] {
+  background-color: var(--fdm-surf-3) !important;
+  border-color: var(--fdm-border-str) !important;
+  color: var(--fdm-text) !important;
+}
+
+/* --- marketing hero and the green header bars ----------------------------- */
+/* The hero's artwork is left alone, and Fidelity sets dark copy on it because
+   it is pale, so the copy keeps light mode's ink. Not under a scrim the engine
+   has laid over the picture ([data-fdm-scrim], recolor.js "Copy laid over a
+   pale photograph"): there the copy sits on dark and takes the usual ink. */
+html:not(.fdm-off):not(#\9) .scl-hero--msg-text-header:where(:not([data-fdm-scrim] *)),
+html:not(.fdm-off):not(#\9) .scl-hero--msg-text-desc:where(:not([data-fdm-scrim] *)),
+html:not(.fdm-off):not(#\9) .scl-hero--msg-text-desc *:where(:not([data-fdm-scrim] *)),
+html:not(.fdm-off):not(#\9) .scl-hero--msg-text-cta:where(:not([data-fdm-scrim] *)),
+html:not(.fdm-off):not(#\9) [class*="scl-hero"] p:where(:not([data-fdm-scrim] *)),
+html:not(.fdm-off):not(#\9) [class*="scl-hero"] h1:where(:not([data-fdm-scrim] *)),
+html:not(.fdm-off):not(#\9) [class*="scl-hero"] h2:where(:not([data-fdm-scrim] *)) {
+  color: #141414 !important;
+}
+/* Light-on-dark hero variants (--login-white, --white) keep their white ink. */
+html:not(.fdm-off):not(#\9) [class*="scl-hero--login-white"],
+html:not(.fdm-off):not(#\9) [class*="scl-hero--login-white"] *,
+html:not(.fdm-off):not(#\9) [class*="scl-hero"][class*="--white"] * {
+  color: #FFFFFF !important;
+}
+/* Hero links keep light mode's navy. Links only: the homepage's hero buttons
+   are a classless <a> in a `scl-button-component` wrapper, hence the wrapper
+   exclusion. */
+html:not(.fdm-off):not(#\9) [class*="scl-hero"] a:not([class*="button"]):not(:is([class*="button"],[class*="btn"]) > a):where(:not([data-fdm-scrim] *)) {
+  color: #1D3986 !important;
+}
+html:not(.fdm-off):not(#\9) [class*="scl-hero"] :is([class*="button"],[class*="btn"]) > a {
+  color: var(--fdm-btn-ink) !important;
+}
+html:not(.fdm-off):not(#\9) [class*="scl-hero"] :is([class*="button"],[class*="btn"]):not([class*="primary"]) > a {
+  color: var(--fdm-link) !important;
+}
+
+/* The signed-out utility bar is #368727 under a white wordmark, and the colour
+   map answers #368727 with the button fill. It takes the app's dark header bar
+   instead, and the white mark stays white. `.top-menu-bar__content-wrapper` is
+   the same bar on fidelityrewards.com. */
+html:not(.fdm-off):not(#\9) .nav-utility,
+html:not(.fdm-off):not(#\9) .nav-utility-container,
+html:not(.fdm-off):not(#\9) .top-menu-bar__content-wrapper {
+  background-color: var(--fdm-surf-1) !important;
+}
+html:not(.fdm-off):not(#\9) .nav-utility [class*="logo"] svg path[fill="#FFFFFE" i],
+html:not(.fdm-off):not(#\9) .nav-utility [class*="logo"] svg path[fill="#FFFFFF" i],
+html:not(.fdm-off):not(#\9) .nav-utility [class*="logo"] svg path[fill="white" i] {
+  fill: #FFFFFF !important;
+}
+/* The bar's two pills. Fidelity's class names run against their emphasis:
+   `.button-secondary` is "Open an account", a white pill in light mode, and
+   takes the filled CTA (as the app's "Open or link an account" does);
+   `.button-primary` is the quiet "Log in", a white 64% outline and white
+   label, and keeps both on the dark bar. */
+html:not(.fdm-off):not(#\9) .nav-utility .button-secondary > a {
+  background-color: var(--fdm-btn) !important;
+  border-color: var(--fdm-btn) !important;
+  color: var(--fdm-btn-ink) !important;
+}
+html:not(.fdm-off):not(#\9) .nav-utility .button-secondary > a span { color: var(--fdm-btn-ink) !important; }
+html:not(.fdm-off):not(#\9) .nav-utility .button-secondary > a:hover,
+html:not(.fdm-off):not(#\9) .nav-utility .button-secondary > a:focus-visible {
+  background-color: var(--fdm-btn-hov) !important;
+  border-color: var(--fdm-btn-hov) !important;
+}
+html:not(.fdm-off):not(#\9) .nav-utility .button-primary > a {
+  background-color: transparent !important;
+  border-color: rgba(255, 255, 255, .64) !important;
+  color: var(--fdm-text) !important;
+}
+html:not(.fdm-off):not(#\9) .nav-utility .button-primary > a span { color: var(--fdm-text) !important; }
+html:not(.fdm-off):not(#\9) .nav-utility .button-primary > a:hover,
+html:not(.fdm-off):not(#\9) .nav-utility .button-primary > a:focus-visible {
+  background-color: var(--fdm-surf-3) !important;
+  border-color: #FFFFFF !important;
+}
+/* The legacy header on fund research and older pages (#pgnb) is the same green
+   bar in other markup: .pbn is the utility row with the logo, .pnl1 the
+   section nav. Same answer: the dark bar under white links. */
+html:not(.fdm-off):not(#\9) #pgnb .pbn,
+html:not(.fdm-off):not(#\9) #pgnb .pnl1 {
+  background-color: var(--fdm-surf-1) !important;
+}
+html:not(.fdm-off):not(#\9) #pgnb .pnl1 {
+  border-top: 1px solid var(--fdm-hair) !important;
+}
+html:not(.fdm-off):not(#\9) #pgnb .pbn a,
+html:not(.fdm-off):not(#\9) #pgnb .pnl1 a {
+  color: var(--fdm-text) !important;
+}
+
+/* --- data providers' wordmarks -------------------------------------------- */
+/* Morningstar's wordmark under the StyleMap is a 59x14 GIF of red letters on
+   white; edited for a dark field its counters stayed white and the letters
+   smeared. A provider's mark is someone else's brand and keeps its own
+   colours: it sits on a small white chip, as it does in light mode. The
+   engine leaves these pictures alone (PROVIDER_MARK in recolor.js). */
+html:not(.fdm-off):not(#\9) img[alt*="morningstar" i],
+html:not(.fdm-off):not(#\9) img[alt*="lipper" i],
+html:not(.fdm-off):not(#\9) img[alt*="zacks" i],
+html:not(.fdm-off):not(#\9) img[alt*="argus" i],
+html:not(.fdm-off):not(#\9) img[alt*="refinitiv" i],
+html:not(.fdm-off):not(#\9) img[alt*="factset" i],
+html:not(.fdm-off):not(#\9) img[alt*="cfra" i],
+html:not(.fdm-off):not(#\9) img[alt*="ned davis" i],
+html:not(.fdm-off):not(#\9) img[alt*="trefis" i],
+html:not(.fdm-off):not(#\9) img[alt*="jefferies" i],
+html:not(.fdm-off):not(#\9) img[alt*="barchart" i],
+html:not(.fdm-off):not(#\9) img[alt*="recognia" i],
+html:not(.fdm-off):not(#\9) img[alt*="trading central" i],
+html:not(.fdm-off):not(#\9) img[alt*="wall street horizon" i],
+html:not(.fdm-off):not(#\9) img[alt*="starmine" i],
+html:not(.fdm-off):not(#\9) img[alt*="value line" i],
+html:not(.fdm-off):not(#\9) img[alt*="valueline" i],
+html:not(.fdm-off):not(#\9) img[alt*="first call" i] {
+  background-color: #FFFFFF !important;
+  outline: 3px solid #FFFFFF !important;
+  outline-offset: 0 !important;
+  border-radius: 2px !important;
+  filter: none !important;
+}
+
+/* --- research quote pages (nre-*) ----------------------------------------- */
+/* Light mode draws the quote header and the tab strip as one white band (the
+   strip widens itself with white box-shadows), over a #f2f2f2 panel of white
+   cards. The band stays on the page colour, the panel sits a step below it,
+   and the cards keep the card colour, so all three still read apart. The
+   dashboard container round them is the page too (white on the white page),
+   so it paints nothing: mapped as a card it showed as a lighter field either
+   side of the strip. */
+html:not(.fdm-off):not(#\9) .nre-cards-container {
+  background-color: transparent !important;
+}
+html:not(.fdm-off):not(#\9) .nre-cards-container .pvd-tab-group__tabs {
+  background-color: var(--fdm-canvas) !important;
+  box-shadow: var(--fdm-canvas) 187.5rem 0 0, var(--fdm-canvas) -187.5rem 0 0 !important;
+}
+html:not(.fdm-off):not(#\9) .nre-cards-container .nre-panel {
+  background-color: var(--fdm-sunken) !important;
+  box-shadow: var(--fdm-sunken) 187.5rem 0 0, var(--fdm-sunken) -187.5rem 0 0 !important;
+}
+/* The other tabs lay their cards in a #f4f4f4 grid over that panel, a shade
+   light mode could not tell from it; mapped on its own it would be one card-
+   coloured field with the cards lost in it. (flattenPage in recolor.js
+   catches the general case; naming this one spares the first paint.) */
+html:not(.fdm-off):not(#\9) .nre-cards-container .nre-panel .card-grid-container {
+  background-color: transparent !important;
+}
+/* The holdings ring is a disc in the arc colour under two clipped halves in
+   the track colour; their shared round edge anti-aliases to a hairline of the
+   arc colour all round. An inset ring in the track colour covers it. */
+html:not(.fdm-off):not(#\9) donut .donut-chart {
+  box-shadow: inset 0 0 0 1px var(--fdm-surf-4) !important;
+}
+/* Day range and 52-week range: the price is a black diamond on the line. */
+html:not(.fdm-off):not(#\9) app-price-range-indicator .cursor {
+  background-color: var(--fdm-text) !important;
+}
+/* The Fund profile module's icons are one cross-origin PNG sprite of white
+   tiles, which the engine cannot read. Inverted with the hue turned back, a
+   tile goes black and screen blending drops it into the card. */
+html:not(.fdm-off):not(#\9) .MOD .icon.overview-item {
+  filter: invert(1) hue-rotate(180deg) brightness(1.6) !important;
+  mix-blend-mode: screen !important;
+}
+
+/* --- fund research (legacy markup) ---------------------------------------- */
+/* Top 10 Holdings logos are third-party rasters drawn for a white page, some
+   as dark lettering on transparency. Each sits on a small white chip;
+   border-box keeps the box size, so the table does not move. */
+html:not(.fdm-off):not(#\9) img.top-x-row-graphic {
+  background-color: #FFFFFF !important;
+  border-radius: 3px !important;
+  padding: 2px 3px !important;
+  box-sizing: border-box !important;
+  filter: none !important;
+}
+
+/* Disabled legacy buttons (Compare Funds with nothing selected) are flat grey
+   in light mode; mapped, they look live. A button styled as a link (.as-link,
+   "(show funds)") has no body in light mode and is excluded. */
+html:not(.fdm-off):not(#\9) button:is(.disabled, .disabled-btn):not(.as-link),
+html:not(.fdm-off):not(#\9) .action-button.disabled {
+  background-color: var(--fdm-surf-2) !important;
+  background-image: none !important;
+  border-color: var(--fdm-border) !important;
+  color: var(--fdm-text-dis) !important;
+}
+
+/* Morningstar's five-box scales (Returns, Expenses; the screener's pickers in
+   other markup): filled boxes are navy, empty ones #CDCDCD. Mapped as
+   surfaces both sink into the card, so filled takes the data blue and empty a
+   visible step. */
+html:not(.fdm-off):not(#\9) .box-scale-blue,
+html:not(.fdm-off):not(#\9) .quick-criteria-morningstar-ratings .box:not(.greyed-out) {
+  background-color: var(--fdm-c-domestic) !important;
+  color: var(--fdm-c-domestic) !important;
+}
+html:not(.fdm-off):not(#\9) .box-scale-gray {
+  background-color: var(--fdm-surf-4) !important;
+}
+
+/* Morningstar Category Risk: ten segments, green to red, drawn as one gradient
+   with 1% white gaps. Mapped as a surface it darkens; the segments are data and
+   keep Fidelity's colours, and the gaps go transparent. Used by the fund
+   page's icon, the screener's Category Risk column and its risk slider track,
+   which still greys itself (filter: grayscale(1)) while its radio is off. */
+html:not(.fdm-off) {
+  --fdm-risk-scale: linear-gradient(to right,
+    #7A962D 0 9.1%, transparent 9.1% 10.1%,
+    #9B9F32 10.1% 19.2%, transparent 19.2% 20.2%,
+    #BAA937 20.2% 29.3%, transparent 29.3% 30.3%,
+    #D8B13A 30.3% 39.4%, transparent 39.4% 40.4%,
+    #E0B13D 40.4% 49.5%, transparent 49.5% 50.5%,
+    #E0A53F 50.5% 59.6%, transparent 59.6% 60.6%,
+    #DF9A40 60.6% 69.7%, transparent 69.7% 70.7%,
+    #D4823C 70.7% 79.8%, transparent 79.8% 80.8%,
+    #C86A37 80.8% 89.9%, transparent 89.9% 90.9%,
+    #B74A31 90.9% 100%);
+}
+html:not(.fdm-off):not(#\9) .risk-icon-gradient,
+html:not(.fdm-off):not(#\9) .risk-rating-container .result-risk {
+  background-color: transparent !important;
+  background-image: var(--fdm-risk-scale) !important;
+}
+html:not(.fdm-off):not(#\9) .quick-criteria-risk-slider input[type="range"].slider-input::-webkit-slider-runnable-track {
+  background-color: transparent !important;
+  background-image: var(--fdm-risk-scale) !important;
+}
+
+/* The screener's asset-class and category selects draw their chevron as a
+   30x17 image (black on opaque white) in ::after content, where the icon pass
+   cannot reach it. Redrawn at the same size in --fdm-text-2 (#D9D8D5). */
+html:not(.fdm-off):not(#\9) .quick-criteria-fund-type .category-criterion :is(.class-options, .category-options).dropdown-arrows::after {
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' data-fdm='1' width='30' height='17' viewBox='0 0 30 17'%3E%3Cpath d='M7.5 6l7.5 6.5L22.5 6' fill='none' stroke='%23D9D8D5' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+}
+
+/* The results table's sort triangle is a black PNG background on the header
+   cell, so a filter would hit the label too. Redrawn per direction in #D9D8D5;
+   data-fdm marks artwork the theme drew, which the icon pass skips. */
+html:not(.fdm-off):not(#\9) :is(#results-header, #fixed-results-header) tr th.sort-desc:is(.sort, .column-group) {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' data-fdm='1' viewBox='0 0 16 16'%3E%3Cpath d='M1 4h15l-7.5 8z' fill='%23D9D8D5'/%3E%3C/svg%3E") !important;
+}
+html:not(.fdm-off):not(#\9) :is(#results-header, #fixed-results-header) tr th.sort-asc:is(.sort, .column-group) {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' data-fdm='1' viewBox='0 0 16 16'%3E%3Cpath d='M7.5 4l7.5 8H0z' fill='%23D9D8D5'/%3E%3C/svg%3E") !important;
+}
+
+/* The green header bar's round icon buttons (Customer Support is one): on
+   hover, light mode puts a darker green disc and a white ring under the white
+   glyph. The disc would map to the button green; it takes a lifted neutral
+   instead, and the label chip under it is a floating layer. */
+html:not(.fdm-off):not(#\9) [class*="header-icon-utility"] > a:is(:hover, :focus) {
+  background-color: var(--fdm-surf-4) !important;
+  outline-color: var(--fdm-text) !important;
+}
+html:not(.fdm-off):not(#\9) [class*="header-icon-utility"] > a:is(:hover, :focus) > span:not(:empty) {
+  background-color: var(--fdm-surf-3) !important;
+  color: var(--fdm-text) !important;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, .55) !important;
+}
+/* A brand-green band is not a button. The marketing site paints whole sections
+   #368727 ("Customer service and security"), which the colour map answers with
+   the button fill. A band takes Fidelity's surface-fixed-background instead
+   (#044014 in both modes) and keeps its white ink. */
+html:not(.fdm-off):not(#\9) [class*="scl-green-background"],
+html:not(.fdm-off):not(#\9) [class*="scl-green-bg"],
+html:not(.fdm-off):not(#\9) [class*="green-background"]:not(button):not(a):not([class*="button"]) {
+  background-color: #044014 !important;
+  background-image: none !important;
+}
+html:not(.fdm-off):not(#\9) [class*="scl-green-background"] :is(h1, h2, h3, h4, p, span, li, a:not([class*="button"])),
+html:not(.fdm-off):not(#\9) [class*="green-background"]:not(button):not(a) :is(h1, h2, h3, h4, p, span, li) {
+  color: #FFFFFF !important;
+}
+html:not(.fdm-off):not(#\9) [class*="scl-green-background"] svg,
+html:not(.fdm-off):not(#\9) [class*="scl-green-background"] svg :is(path, circle, rect):not([fill="none" i]) {
+  fill: #FFFFFF !important;
+  color: #FFFFFF !important;
+}
+
+/* The hero band itself keeps whatever Fidelity paints, artwork included. */
+html:not(.fdm-off):not(#\9) [class*="scl-hero-container"],
+html:not(.fdm-off):not(#\9) [class*="scl-hero--msg"] {
+  background-color: transparent !important;
+}
+
+/* --- third parties -------------------------------------------------------- */
+/* The Qualtrics Feedback tab is a 24x90 cross-origin image (white, green text):
+   the engine cannot read it (tainted canvas) and will not invert it (it has
+   colour). The image is hidden and the tab is redrawn on its button: dark, with
+   text and outline in the theme's green. */
+html:not(.fdm-off):not(#\9) #QSIFeedbackButton-btn {
+  background-color: var(--fdm-surf-2) !important;
+  border: 1px solid var(--fdm-green) !important;
+  border-right: 0 !important;
+  border-radius: 6px 0 0 6px !important;
+  box-sizing: border-box !important;
+}
+html:not(.fdm-off):not(#\9) #QSIFeedbackButton-btn img { opacity: 0 !important; }
+html:not(.fdm-off):not(#\9) #QSIFeedbackButton-btn::after {
+  content: "Feedback";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fdm-green);
+  font: 600 12px/1 Arial, sans-serif;
+  letter-spacing: .2px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  pointer-events: none;
+}
+
+/* The dialog's close button is a black X PNG on transparency, also
+   cross-origin; inverting it is exact. */
+html:not(.fdm-off):not(#\9) img[src*="wr-dialog-close-btn-black"] {
+  filter: invert(1) !important;
+}
+
+/* --- the Feedback survey -------------------------------------------------- */
+/* These match only inside the survey frame (fmrpi.az1.qualtrics.com, listed in
+   manifest.json): html.JFEScope is the class Qualtrics puts on its page. */
+
+/* The survey page takes the card colour like the dialog around it, so the frame
+   edge cannot be seen, as in light mode. #pace is its loading cover. */
+html.JFEScope:not(.fdm-off):not(#\9),
+html.JFEScope:not(.fdm-off):not(#\9) body,
+html.JFEScope:not(.fdm-off):not(#\9) #pace {
+  background-color: var(--fdm-surf-1) !important;
+}
+
+/* The frame scrolls with the survey page's own root scrollbar, which takes a
+   thin dark bar to suit the small frame. */
+html.JFEScope:not(.fdm-off):not(#\9) {
+  scrollbar-color: var(--fdm-surf-4) transparent;
+  scrollbar-width: thin;
+}
+
+/* Answer tiles: Qualtrics shades them with a black wash (6%, 11% on hover),
+   which the engine keeps black and which vanishes on the dark card. They take
+   the raised surface (1.4:1 off the card) and hover one step more. A chosen
+   answer (.q-checked) is the button green from the colour map (palette.js). */
+html.JFEScope:not(.fdm-off):not(#\9) .Skin label.SingleAnswer:not(.q-checked),
+html.JFEScope:not(.fdm-off):not(#\9) .Skin label.MultipleAnswer:not(.q-checked) {
+  background-color: var(--fdm-surf-4) !important;
+}
+html.JFEScope:not(.fdm-off):not(#\9) .Skin label.SingleAnswer:not(.q-checked):hover,
+html.JFEScope:not(.fdm-off):not(#\9) .Skin label.MultipleAnswer:not(.q-checked):hover {
+  background-color: #575655 !important;   /* the raised surface, 12% of the way to white */
+}
+
+/* The public site's link footer (the sitemap columns, Stay Connected and the
+   copyright) is a grey band below the page-coloured contact and disclosure
+   area in light mode (#F0F0F0 under #F9F7F5). Both map to the page colour,
+   so the band takes the recessed surface here and stays a band of its own.
+   Only under the new site's app-footer: older pages paint the whole page
+   #F0F0F0 too, and there the footer is rightly the page colour. */
+html:not(.fdm-off):not(#\9) app-footer > section,
+html:not(.fdm-off):not(#\9) app-footer .glpg-seo-footer {
+  background-color: var(--fdm-recess) !important;
+}
+
+} /* @media screen */

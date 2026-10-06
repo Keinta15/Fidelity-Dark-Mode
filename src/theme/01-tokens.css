@@ -1,0 +1,291 @@
+/* =============================================================================
+ * 01-tokens.css - Fidelity's design tokens, pointed at the --fdm-* palette.
+ * Fidelity declares them on ":root, .fds-fds-theme", hence the two selectors
+ * below; the engine covers components that skip the tokens. Neutral-ramp
+ * numbers are HSL lightness (--color-neutral-88 is L=88%), mapped inverted.
+ * =========================================================================== */
+
+@media screen {
+
+html:not(.fdm-off),
+html:not(.fdm-off) [class*="fds-theme"] {
+
+  /* --- page + panel layers ---------------------------------------------- */
+  --layer-background: var(--fdm-canvas) !important;
+  --layer-background-content: var(--fdm-surf-1) !important;
+  --layer-background-meta: var(--fdm-surf-2) !important;
+  --layer-foreground: var(--fdm-text) !important;
+  --layer-fill: var(--fdm-text-3) !important;
+
+  --box-fill: var(--fdm-surf-3) !important;
+  --box-fill-focus: var(--fdm-text) !important;
+  --box-foreground: var(--fdm-text) !important;
+
+  --media-background: var(--fdm-surf-1) !important;
+
+  /* --- ink --------------------------------------------------------------- */
+  --text-fill: var(--fdm-text) !important;
+  --text-fill-secondary: var(--fdm-text-2) !important;
+  --label-fill: var(--fdm-text-3) !important;
+  --icon-foreground: var(--fdm-text-2) !important;
+  --outline-fill: var(--fdm-border-ctl) !important;
+  --separator-fill: var(--fdm-border) !important;
+
+  --color-white: var(--fdm-surf-1) !important;
+  --color-black: var(--fdm-text) !important;
+
+  /* --- neutral ramp, inverted -------------------------------------------- */
+  --color-neutral-7: #FFFFFF !important;
+  --color-neutral-12: #E6E4E1 !important;
+  --color-neutral-20: #D9D8D5 !important;
+  --color-neutral-40: #ABAAA8 !important;
+  --color-neutral-50: #9C9A98 !important;
+  --color-neutral-53: #8E8C8A !important;
+  --color-neutral-57: #838180 !important;
+  --color-neutral-60: #757473 !important;
+  --color-neutral-73: #525150 !important;
+  --color-neutral-80: #403F3E !important;
+  --color-neutral-87: #333333 !important;
+  --color-neutral-88: #2F2F2F !important;
+  --color-neutral-93: #292928 !important;
+  --color-neutral-96: #1C1B1B !important;
+  --color-neutral-100: #141414 !important;
+
+  --reference-color-neutral-0: var(--fdm-surf-1) !important;
+  --reference-color-neutral-100: var(--fdm-surf-2) !important;
+  --reference-color-neutral-200: var(--fdm-surf-3) !important;
+  --reference-color-neutral-300: var(--fdm-surf-4) !important;
+  --reference-color-neutral-400: var(--fdm-border-str) !important;
+  --reference-color-neutral-500: var(--fdm-text-dis) !important;
+  --reference-color-neutral-600: var(--fdm-text-3) !important;
+  --reference-color-neutral-700: var(--fdm-text-2) !important;
+  --reference-color-neutral-800: var(--fdm-text) !important;
+  --reference-color-neutral-900: var(--fdm-text) !important;
+
+  /* --- actions ----------------------------------------------------------- */
+  --action-primary-background: var(--fdm-green) !important;
+  --action-primary-background-hover: var(--fdm-green-hov) !important;
+  --action-primary-background-focus: var(--fdm-green-hov) !important;
+  --action-primary-background-active: var(--fdm-green-act) !important;
+  --action-primary-background-disabled: var(--fdm-surf-3) !important;
+  --action-primary-fill: var(--fdm-green) !important;
+  --action-primary-foreground: var(--fdm-text-inv) !important;
+  --action-primary-foreground-hover: var(--fdm-text-inv) !important;
+  --action-primary-foreground-focus: var(--fdm-text-inv) !important;
+  --action-primary-foreground-active: var(--fdm-text-inv) !important;
+  --action-primary-foreground-disabled: var(--fdm-text-dis) !important;
+
+  --action-secondary-background-hover: var(--fdm-surf-3) !important;
+  --action-secondary-background-focus: var(--fdm-surf-3) !important;
+  --action-secondary-background-disabled: var(--fdm-surf-2) !important;
+  --action-secondary-fill: var(--fdm-text-2) !important;
+  --action-secondary-foreground: var(--fdm-text) !important;
+  --action-secondary-foreground-hover: var(--fdm-text) !important;
+  --action-secondary-foreground-focus: var(--fdm-text) !important;
+  --action-secondary-foreground-active: var(--fdm-text) !important;
+  --action-secondary-foreground-disabled: var(--fdm-text-dis) !important;
+
+  --action-tertiary-background-hover: var(--fdm-surf-3) !important;
+  --action-tertiary-background-focus: var(--fdm-surf-3) !important;
+  --action-tertiary-background-disabled: var(--fdm-surf-2) !important;
+  --action-tertiary-fill: var(--fdm-text-2) !important;
+  --action-tertiary-foreground: var(--fdm-text) !important;
+  --action-tertiary-foreground-hover: var(--fdm-text) !important;
+  --action-tertiary-foreground-focus: var(--fdm-text) !important;
+  --action-tertiary-foreground-active: var(--fdm-text) !important;
+  --action-tertiary-foreground-disabled: var(--fdm-text-dis) !important;
+
+  /* --- inputs ------------------------------------------------------------ */
+  --input-background: var(--fdm-surf-2) !important;
+  --input-background-hover: var(--fdm-surf-3) !important;
+  --input-background-focus: var(--fdm-surf-2) !important;
+  --input-background-active: var(--fdm-green) !important;
+  --input-background-disabled: var(--fdm-surf-1) !important;
+  --input-background-error: var(--fdm-crit) !important;
+  --input-foreground: var(--fdm-text) !important;
+  --input-foreground-hover: var(--fdm-text) !important;
+  --input-foreground-focus: var(--fdm-text) !important;
+  --input-foreground-active: var(--fdm-text-inv) !important;
+  --input-foreground-error: var(--fdm-text) !important;
+  --input-foreground-disabled: var(--fdm-text-dis) !important;
+  --input-fill: var(--fdm-border-ctl) !important;
+  --input-fill-hover: var(--fdm-text-2) !important;
+  --input-fill-focus: var(--fdm-focus) !important;
+  --input-fill-active: var(--fdm-surf-3) !important;
+  --input-fill-error: var(--fdm-crit) !important;
+  --input-fill-disabled: var(--fdm-text-dis) !important;
+  --input-placeholder: var(--fdm-text-3) !important;
+
+  /* --- navigation -------------------------------------------------------- */
+  --nav-background-hover: var(--fdm-surf-2) !important;
+  --nav-foreground: var(--fdm-text) !important;
+  --nav-foreground-hover: var(--fdm-text) !important;
+  --nav-foreground-focus: var(--fdm-text) !important;
+  --nav-foreground-active: var(--fdm-text) !important;
+  --nav-fill: transparent !important;
+  --nav-fill-hover: var(--fdm-text) !important;
+  --nav-fill-focus: var(--fdm-text) !important;
+  --nav-fill-active: var(--fdm-green) !important;
+
+  /* --- links ------------------------------------------------------------- */
+  --link-foreground: var(--fdm-link) !important;
+  --link-foreground-hover: var(--fdm-link-hov) !important;
+  --link-foreground-focus: var(--fdm-link-hov) !important;
+  --link-foreground-active: var(--fdm-link-hov) !important;
+  --link-foreground-disabled: var(--fdm-text-dis) !important;
+
+  /* --- lists / rows ------------------------------------------------------ */
+  --list-background: var(--fdm-surf-1) !important;
+  --list-background-active: var(--fdm-surf-3) !important;
+  --list-background-focus: var(--fdm-surf-3) !important;
+  --list-background-header: var(--fdm-surf-2) !important;
+  --list-fill: var(--fdm-border) !important;
+
+  /* --- toggles / switches ------------------------------------------------ */
+  --toggle-background: var(--fdm-surf-3) !important;
+  --toggle-background-hover: var(--fdm-surf-4) !important;
+  --toggle-background-active: var(--fdm-green) !important;
+  --toggle-background-selected: var(--fdm-surf-4) !important;
+  --toggle-background-disabled: var(--fdm-surf-2) !important;
+  --toggle-background-error: var(--fdm-crit) !important;
+  --toggle-foreground: var(--fdm-text) !important;
+  --toggle-foreground-hover: var(--fdm-text) !important;
+  --toggle-foreground-active: var(--fdm-text-inv) !important;
+  --toggle-foreground-error: var(--fdm-text) !important;
+  --toggle-foreground-disabled: var(--fdm-text-dis) !important;
+  --toggle-fill: var(--fdm-border-ctl) !important;
+  --toggle-fill-hover: var(--fdm-surf-4) !important;
+  --toggle-fill-active: var(--fdm-green) !important;
+  --toggle-fill-error: var(--fdm-crit) !important;
+  --toggle-fill-disabled: var(--fdm-text-dis) !important;
+
+  /* --- indicators / badges ----------------------------------------------- */
+  --indicator-background: var(--fdm-surf-2) !important;
+  --indicator-background-info: var(--fdm-info-bg) !important;
+  --indicator-background-info-hover: #172A3E !important;
+  --indicator-background-success: var(--fdm-success-bg) !important;
+  --indicator-background-success-hover: #173420 !important;
+  --indicator-background-warning: var(--fdm-warn-bg) !important;
+  --indicator-background-warning-hover: #352B16 !important;
+  --indicator-background-critical: var(--fdm-crit-bg) !important;
+  --indicator-background-critical-hover: #381A1D !important;
+  --indicator-background-status: var(--fdm-green) !important;
+  --indicator-foreground: var(--fdm-text-2) !important;
+  --indicator-foreground-info: var(--fdm-info) !important;
+  --indicator-foreground-success: var(--fdm-success) !important;
+  --indicator-foreground-warning: var(--fdm-warn) !important;
+  --indicator-foreground-critical: var(--fdm-crit) !important;
+  --indicator-foreground-status: var(--fdm-text-inv) !important;
+  --indicator-fill: var(--fdm-text-3) !important;
+  --indicator-fill-info: var(--fdm-info) !important;
+  --indicator-fill-success: var(--fdm-success) !important;
+  --indicator-fill-warning: var(--fdm-warn) !important;
+  --indicator-fill-critical: var(--fdm-crit) !important;
+  --indicator-fill-neutral: var(--fdm-text-3) !important;
+  --indicator-fill-status: var(--fdm-green) !important;
+  --indicator-fill-gain: var(--fdm-gain) !important;
+  --indicator-fill-loss: var(--fdm-loss) !important;
+
+  /* --- component-level semantics ----------------------------------------- */
+  --component-color-alert-confirmation: var(--fdm-success) !important;
+  --component-color-alert-success: var(--fdm-success) !important;
+  --component-color-alert-info: var(--fdm-info) !important;
+  --component-color-alert-warning: var(--fdm-warn) !important;
+  --component-color-alert-critical: var(--fdm-crit) !important;
+  --component-color-alert-critical-fill: var(--fdm-text) !important;
+  --component-color-border-input: var(--fdm-border-ctl) !important;
+  --component-color-border-table-column: var(--fdm-border) !important;
+  --component-color-border-table-row: var(--fdm-hair) !important;
+  --component-color-border-tile: var(--fdm-border) !important;
+  --component-color-text-placeholder: var(--fdm-text-3) !important;
+  --component-color-text-link: var(--fdm-link) !important;
+  --component-color-text-link-hover: var(--fdm-link-hov) !important;
+  --component-color-text-link-focus: var(--fdm-link-hov) !important;
+  --component-color-text-link-visited: var(--fdm-visited) !important;
+
+  /* gain and loss use their own tokens, not the brand green, even where the
+     values match */
+  --component-color-performance-gain: var(--fdm-gain) !important;
+  --component-color-performance-loss: var(--fdm-loss) !important;
+  --component-color-text-performance-gain: var(--fdm-gain) !important;
+  --component-color-text-performance-loss: var(--fdm-loss) !important;
+
+  /* asset-allocation categories */
+  --component-color-chart-asset-domestic: var(--fdm-c-domestic) !important;
+  --component-color-chart-asset-foreign: var(--fdm-c-foreign) !important;
+  --component-color-chart-asset-bonds: var(--fdm-c-bonds) !important;
+  --component-color-chart-asset-fixed-income: var(--fdm-c-fixed) !important;
+  --component-color-chart-asset-other: var(--fdm-c-other) !important;
+  --component-color-chart-asset-unknown: var(--fdm-c-unknown) !important;
+
+  /* --- message cards ------------------------------------------------------ */
+  --ft-message-card-text-color-default: var(--fdm-text) !important;
+  --ft-message-card-text-color-secondary: var(--fdm-text-2) !important;
+  --ft-message-card-ideogram-background-color-default: #1B3A24 !important;
+  --ft-message-card-inline-disclosures-background-color-default: var(--fdm-surf-2) !important;
+
+  /* --- tiles (apex-kit) --------------------------------------------------- */
+  --apex-kit-tile-outline-color: var(--fdm-border) !important;
+  --apex-kit-tile-border-color: var(--fdm-border) !important;
+
+  /* --- AG Grid ----------------------------------------------------------- */
+  /* The Positions table is AG Grid, themed through its --ag-* tokens (sort
+     arrows, menus, hover and price-tick flashes included). Surfaces follow the
+     app, where a grid is a low container: #1C1B1B rows under a black header
+     row, and the card colour on hover. */
+  --ag-background-color:              var(--fdm-recess) !important;
+  --ag-foreground-color:              var(--fdm-text) !important;
+  --ag-secondary-foreground-color:    var(--fdm-text-2) !important;
+  --ag-disabled-foreground-color:     var(--fdm-text-dis) !important;
+  --ag-header-background-color:       var(--fdm-grid-head) !important;
+  /* Column headers stay at full ink; the black header row sets them apart. */
+  --ag-header-text-color:             var(--fdm-text) !important;
+  --ag-header-foreground-color:       var(--fdm-text) !important;
+  /* Grid lines keep light mode's contrast: #cccccc on white is 1.6:1,
+     --fdm-border on the recess 1.64:1. */
+  --ag-border-color:                  var(--fdm-border) !important;
+  --ag-row-border-color:              var(--fdm-border) !important;
+  --ag-header-column-separator-color: var(--fdm-border) !important;
+  --ag-odd-row-background-color:      var(--fdm-recess) !important;
+  --ag-row-hover-color:               var(--fdm-surf-1) !important;
+  --ag-column-hover-color:            var(--fdm-surf-1) !important;
+  --ag-selected-row-background-color: var(--fdm-row-mark) !important;
+  --ag-range-selection-background-color: rgba(88, 166, 255, .16) !important;
+  --ag-range-selection-border-color:  var(--fdm-focus) !important;
+  --ag-menu-background-color:         var(--fdm-surf-3) !important;
+  --ag-menu-text-color:               var(--fdm-text) !important;
+  --ag-panel-background-color:        var(--fdm-surf-3) !important;
+  --ag-control-panel-background-color:var(--fdm-surf-2) !important;
+  --ag-subheader-background-color:    var(--fdm-surf-2) !important;
+  --ag-tooltip-background-color:      var(--fdm-surf-4) !important;
+  --ag-input-background-color:        var(--fdm-surf-2) !important;
+  --ag-input-border-color:            var(--fdm-border-ctl) !important;
+  --ag-chip-background-color:         var(--fdm-surf-3) !important;
+  --ag-modal-overlay-background-color: rgba(0, 0, 0, .66) !important;
+  --ag-invalid-color:                 var(--fdm-crit) !important;
+  --ag-active-color:                  var(--fdm-green) !important;
+  --ag-alpine-active-color:           var(--fdm-green) !important;
+  --ag-checkbox-checked-color:        var(--fdm-green) !important;
+  --ag-icon-color:                    var(--fdm-text-2) !important;
+  /* price-tick flashes keep their meaning */
+  --ag-value-change-delta-up-color:   var(--fdm-gain) !important;
+  --ag-value-change-delta-down-color: var(--fdm-loss) !important;
+  --ag-value-change-value-highlight-background-color: rgba(88, 166, 255, .18) !important;
+
+  /* --- media / illustrations ---------------------------------------------- */
+  --media-ideogram-accent-1-high-contrast: var(--fdm-green-txt) !important;
+  --media-ideogram-accent-1-low-contrast: #1B3A24 !important;
+  --media-illustration-accent-1-primary: var(--fdm-green-txt) !important;
+  --media-illustration-accent-1-secondary: #3F7A38 !important;
+  --media-illustration-accent-1-stroke: var(--fdm-green-txt) !important;
+}
+
+
+/* --- the Fidelity Assistant button ---------------------------------------- */
+/* Its solid glyph is painted from --fa-icon-fill, which the engine maps to
+   primary ink; secondary matches the other toolbar icons. */
+html:not(.fdm-off) {
+  --fa-icon-fill: var(--fdm-text-2) !important;
+}
+
+}

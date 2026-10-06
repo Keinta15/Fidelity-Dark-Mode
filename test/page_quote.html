@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Quote page: layout, progress ring, research module</title>
+<!-- The research quote summary, reduced:
+     - the layout: a white header and a white tab strip (widened with white
+       box-shadows) over a #f2f2f2 panel that holds white cards,
+     - the Top holdings progress ring, drawn in CSS: a disc carrying the filled
+       colour inline, two clipped halves carrying the track colour inline, and
+       a centre the size of the hole,
+     - the Fund profile module, styled by a stylesheet from another origin
+       (the test swaps the host so the sheet cannot be read in place), under a
+       page reset that would erase the module's picture if the picture were
+       not carried over too,
+     - a box the test styles later from a second cross-origin sheet, the way a
+       route bundle arrives,
+     - icons whose wrapper the page colours on purpose: the analyst ratings'
+       orange stars and the search field's green magnifier, beside an icon
+       whose wrapper sets no colour. -->
+<style>
+  body { background: #fff; margin: 0; font: 14px Arial, sans-serif; color: #333; }
+  .res-exp-container { background: #fff; display: block; }
+  .quote-header { padding: 20px; }
+  .nre-cards-container { background: #fff; }
+  .nre-cards-container .pvd-tab-group__tabs { background: #fff; box-shadow: #fff 187.5rem 0, #fff -187.5rem 0; margin: 0 auto; padding: 0 2rem; max-width: 600px; }
+  .nre-cards-container .nre-panel.pvd3-tab-panel-root { background: #f2f2f2; box-shadow: #fff 187.5rem 0, #fff -187.5rem 0; padding: 1rem 2rem; min-height: 700px; }
+  .pvd-card { background: #fff; box-shadow: rgba(0, 0, 0, .3) 0 1px 4px; padding: 16px; width: 360px; margin-bottom: 16px; }
+  .card div { background-image: none; }
+  .price-range .grids { position: relative; width: 170px; height: 11px; }
+  .price-range .grid { position: absolute; top: 5px; width: 170px; height: 1px; background: #cccccc; }
+  .price-range .cursor { position: absolute; left: 60px; width: 11px; height: 11px; background: #000; transform: rotate(45deg); }
+  .donut-chart { position: relative; width: 30px; height: 30px; border-radius: 50%; overflow: hidden; }
+  .donut-chart .slice { position: absolute; width: 30px; height: 30px; }
+  .donut-chart .chart-center { position: absolute; top: 5px; left: 5px; width: 20px; height: 20px; border-radius: 50%; background: #fff; }
+  :root .pvd3-icon-root { --apex-kit-icon-color: currentColor; }
+  .pvd3-icon-root { fill: var(--apex-kit-icon-color); width: 24px; height: 24px; }
+  .nre-analyst-ratings-card .right .color-highlight { color: #fb9914 !important; }
+  .res-exp-search-container > .nre-input-icon-container .nre-search-icon { color: #317b23 !important; }
+</style>
+</head>
+<body>
+  <main class="res-exp-container" id="main">
+    <div class="quote-header" id="quoteHeader">Example Small-Cap ETF <b>$100.00</b>
+      <app-price-range-indicator><div class="price-range"><div class="grids"><div class="cursor" id="rangeCursor"></div><div class="grid"></div></div></div></app-price-range-indicator>
+    </div>
+    <div class="nre-cards-container" id="cards">
+      <div class="pvd3-tab-group-root">
+        <div class="pvd-tab-group__tabs" id="tabs"><span class="pvd-tab__tab">Overview</span> <span class="pvd-tab__tab">Chart</span></div>
+      </div>
+      <div class="nre-panel pvd3-tab-panel-root" id="panel">
+        <div class="pvd-card card" id="holdings">
+          <span id="pct">9.83%</span>
+          <donut><div class="donut-chart chart" id="ring" style="background: rgb(29, 57, 134);">
+            <div class="slice one" id="sliceOne" style="transform: rotate(125.4deg); background: rgb(230, 230, 230); clip: rect(0px, 30px, 15px, 0px);"></div>
+            <div class="slice two" id="sliceTwo" style="transform: rotate(0deg); background: rgb(230, 230, 230); clip: rect(0px, 15px, 30px, 0px);"></div>
+            <div class="chart-center" id="ringCenter"></div>
+          </div></donut>
+        </div>
+        <svg style="display: none"><symbol id="starShape" viewBox="0 0 24 24"><path d="M12 2l3 7h7l-5.5 4.5 2 7.5-6.5-4-6.5 4 2-7.5L2 9h7z"/></symbol></svg>
+        <div class="pvd-card nre-analyst-ratings-card" id="ratings">
+          <div class="right"><pvd3-icon class="color-highlight overall-icon"><svg class="pvd3-icon-root" id="starIcon"><use href="#starShape"/></svg></pvd3-icon></div>
+          <div class="left"><pvd3-icon class="plain-icon"><svg class="pvd3-icon-root" id="plainIcon"><use href="#starShape"/></svg></pvd3-icon></div>
+          <div class="res-exp-search-container"><div class="nre-input-icon-container"><pvd3-icon class="nre-search-icon"><svg class="pvd3-icon-root" id="searchIcon"><use href="#starShape"/></svg></pvd3-icon></div></div>
+        </div>
+        <div class="pvd-card card">
+          <div class="MOD appContent" id="module">
+            <h3 id="holdingsHead"><img id="holdingsGlyph" alt="" width="17" height="15"> Holdings</h3>
+            <p class="notation">Data provided by <img id="providerMark" alt="Morningstar" width="59" height="14"></p>
+            <p class="category-empty"><img id="twoTone" alt="Loan" width="40" height="40"> Do you have any loans?</p>
+            <p>The investment seeks to track an index.</p>
+            <div class="profile-item" id="moduleIcon">Morningstar category</div>
+            <a href="#" id="moduleLink">Prospectus &amp; reports</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <div id="late">Arrives with the next route</div>
+  <script>
+    const l = document.createElement('link');
+    l.rel = 'stylesheet';
+    l.href = location.protocol + '//localhost:' + location.port + '/quote_module.css';
+    document.head.appendChild(l);
+    /* the research provider's GIF icon, from a host that sends no CORS headers */
+    document.getElementById('holdingsGlyph').src = location.protocol + '//localhost:' + location.port + '/holdings_glyph.gif';
+    /* and its wordmark, red letters on white, from the same host */
+    document.getElementById('providerMark').src = location.protocol + '//localhost:' + location.port + '/provider_mark.gif';
+    /* a two-tone drawing: dark grey line art with an orange base (the planning
+       pages' category pictures), from the page's own origin */
+    document.getElementById('twoTone').src = 'two_tone.png';
+  </script>
+</body>
+</html>
