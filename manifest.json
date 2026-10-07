@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Fidelity Dark Mode",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Dark mode for Fidelity.com",
   "homepage_url": "https://github.com/bradleyw95/Fidelity-Dark-Mode",
   "minimum_chrome_version": "111",
