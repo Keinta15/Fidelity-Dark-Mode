@@ -1357,6 +1357,44 @@ const parseHex = h => { const m = /^#?([0-9a-f]{6})$/i.exec(String(h).trim()); i
     report(hex(rgb(seo2.bg)) === '#1C1B1B' && hex(rgb(seo2.band)) === '#1C1B1B',
       `  the link footer is the recessed surface, one band, a step off the page (${hex(rgb(seo2.bg))}, ${hex(rgb(seo2.band))})`);
     await page.evaluate(() => { for (const id of ['seoStyleA', 'seoStyleB', 'seoHost']) document.getElementById(id).remove(); });
+
+    /* The logout page's banner: a white box painted over by a 960x300 PNG of
+       plain cream, with copy on it. A flat picture is a background colour, so
+       it takes the dark counterpart, a step off the card around it as the
+       cream stood off the white page; the copy reads on it. */
+    await page.evaluate(() => {
+      const st = document.createElement('style');
+      st.id = 'flatStyle';
+      st.textContent = '.iam-test{background:#ffffff url("flat_panel.png") no-repeat 100% 100%;border-radius:24px;width:640px;height:96px;padding:20px;box-sizing:border-box} .iam-test h3{color:#000000;margin:0;font-weight:300}';
+      document.head.appendChild(st);
+      const host = document.createElement('div'); host.className = 'iam-test'; host.id = 'flatPanel';
+      host.innerHTML = '<h3 id="flatHead">Did you leave a 401(k) at a former employer?</h3>';
+      document.querySelector('#card').appendChild(host);
+    });
+    await page.waitForTimeout(2600);
+    const flat = await page.evaluate(async () => {
+      const el = document.getElementById('flatPanel');
+      const v = el.style.getPropertyValue('background-image');
+      const m = /url\("?(data:image\/png[^")]+)"?\)/.exec(v);
+      let px = null;
+      if (m) {
+        const img = new Image();
+        await new Promise(r => { img.onload = r; img.onerror = r; img.src = m[1]; });
+        const c = document.createElement('canvas'); c.width = 4; c.height = 4;
+        const x = c.getContext('2d'); x.drawImage(img, 0, 0, 4, 4);
+        const d = x.getImageData(1, 1, 1, 1).data;
+        px = 'rgb(' + d[0] + ', ' + d[1] + ', ' + d[2] + ')';
+      }
+      const card = getComputedStyle(document.getElementById('card')).backgroundColor;
+      return { edited: !!m, px, card, ink: getComputedStyle(document.getElementById('flatHead')).color };
+    });
+    report(flat.edited && flat.px && lum(rgb(flat.px)) < 0.08,
+      `a panel painted by a flat cream picture is drawn dark instead (${flat.px || 'unchanged'})`);
+    report(flat.px && contrast(rgb(flat.px), rgb(flat.card)) >= 1.04,
+      `  a step off the card around it, as the cream stood off the white (${flat.px ? contrast(rgb(flat.px), rgb(flat.card)).toFixed(2) : '?'}:1 on ${hex(rgb(flat.card))})`);
+    report(flat.px && contrast(rgb(flat.ink), rgb(flat.px)) >= 4.5,
+      `  and the copy on it reads (${flat.px ? contrast(rgb(flat.ink), rgb(flat.px)).toFixed(2) : '?'}:1)`);
+    await page.evaluate(() => { document.getElementById('flatStyle').remove(); document.getElementById('flatPanel').remove(); });
   }
 
   /* --- a component that styles itself after it mounts ---------------------- */

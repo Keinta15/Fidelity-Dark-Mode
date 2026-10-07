@@ -1743,6 +1743,7 @@
     textured = new WeakMap();
     texturedEls.clear();
     textureRejected = new WeakSet();
+    solidRejected = new WeakSet();
     spinPlated = new WeakSet();
     filtered = new WeakMap();
   }
@@ -3800,6 +3801,85 @@
     }
   }
 
+  /* --- a picture that is one flat colour ---------------------------------- */
+  /* A panel can be painted by a picture of a single colour (the logout page's
+     401(k) banner is a 960x300 PNG of plain #F7F4E4). It takes that colour's
+     dark counterpart, drawn at the picture's own size so it covers exactly
+     what the picture did. A panel that lands on the colour already around it
+     steps up a surface, as the cream stood off the white page in light mode. */
+  const solidPictures = new Map();     // url -> Promise<hex|null>
+  let solidRejected = new WeakSet();
+
+  function solidColourOf(url) {
+    if (solidPictures.has(url)) return solidPictures.get(url);
+    const p = new Promise(resolve => {
+      const img = new Image();
+      img.onerror = () => resolve(null);
+      img.onload = () => {
+        try {
+          const w = img.naturalWidth, h = img.naturalHeight;
+          if (!w || !h || w * h > 4e6) return resolve(null);
+          /* read at most 200x200: a flat picture stays flat when scaled */
+          const cw = Math.min(w, 200), ch = Math.min(h, 200);
+          const cv = document.createElement('canvas');
+          cv.width = cw; cv.height = ch;
+          const ctx = cv.getContext('2d', { willReadFrequently: true });
+          ctx.drawImage(img, 0, 0, cw, ch);
+          const d = ctx.getImageData(0, 0, cw, ch).data;          // throws if tainted
+          const r = d[0], g = d[1], b = d[2];
+          for (let i = 0; i < d.length; i += 4) {
+            if (d[i + 3] < 250) return resolve(null);           // see-through: not a panel
+            if (Math.abs(d[i] - r) > 2 || Math.abs(d[i + 1] - g) > 2 || Math.abs(d[i + 2] - b) > 2) return resolve(null);
+          }
+          resolve({ hex: toHex(r, g, b), w, h });
+        } catch (e) {
+          resolve(null);
+        }
+      };
+      loadRaster(img, url);
+    });
+    remember(solidPictures, url, p, 120);
+    return p;
+  }
+
+  function solidRaster(hex, w, h) {
+    const cv = document.createElement('canvas');
+    cv.width = w; cv.height = h;
+    const ctx = cv.getContext('2d');
+    ctx.fillStyle = hex;
+    ctx.fillRect(0, 0, w, h);
+    return cv.toDataURL('image/png');
+  }
+
+  function resolidify(el, url) {
+    const ep = epoch;
+    imagedEls.add(el);
+    pictureSource.set(el, url);
+    backgroundPictures.add(el);
+    solidColourOf(url).then(found => {
+      if (ep !== epoch || !el.isConnected) return;
+      if (!found) {
+        /* not flat after all: the other picture passes may have it */
+        solidRejected.add(el);
+        imagedEls.delete(el);
+        return;
+      }
+      let now = null;
+      try { now = pictureUrlOf(el); } catch (e) { now = null; }
+      if (now !== url) { imagedEls.delete(el); return; }
+      const light = parseColor(found.hex);
+      /* only pale panels: a dark flat picture is a band of its own */
+      if (!light || relLum(light) < 0.6) { solidRejected.add(el); imagedEls.delete(el); return; }
+      let next = mapColor(found.hex, 'bg', null);
+      const around = el.parentElement ? effectiveBg(el.parentElement) : parseColor(P.canvas);
+      const mapped = parseColor(next);
+      if (mapped && around && contrast(mapped, around) < 1.04) {
+        next = relLum(around) < relLum(parseColor(P.surf1)) - 0.001 ? P.surf1 : P.surf2;
+      }
+      try { writeStyle(el, 'background-image', 'url("' + solidRaster(next, found.w, found.h) + '")', 'important'); } catch (e) { /* ignore */ }
+    });
+  }
+
   /* `rasterOnly`: a small picture set into a larger element, so only a pixel
      edit applies, never a filter (which would recolour the whole element). */
   function refilter(el, url, surface, apply, inkLevel, rasterOnly) {
@@ -4056,6 +4136,14 @@
       }
 
       const box = el.getBoundingClientRect();
+      /* A panel-sized background that may be one flat colour (resolidify).
+         One that is not comes back on a later pass, for the steps below. */
+      if (tag !== 'img' && !solidRejected.has(el) && !/\.svg(\?|$)/i.test(url) && !DATA_SVG.test(url) &&
+          box.width >= 120 && box.height >= 40 && getComputedStyle(el).backgroundImage.split('url(').length === 2) {
+        if (++looked > 120) break;
+        resolidify(el, url);
+        continue;
+      }
       /* A photograph behind copy may need a scrim. Tested before :hover,
          since the pointer is nearly always somewhere over a page-sized hero. */
       if (tag !== 'img' && box.width >= 600 && box.height >= 160) { maybeScrim(el, url); continue; }
