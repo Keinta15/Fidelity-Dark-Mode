@@ -6,6 +6,7 @@ npm-debug.log*
 *.pem
 *.crx
 *.zip
+dist/
 
 # Test artifacts
 test/out/

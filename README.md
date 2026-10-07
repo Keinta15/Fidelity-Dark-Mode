@@ -1,7 +1,7 @@
 # Fidelity Dark Mode
 
-Fidelity Dark Mode is an unofficial Chrome extension that adds a dark theme to
-fidelity.com. The palette is modeled on the dark mode in Fidelity's mobile
+Fidelity Dark Mode is an unofficial browser extension that adds a dark theme
+to fidelity.com. The palette is modeled on the dark mode in Fidelity's mobile
 app, so the website looks consistent with the app when the app is in dark
 mode.
 
@@ -20,7 +20,7 @@ Investments. See the [disclaimer](#disclaimer) for details.
 - Turns off instantly from the toolbar, with no page reload.
 - Collects no data and includes no analytics or tracking.
 
-## Installation
+## Chrome installation
 
 Install Fidelity Dark Mode from the
 [Chrome Web Store](https://chromewebstore.google.com/detail/fidelity-dark-mode/bldgiageknkcfafafdmgifbdegngjdfd),
@@ -30,24 +30,32 @@ Chrome 111 or later is required. Other Chromium-based browsers that can
 install from the Chrome Web Store, such as Edge and Brave, may also work but
 are not tested.
 
-### From source
+### Firefox
 
-To run the latest code from this repository instead:
+Firefox 128 or later is required. To run the latest code from this repository:
 
-1. Download or clone this repository.
-2. Open `chrome://extensions` and turn on **Developer mode** in the top right
-   corner.
-3. Click **Load unpacked** and select the repository folder.
+1. Download or clone this repository and run `npm run build:firefox`.
+2. Open `about:debugging#/runtime/this-firefox`.
+3. Click **Load Temporary Add-on...** and select
+   `dist/firefox/manifest.json`.
 4. Open or refresh any Fidelity page.
 
-If the store version is also installed, turn it off while the unpacked copy is
-on, so the two do not both theme the page.
+Temporary add-ons are removed when Firefox closes. For a persistent
+installation, package the contents of `dist/firefox` as a ZIP and submit it
+through Mozilla Add-ons.
+
+### From source in Chrome
+
+To load the Chrome version directly, download or clone this repository, open
+`chrome://extensions`, turn on **Developer mode**, and select **Load unpacked**
+with the repository folder. If the store version is also installed, turn it
+off while the unpacked copy is on, so the two do not both theme the page.
 
 ## Usage
 
 The theme is enabled as soon as the extension is installed. Click the toolbar
 icon to turn it on or off. The change applies to every open Fidelity tab right
-away, and the setting is saved to your Chrome profile.
+away, and the setting is saved to your browser profile.
 
 ## Privacy
 
@@ -116,9 +124,10 @@ dark counterpart (open it in a browser).
 
 ## Development
 
-There is no build step: Chrome loads the files in `src/` directly. After
-making a change, click the reload button on the extension's card in
-`chrome://extensions`, then refresh the Fidelity tab.
+There is no build step for Chrome: it loads the files in `src/` directly. For
+Firefox, `npm run build:firefox` creates a loadable extension in
+`dist/firefox/` using the Firefox-specific manifest. After making a change,
+reload the extension in the browser, then refresh the Fidelity tab.
 
 The test suites require Node 18 or later:
 

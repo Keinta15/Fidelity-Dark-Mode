@@ -7,8 +7,8 @@ It does not collect any data. There is no analytics, no tracking, no sign-in
 and no server behind it. Nothing about you, your accounts or the pages you
 visit is recorded or sent anywhere.
 
-The only thing it stores is your on/off setting, in Chrome's extension
-storage, so it follows your Chrome profile.
+The only thing it stores is your on/off setting, in the browser's extension
+storage, so it follows your browser profile.
 
 To recolor a page it reads the page's styles and colors in memory while the
 page is open, the same way a browser theme or a custom stylesheet would. It
