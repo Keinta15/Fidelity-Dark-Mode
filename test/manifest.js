@@ -11,7 +11,7 @@ const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 
 assert.equal(chrome.background.service_worker, 'src/background.js');
 assert.equal(firefox.background.scripts[0], 'src/background.js');
-assert.equal(firefox.browser_specific_settings.gecko.strict_min_version, '128.0');
+assert.equal(firefox.browser_specific_settings.gecko.strict_min_version, '142.0');
 assert.equal(firefox.browser_specific_settings.gecko.id, 'fidelity-dark-mode@keinta15.github.io');
 assert.deepEqual(firefox.browser_specific_settings.gecko.data_collection_permissions, { required: ['none'] });
 assert.equal(firefox.minimum_chrome_version, undefined);
