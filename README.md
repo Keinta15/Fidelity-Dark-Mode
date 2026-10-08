@@ -32,9 +32,10 @@ are not tested.
 
 ### Firefox
 
-Firefox 128 or later is required. To run the latest code from this repository:
+Firefox 142 or later is required. To run the latest code from this repository:
 
-1. Download or clone this repository and run `npm run build:firefox`.
+1. Download or clone this repository, install Node.js 18 or later, and run
+   `npm ci` followed by `npm run build:firefox`.
 2. Open `about:debugging#/runtime/this-firefox`.
 3. Click **Load Temporary Add-on...** and select
    `dist/firefox/manifest.json`.
@@ -126,8 +127,46 @@ dark counterpart (open it in a browser).
 
 There is no build step for Chrome: it loads the files in `src/` directly. For
 Firefox, `npm run build:firefox` creates a loadable extension in
-`dist/firefox/` using the Firefox-specific manifest. After making a change,
-reload the extension in the browser, then refresh the Fidelity tab.
+`dist/firefox/` and the ZIP-format add-on package at
+`dist/fidelity-dark-mode-firefox.xpi`, using the Firefox-specific manifest.
+After making a change, reload the extension in the browser, then refresh the
+Fidelity tab.
+
+### Firefox source-code submission
+
+The Firefox build uses a custom Node.js packaging script, so submit the
+matching source code with every version sent to Mozilla Add-ons. Include this
+README, `package.json`, `package-lock.json`, `manifest.firefox.json`,
+`scripts/build-firefox.js`, `LICENSE`, and the `src/`, `popup/`, and `icons/`
+directories in the source archive. Do not include `node_modules/` or the
+generated `dist/` directory.
+
+The build requires Windows, macOS, or Linux supported by Node.js 18 or later,
+with npm 9 or later. Install Node.js from [nodejs.org](https://nodejs.org/);
+npm is included with Node.js. The packaging dependency `archiver` 8.0.0 and
+its dependencies are installed at the versions recorded in
+`package-lock.json` by `npm ci`; no global build tools are required. Once
+dependencies are installed, packaging runs locally without a browser or
+network service. The development tests additionally use Playwright and its
+Chromium browser, but these are not used to build the add-on.
+
+To create a source archive from a committed checkout, run
+`git archive --format=zip --output=fidelity-dark-mode-source.zip HEAD`.
+Alternatively, the source ZIP downloaded from the repository contains the
+same tracked files.
+
+To reproduce the submitted add-on from the source archive:
+
+1. Extract the archive and open a terminal in the extracted project directory.
+2. Run `npm ci` to install the exact locked dependencies.
+3. Run `npm run build:firefox`.
+4. The generated add-on is `dist/fidelity-dark-mode-firefox.xpi`. Its
+   uncompressed payload is also available in `dist/firefox/`, with
+   `manifest.json` at the root.
+
+The script copies the extension source files unchanged, selects
+`manifest.firefox.json` as the packaged manifest, and creates an XPI archive.
+It does not transpile, concatenate, minify, or generate extension source code.
 
 The test suites require Node 18 or later:
 
